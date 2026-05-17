@@ -1,0 +1,417 @@
+[gd_scene format=3 uid="uid://fwa2hscibahr"]
+
+[ext_resource type="PackedScene" uid="uid://n6o0yb58tbnx" path="res://addon/inventory/slot.tscn" id="1_3i2wc"]
+[ext_resource type="Script" uid="uid://baba2xvwnubgm" path="res://addon/inventory/inventory.gd" id="1_imj5t"]
+[ext_resource type="Script" uid="uid://b2h0i8wyj12p0" path="res://addon/inventory/crafting.gd" id="3_ug3s1"]
+[ext_resource type="Script" uid="uid://bihro8vp6lrg5" path="res://addon/inventory/mouse_item.gd" id="4_q483t"]
+
+[node name="Inventory" type="Control" unique_id=1460526324]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -282.0
+offset_top = -276.0
+offset_right = -282.0
+offset_bottom = -276.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_imj5t")
+
+[node name="Slots" type="GridContainer" parent="." unique_id=1795672112]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -428.0
+offset_top = -114.0
+offset_right = 68.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+columns = 10
+
+[node name="Slot" parent="Slots" unique_id=913615063 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot2" parent="Slots" unique_id=1510899088 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot3" parent="Slots" unique_id=1375627108 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot4" parent="Slots" unique_id=301281637 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot5" parent="Slots" unique_id=190085639 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot6" parent="Slots" unique_id=272912397 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot7" parent="Slots" unique_id=2073739148 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot8" parent="Slots" unique_id=519694896 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot9" parent="Slots" unique_id=1146775937 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot10" parent="Slots" unique_id=283970258 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+visible = false
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+armor = true
+
+[node name="Slot11" parent="Slots" unique_id=830163133 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot12" parent="Slots" unique_id=956777793 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot13" parent="Slots" unique_id=1199735292 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot14" parent="Slots" unique_id=1691173102 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot15" parent="Slots" unique_id=1205926576 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot16" parent="Slots" unique_id=228587545 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot17" parent="Slots" unique_id=371512807 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot18" parent="Slots" unique_id=823959841 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot19" parent="Slots" unique_id=1388420974 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot20" parent="Slots" unique_id=1771159594 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot21" parent="Slots" unique_id=1535601230 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot22" parent="Slots" unique_id=1301850150 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot23" parent="Slots" unique_id=1027774190 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot24" parent="Slots" unique_id=492482768 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot25" parent="Slots" unique_id=442283590 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot26" parent="Slots" unique_id=834080837 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot27" parent="Slots" unique_id=1989622921 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot28" parent="Slots" unique_id=1119090458 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot29" parent="Slots" unique_id=1312219940 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot30" parent="Slots" unique_id=739896522 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot31" parent="Slots" unique_id=2034984100 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot32" parent="Slots" unique_id=1090192839 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot33" parent="Slots" unique_id=1719246672 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot34" parent="Slots" unique_id=1467762939 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot35" parent="Slots" unique_id=1808428918 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot36" parent="Slots" unique_id=1600630491 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot37" parent="Slots" unique_id=83451790 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot38" parent="Slots" unique_id=935426877 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot39" parent="Slots" unique_id=1641629167 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot40" parent="Slots" unique_id=1728897661 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot41" parent="Slots" unique_id=874774538 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot42" parent="Slots" unique_id=1699211747 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot43" parent="Slots" unique_id=1524822690 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot44" parent="Slots" unique_id=338656727 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot45" parent="Slots" unique_id=292838129 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot46" parent="Slots" unique_id=1119178738 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot47" parent="Slots" unique_id=382286013 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot48" parent="Slots" unique_id=581724025 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot49" parent="Slots" unique_id=1795791403 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot50" parent="Slots" unique_id=1571675836 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot51" parent="Slots" unique_id=1857132205 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slots2" type="GridContainer" parent="." unique_id=2020231680]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -244.0
+offset_right = 56.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
+columns = 2
+
+[node name="Slot" parent="Slots2" unique_id=911873084 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot2" parent="Slots2" unique_id=244421004 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot3" parent="Slots2" unique_id=1384702837 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot4" parent="Slots2" unique_id=1455500473 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot5" parent="Slots2" unique_id=1883887231 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Slot6" parent="Slots2" unique_id=1348632399 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../MouseItem")
+
+[node name="Button" type="Button" parent="." unique_id=1017323155]
+visible = false
+layout_mode = 0
+offset_right = 415.0
+offset_bottom = 131.0
+text = "give(\"coin\")"
+
+[node name="Label" type="Label" parent="." unique_id=217205076]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -145.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 71
+text = "Inventory Example"
+horizontal_alignment = 2
+
+[node name="Crafting" type="Control" parent="." unique_id=718087610]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_ug3s1")
+
+[node name="CraftingSlots" type="GridContainer" parent="Crafting" unique_id=600561269]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 114.0
+offset_top = -152.0
+offset_right = 410.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+columns = 3
+
+[node name="Slot" parent="Crafting/CraftingSlots" unique_id=249044742 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot2" parent="Crafting/CraftingSlots" unique_id=1091533874 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot3" parent="Crafting/CraftingSlots" unique_id=1767897035 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot4" parent="Crafting/CraftingSlots" unique_id=1447928634 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot5" parent="Crafting/CraftingSlots" unique_id=1715571694 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot6" parent="Crafting/CraftingSlots" unique_id=1948342364 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot7" parent="Crafting/CraftingSlots" unique_id=192109801 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot8" parent="Crafting/CraftingSlots" unique_id=191601470 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Slot9" parent="Crafting/CraftingSlots" unique_id=789565212 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 2
+mouse_item = NodePath("../../../MouseItem")
+crafting_slot = true
+
+[node name="Output" parent="Crafting" unique_id=152321728 node_paths=PackedStringArray("mouse_item") instance=ExtResource("1_3i2wc")]
+layout_mode = 0
+offset_left = 1338.0
+offset_top = 457.0
+offset_right = 1434.0
+offset_bottom = 553.0
+mouse_item = NodePath("../../MouseItem")
+crafting_output = true
+
+[node name="Label" type="Label" parent="Crafting" unique_id=1045416374]
+layout_mode = 0
+offset_left = 579.0
+offset_top = 273.0
+offset_right = 619.0
+offset_bottom = 296.0
+
+[node name="MouseItem" type="TextureRect" parent="." unique_id=86937312]
+z_index = 90
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 219.0
+offset_top = 137.0
+offset_right = 283.0
+offset_bottom = 201.0
+mouse_filter = 2
+script = ExtResource("4_q483t")
+
+[node name="Count" type="Label" parent="MouseItem" unique_id=1671653240]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

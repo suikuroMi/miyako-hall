@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bynyc1iqomh27"]
+
+[ext_resource type="Texture2D" uid="uid://bybmtixyawcr7" path="res://assets/tileset/lamp.png" id="1_4synu"]
+[ext_resource type="Texture2D" uid="uid://26n8jtongy6c" path="res://assets/tileset/TORII.png" id="3_64gt2"]
+[ext_resource type="Texture2D" uid="uid://4m1y7x1xssps" path="res://assets/tileset/main map/Road.png" id="6_4synu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1xo34"]
+texture = ExtResource("3_64gt2")
+texture_region_size = Vector2i(295, 212)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eqscl"]
+texture = ExtResource("1_4synu")
+texture_region_size = Vector2i(23, 53)
+0:0/0 = 0
+0:0/0/z_index = 1
+
+[sub_resource type="TileSet" id="TileSet_eqscl"]
+sources/0 = SubResource("TileSetAtlasSource_1xo34")
+sources/1 = SubResource("TileSetAtlasSource_eqscl")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whrjg"]
+texture = ExtResource("6_4synu")
+texture_region_size = Vector2i(1280, 3000)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_1xo34"]
+sources/0 = SubResource("TileSetAtlasSource_whrjg")
+
+[node name="Main map" type="Node2D" unique_id=2072355895]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1584340960]
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=1185535586]
+
+[node name="TileMapLayer3" type="TileMapLayer" parent="." unique_id=1353935625]
+
+[node name="TileMapLayer4" type="TileMapLayer" parent="." unique_id=599181659]
+
+[node name="TileMapLayer5" type="TileMapLayer" parent="." unique_id=1722466663]
+
+[node name="TileMapLayer6" type="TileMapLayer" parent="." unique_id=1807342151]
+
+[node name="TileMapLayer7" type="TileMapLayer" parent="." unique_id=1156205666]
+
+[node name="TileMapLayer8" type="TileMapLayer" parent="." unique_id=1949849214]
+
+[node name="TileMapLayer9" type="TileMapLayer" parent="." unique_id=1089464291]
+z_index = 11
+tile_map_data = PackedByteArray(0, 0, 255, 255, 249, 255, 0, 0, 0, 0, 0, 0, 0, 0, 248, 255, 255, 255, 1, 0, 0, 0, 0, 0, 0, 0, 6, 0, 255, 255, 1, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_eqscl")
+
+[node name="Ground_Road" type="TileMapLayer" parent="." unique_id=2064323048]
+tile_map_data = PackedByteArray(0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_1xo34")

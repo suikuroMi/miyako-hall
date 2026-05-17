@@ -1,0 +1,23 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Compilation/Build Artifacts
+bin/
+build/
+*.class
+*.jar
+*.war
+
+# IDE & Editor Settings
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+*.iws
+.vscode/
+
+# OS-generated files
+.DS_Store
+Thumbs.db

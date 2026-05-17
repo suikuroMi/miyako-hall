@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://vv22cbuowiu4"]
+
+[ext_resource type="Script" uid="uid://6406udje387v" path="res://scripts/Mascot.gd" id="1_12kyv"]
+[ext_resource type="Texture2D" uid="uid://domyjl6digx68" path="res://assets/sprites/enemy.png" id="2_12kyv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_82ifp"]
+size = Vector2(106.161285, 89.571434)
+
+[sub_resource type="Animation" id="Animation_x1xt6"]
+resource_name = "hurt"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ob8pd"]
+_data = {
+&"hurt": SubResource("Animation_x1xt6")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k6a2c"]
+size = Vector2(74.322586, 64.00001)
+
+[node name="mascot" type="CharacterBody2D" unique_id=488455841]
+collision_layer = 2
+collision_mask = 3
+platform_floor_layers = 2
+platform_wall_layers = 3
+script = ExtResource("1_12kyv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=136768177]
+position = Vector2(-2.3841858e-07, -14)
+scale = Vector2(0.44596353, 0.40885416)
+texture = ExtResource("2_12kyv")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=864257558 groups=["Mascots"]]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=1478270316]
+position = Vector2(5.722046e-06, -14)
+scale = Vector2(0.2421875, 0.21874999)
+shape = SubResource("RectangleShape2D_82ifp")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=833233588]
+libraries/ = SubResource("AnimationLibrary_ob8pd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=885758051]
+position = Vector2(1.1920929e-07, -13.999999)
+scale = Vector2(0.24218747, 0.21874996)
+shape = SubResource("RectangleShape2D_k6a2c")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1094748702]

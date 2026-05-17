@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c0ns6x0odtfb7"]
+
+[ext_resource type="PackedScene" uid="uid://dlsa4je7lbkwu" path="res://character/player.tscn" id="1_pcdg3"]
+[ext_resource type="PackedScene" uid="uid://dryuml1i51dxs" path="res://scenes/EnemySpawner.tscn" id="2_6nlsj"]
+
+[node name="endless" type="Node2D" unique_id=186783087]
+y_sort_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1792328259]
+layer = -10
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=646248304]
+offset_right = 1919.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="Player" parent="." unique_id=1544112096 instance=ExtResource("1_pcdg3")]
+position = Vector2(967, 549)
+
+[node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("2_6nlsj")]

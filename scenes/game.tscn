@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bqspgx57rs0cm"]
+
+[ext_resource type="PackedScene" uid="uid://dlsa4je7lbkwu" path="res://character/player.tscn" id="1_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://bynyc1iqomh27" path="res://scenes/main_map.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://dlims0kt4s6sj" path="res://gui/minimap.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://dryuml1i51dxs" path="res://scenes/EnemySpawner.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://fwa2hscibahr" path="res://addon/inventory/inventory.tscn" id="5_iywne"]
+
+[node name="Game" type="Node2D" unique_id=2007219614]
+position = Vector2(0, 9)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1240511976]
+
+[node name="Inventory" parent="CanvasLayer" unique_id=1460526324 instance=ExtResource("5_iywne")]
+offset_left = -144.0
+offset_top = -173.0
+offset_right = -144.0
+offset_bottom = -173.0
+
+[node name="minimap" parent="CanvasLayer" unique_id=399684327 instance=ExtResource("3_lnu2h")]
+visible = false
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Main map" parent="." unique_id=2072355895 instance=ExtResource("2_yqjtg")]
+position = Vector2(8, 0)
+
+[node name="Player" parent="." unique_id=1544112096 instance=ExtResource("1_lbhrr")]
+
+[node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("4_lbhrr")]
