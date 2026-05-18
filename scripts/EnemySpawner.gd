@@ -26,4 +26,10 @@ func spawn_enemy():
 
 	var enemy = enemy_scene.instantiate()
 	enemy.global_position = spawn_pos
+	if enemy.has_signal("defeated"):
+		enemy.defeated.connect(_on_enemy_defeated)
 	get_tree().current_scene.add_child(enemy)
+
+func _on_enemy_defeated(exp_reward: int):
+	if _player and _player.has_method("add_experience"):
+		_player.add_experience(exp_reward)
