@@ -8,7 +8,6 @@ extends Button
 @export var crafting_slot: bool
 @export var craft_index: int
 
-# Renamed to icon_rect to avoid built-in property conflicts
 @onready var icon_rect: TextureRect = get_node("TextureRect")
 @onready var count_label: Label = get_node("TextureRect/Count")
 
