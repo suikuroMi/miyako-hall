@@ -3,12 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://dlsa4je7lbkwu" path="res://character/player.tscn" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bynyc1iqomh27" path="res://scenes/main_map.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://dlims0kt4s6sj" path="res://gui/minimap.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://btjs0cvbp3drq" path="res://scenes/player_stats_hud.tscn" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://dryuml1i51dxs" path="res://scenes/EnemySpawner.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://fwa2hscibahr" path="res://addon/inventory/inventory.tscn" id="5_iywne"]
+[ext_resource type="PackedScene" uid="uid://ci6ff21j7gnbo" path="res://scenes/level_up_cards.tscn" id="6_0tnpc"]
 [ext_resource type="Script" path="res://scripts/HealthBar.gd" id="6_yd5qc"]
-[ext_resource type="Texture2D" uid="uid://njtvemd2ha0b" path="res://assets/sprites/MIO.png" id="7_4ad7s"]
-[ext_resource type="Script" path="res://scripts/PlayerStatsHUD.gd" id="8_mobft"]
-[ext_resource type="Script" path="res://scripts/LevelUpCards.gd" id="9_2k3ov"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbar_bg"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
@@ -24,48 +23,33 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_badge"]
-bg_color = Color(0.121569, 0.121569, 0.121569, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.258824, 0.760784, 0.309804, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_player_avatar"]
-atlas = ExtResource("7_4ad7s")
-region = Rect2(96, 48, 48, 48)
-
-[sub_resource type="Shader" id="Shader_circular_avatar"]
-code = "shader_type canvas_item;\n\nvoid fragment() {\n\tvec2 center_uv = UV - vec2(0.5);\n\tif (length(center_uv) > 0.5) {\n\t\tdiscard;\n\t}\n\tCOLOR = texture(TEXTURE, UV) * COLOR;\n}\n"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_circular_avatar"]
-shader = SubResource("Shader_circular_avatar")
-
 [node name="Game" type="Node2D" unique_id=2007219614]
-position = Vector2(0, 9)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1240511976]
+[node name="GAMEHUD" type="CanvasLayer" parent="." unique_id=1240511976]
 
-[node name="Inventory" parent="CanvasLayer" unique_id=1460526324 instance=ExtResource("5_iywne")]
-offset_left = -144.0
-offset_top = -173.0
-offset_right = -144.0
-offset_bottom = -173.0
-
-[node name="minimap" parent="CanvasLayer" unique_id=399684327 instance=ExtResource("3_lnu2h")]
-visible = false
+[node name="Inventory" parent="GAMEHUD" unique_id=1460526324 instance=ExtResource("5_iywne")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
+offset_left = 957.0
+offset_top = 532.0
+offset_right = 957.0
+offset_bottom = 532.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer"]
+[node name="minimap" parent="GAMEHUD" unique_id=399684327 instance=ExtResource("3_lnu2h")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1610.0
+offset_top = 57.0
+offset_right = 1610.0
+offset_bottom = 57.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="HealthBar" type="ProgressBar" parent="GAMEHUD" unique_id=54346965]
 offset_left = 68.0
 offset_top = 16.0
 offset_right = 308.0
@@ -76,77 +60,15 @@ value = 100.0
 show_percentage = false
 script = ExtResource("6_yd5qc")
 
-[node name="PlayerBadge" type="Panel" parent="CanvasLayer"]
-offset_left = 16.0
-offset_top = 10.0
-offset_right = 56.0
-offset_bottom = 50.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_player_badge")
+[node name="PlayerStatsHUD" parent="GAMEHUD" unique_id=749091619 instance=ExtResource("4_gee14")]
 
-[node name="PlayerAvatar" type="TextureRect" parent="CanvasLayer/PlayerBadge"]
-material = SubResource("ShaderMaterial_circular_avatar")
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 38.0
-offset_bottom = 38.0
-texture = SubResource("AtlasTexture_player_avatar")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="PlayerStatsHUD" type="VBoxContainer" parent="CanvasLayer"]
-offset_left = 68.0
-offset_top = 44.0
-offset_right = 368.0
-offset_bottom = 95.0
-script = ExtResource("8_mobft")
-
-[node name="LevelExpLabel" type="Label" parent="CanvasLayer/PlayerStatsHUD"]
-text = "LVL 1   EXP 0 / 100"
-
-[node name="StatsLabel" type="Label" parent="CanvasLayer/PlayerStatsHUD"]
-text = "DMG 10   SPD 10   INT 10   HP 100"
-
-[node name="HintLabel" type="Label" parent="CanvasLayer/PlayerStatsHUD"]
-text = "H: -HP   J: +HP   K: +EXP"
-
-[node name="LevelUpCards" type="PanelContainer" parent="CanvasLayer"]
-visible = false
-offset_left = 140.0
-offset_top = 80.0
-offset_right = 500.0
-offset_bottom = 220.0
-script = ExtResource("9_2k3ov")
-
-[node name="Content" type="VBoxContainer" parent="CanvasLayer/LevelUpCards"]
-layout_mode = 2
-
-[node name="TitleLabel" type="Label" parent="CanvasLayer/LevelUpCards/Content"]
-layout_mode = 2
-text = "LEVEL UP! Choose 1 card"
-horizontal_alignment = 1
-
-[node name="CardsRow" type="HBoxContainer" parent="CanvasLayer/LevelUpCards/Content"]
-layout_mode = 2
-alignment = 1
-
-[node name="CardA" type="Button" parent="CanvasLayer/LevelUpCards/Content/CardsRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "ATK +3"
-
-[node name="CardB" type="Button" parent="CanvasLayer/LevelUpCards/Content/CardsRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "SPD +2"
-
-[node name="CardC" type="Button" parent="CanvasLayer/LevelUpCards/Content/CardsRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "INT +2"
+[node name="LevelUpCards" parent="GAMEHUD" unique_id=1772498664 instance=ExtResource("6_0tnpc")]
 
 [node name="Main map" parent="." unique_id=2072355895 instance=ExtResource("2_yqjtg")]
-position = Vector2(8, 0)
+position = Vector2(990, 527)
 
 [node name="Player" parent="." unique_id=1544112096 instance=ExtResource("1_lbhrr")]
+position = Vector2(989, 527)
 
 [node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("4_lbhrr")]
+position = Vector2(-35, -7)
