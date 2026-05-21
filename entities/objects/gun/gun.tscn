@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bsymr1e8cbimy"]
+
+[ext_resource type="Script" uid="uid://byig4sto2c21g" path="res://entities/objects/gun/gun.gd" id="1_og67c"]
+[ext_resource type="Texture2D" uid="uid://nbydem3idfp" path="res://assets/pistol/AK47.png" id="2_og67c"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_og67c"]
+radius = 602.0133
+
+[node name="weapon" type="Area2D" unique_id=1333721170]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_og67c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=980982605]
+shape = SubResource("CircleShape2D_og67c")
+
+[node name="weaponmarl" type="Marker2D" parent="." unique_id=921204014]
+
+[node name="Pistol" type="Sprite2D" parent="weaponmarl" unique_id=196499426]
+position = Vector2(22, -3)
+scale = Vector2(0.93581855, 1.1250001)
+texture = ExtResource("2_og67c")
+
+[node name="ShootingPoint" type="Marker2D" parent="weaponmarl/Pistol" unique_id=1581375778]
+position = Vector2(15.094341, -1.7937231)
+scale = Vector2(0.51752, 0.4304933)
+
+[node name="Timer" type="Timer" parent="." unique_id=1985232223]
+wait_time = 0.3
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://btfupc57tjbaa"]
+
+[ext_resource type="Script" uid="uid://dcsecsmeucuni" path="res://entities/objects/bullet/bullet.gd" id="1_j8r0v"]
+[ext_resource type="Texture2D" uid="uid://ftgn8042h2hv" path="res://assets/pistol/RifleAmmoSmall.png" id="2_j8r0v"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qkbn0"]
+radius = 6.0
+height = 24.0
+
+[node name="Area2D" type="Area2D" unique_id=1524907552]
+top_level = true
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_j8r0v")
+
+[node name="Projectile" type="Sprite2D" parent="." unique_id=1247909739]
+scale = Vector2(3, 3)
+texture = ExtResource("2_j8r0v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=79026864]
+position = Vector2(0, 1)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_qkbn0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

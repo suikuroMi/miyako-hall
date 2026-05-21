@@ -12,12 +12,12 @@ config_version=5
 
 config/name="OOKAMI"
 run/main_scene="uid://bqspgx57rs0cm"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-List="*uid://ulnbynv2grqy"
+List="*res://ui/inventory/item_list.gd"
 
 [display]
 

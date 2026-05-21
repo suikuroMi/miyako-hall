@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Item" format=3 uid="uid://c02b0jq5bdpkm"]
+
+[ext_resource type="Script" uid="uid://dlhwo7m7dufls" path="res://ui/inventory/item.gd" id="1_lpx27"]
+[ext_resource type="Texture2D" uid="uid://nbydem3idfp" path="res://assets/pistol/AK47.png" id="2_g1805"]
+
+[resource]
+script = ExtResource("1_lpx27")
+texture = ExtResource("2_g1805")
