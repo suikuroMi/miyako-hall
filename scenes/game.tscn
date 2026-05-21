@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dbc04t0pt4qo4"]
 
 [ext_resource type="PackedScene" uid="uid://dlsa4je7lbkwu" path="res://entities/player/player.tscn" id="1_lbhrr"]
-[ext_resource type="PackedScene" path="res://scenes/main_map.tscn" id="2_yqjtg"]
-[ext_resource type="PackedScene" path="res://gui/minimap.tscn" id="3_lnu2h"]
-[ext_resource type="PackedScene" path="res://scenes/player_stats_hud.tscn" id="4_gee14"]
-[ext_resource type="PackedScene" path="res://scenes/EnemySpawner.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://bynyc1iqomh27" path="res://maps/main_map.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://dlims0kt4s6sj" path="res://ui/hud/minimap.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://btjs0cvbp3drq" path="res://ui/hud/player_stats_hud.tscn" id="4_gee14"]
+[ext_resource type="PackedScene" uid="uid://dryuml1i51dxs" path="res://entities/enemy/spawner/enemy_spawner.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://fwa2hscibahr" path="res://ui/inventory/inventory.tscn" id="5_iywne"]
-[ext_resource type="PackedScene" path="res://scenes/level_up_cards.tscn" id="6_0tnpc"]
-[ext_resource type="Script" path="res://scripts/HealthBar.gd" id="6_yd5qc"]
+[ext_resource type="PackedScene" uid="uid://ci6ff21j7gnbo" path="res://ui/menus/level_up_cards.tscn" id="6_0tnpc"]
+[ext_resource type="Script" uid="uid://bt6juyl0i5qko" path="res://ui/hud/health_bar.gd" id="6_yd5qc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbar_bg"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
