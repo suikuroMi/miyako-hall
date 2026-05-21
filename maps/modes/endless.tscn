@@ -63,13 +63,15 @@ offset_right = 1919.0
 offset_bottom = 1080.0
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1420768397]
+scroll_offset = Vector2(1714, 378)
 repeat_size = Vector2(64, 64)
-repeat_times = 15
+repeat_times = 20
 
 [node name="Ground texture" type="Sprite2D" parent="Parallax2D" unique_id=581836650]
+position = Vector2(898, 551)
 texture = ExtResource("5_7dvob")
 
 [node name="Player" parent="." unique_id=1544112096 groups=["player"] instance=ExtResource("1_pcdg3")]
-position = Vector2(967, 549)
+position = Vector2(928, 549)
 
 [node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("2_6nlsj")]
