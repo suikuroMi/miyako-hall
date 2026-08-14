@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3kv36p6b5n8r"
-path="res://.godot/imported/projectile.png-68f8d3944c3dd00050fc9d637b4db968.ctex"
+uid="uid://23ub1l8ep8i5"
+path="res://.godot/imported/sycte.png-9aab2685d974be292ca056f64f1151d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pistol/projectile.png"
-dest_files=["res://.godot/imported/projectile.png-68f8d3944c3dd00050fc9d637b4db968.ctex"]
+source_file="res://ui/inventory/textures/sycte.png"
+dest_files=["res://.godot/imported/sycte.png-9aab2685d974be292ca056f64f1151d1.ctex"]
 
 [params]
 

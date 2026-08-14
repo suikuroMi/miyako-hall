@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://bwj3xm1ywo3u1"]
+
+[ext_resource type="PackedScene" uid="uid://ywnr4fpagbmg" path="res://entities/character/Ookami Mio/ookami mio.tscn" id="1_if4sx"]
+[ext_resource type="Script" uid="uid://jinh27anpcv7" path="res://entities/character/character_data.gd" id="1_rrahy"]
+
+[resource]
+script = ExtResource("1_rrahy")
+id = "ookami_mio"
+base_health = 1000.0
+base_speed = 30.0
+character_visual_scene = ExtResource("1_if4sx")
+anim_library = "mio_animation"
+metadata/_custom_type_script = "uid://jinh27anpcv7"

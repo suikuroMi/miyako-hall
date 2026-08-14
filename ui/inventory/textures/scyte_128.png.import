@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ffc56h1vyk7r"
-path="res://.godot/imported/circle.png-d30ec473e796e39358dd518878c49d6c.ctex"
+uid="uid://5mn3qo0b65l6"
+path="res://.godot/imported/scyte_128.png-988fe1004eb8e7e1451b23c2659bfe56.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pistol/impact/circle.png"
-dest_files=["res://.godot/imported/circle.png-d30ec473e796e39358dd518878c49d6c.ctex"]
+source_file="res://ui/inventory/textures/scyte_128.png"
+dest_files=["res://.godot/imported/scyte_128.png-988fe1004eb8e7e1451b23c2659bfe56.ctex"]
 
 [params]
 

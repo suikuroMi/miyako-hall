@@ -11,17 +11,9 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbar_bg"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbar_fill"]
 bg_color = Color(0.258824, 0.760784, 0.309804, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
 
 [node name="Game" type="Node2D" unique_id=2007219614]
 
@@ -50,10 +42,10 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="HealthBar" type="ProgressBar" parent="GAMEHUD" unique_id=54346965]
-offset_left = 68.0
-offset_top = 16.0
-offset_right = 308.0
-offset_bottom = 42.0
+offset_left = 564.0
+offset_top = 1003.0
+offset_right = 874.0
+offset_bottom = 1029.0
 theme_override_styles/background = SubResource("StyleBoxFlat_healthbar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_healthbar_fill")
 value = 100.0
@@ -63,12 +55,15 @@ script = ExtResource("6_yd5qc")
 [node name="PlayerStatsHUD" parent="GAMEHUD" unique_id=749091619 instance=ExtResource("4_gee14")]
 
 [node name="LevelUpCards" parent="GAMEHUD" unique_id=1772498664 instance=ExtResource("6_0tnpc")]
+offset_left = 753.0
+offset_top = 228.0
+offset_right = 1113.0
+offset_bottom = 368.0
 
 [node name="Main map" parent="." unique_id=2072355895 instance=ExtResource("2_yqjtg")]
-position = Vector2(990, 527)
+position = Vector2(990, 528)
 
 [node name="Player" parent="." unique_id=1544112096 instance=ExtResource("1_lbhrr")]
 position = Vector2(989, 527)
 
 [node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("4_lbhrr")]
-position = Vector2(0, -2)

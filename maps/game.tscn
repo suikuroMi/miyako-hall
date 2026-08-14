@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bynyc1iqomh27" path="res://maps/main_map.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://dlims0kt4s6sj" path="res://ui/hud/minimap.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://btjs0cvbp3drq" path="res://ui/hud/player_stats_hud.tscn" id="4_gee14"]
-[ext_resource type="PackedScene" uid="uid://dryuml1i51dxs" path="res://entities/enemy/spawner/enemy_spawner.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://fwa2hscibahr" path="res://ui/inventory/inventory.tscn" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://ci6ff21j7gnbo" path="res://ui/menus/level_up_cards.tscn" id="6_0tnpc"]
 [ext_resource type="Script" uid="uid://bt6juyl0i5qko" path="res://ui/hud/health_bar.gd" id="6_yd5qc"]
@@ -50,6 +49,7 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="HealthBar" type="ProgressBar" parent="GAMEHUD" unique_id=54346965]
+visible = false
 offset_left = 68.0
 offset_top = 16.0
 offset_right = 308.0
@@ -61,6 +61,7 @@ show_percentage = false
 script = ExtResource("6_yd5qc")
 
 [node name="PlayerStatsHUD" parent="GAMEHUD" unique_id=749091619 instance=ExtResource("4_gee14")]
+visible = false
 
 [node name="LevelUpCards" parent="GAMEHUD" unique_id=1772498664 instance=ExtResource("6_0tnpc")]
 
@@ -68,7 +69,4 @@ script = ExtResource("6_yd5qc")
 position = Vector2(990, 527)
 
 [node name="Player" parent="." unique_id=1544112096 instance=ExtResource("1_lbhrr")]
-position = Vector2(989, 527)
-
-[node name="EnemySpawn" parent="." unique_id=415231420 instance=ExtResource("4_lbhrr")]
-position = Vector2(0, -2)
+position = Vector2(981, 479)

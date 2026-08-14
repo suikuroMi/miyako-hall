@@ -1,13 +1,12 @@
 extends Control
 
-@onready var mouse_item_node: TextureRect = get_node("MouseItem")
 @export var held_item: String
 
 func _ready() -> void:
 	self.visible = false
 	
 	# Initial items
-	give("sword")
+	give("sycte")
 	give("pickaxe")
 	give("chestplate")
 
@@ -17,17 +16,8 @@ func _input(event: InputEvent) -> void:
 
 func toggle_inventory():
 	self.visible = !self.visible
-	
 	get_tree().paused = self.visible
-	
-	if self.visible:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	else:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
-func _process(_delta: float) -> void:
-	if self.visible:
-		mouse_item_node.global_position = get_global_mouse_position() - Vector2(32, 32)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func give(id: String):
 	var slots_parent = get_node("%Slots")

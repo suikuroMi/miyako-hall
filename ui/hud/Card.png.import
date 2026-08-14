@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ftgn8042h2hv"
-path="res://.godot/imported/RifleAmmoSmall.png-2f65ebdf6b2e61ead0e585d145192e2f.ctex"
+uid="uid://bdxpnxbyj20ta"
+path="res://.godot/imported/Card.png-618bc9f3021057117f5e98c4dce07186.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pistol/RifleAmmoSmall.png"
-dest_files=["res://.godot/imported/RifleAmmoSmall.png-2f65ebdf6b2e61ead0e585d145192e2f.ctex"]
+source_file="res://ui/hud/Card.png"
+dest_files=["res://.godot/imported/Card.png-618bc9f3021057117f5e98c4dce07186.ctex"]
 
 [params]
 

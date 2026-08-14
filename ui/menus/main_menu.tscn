@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://dq7v2a7u29jpx"]
+[gd_scene format=3 uid="uid://dq7v2a7u3ajpx"]
 
-[ext_resource type="Script" path="res://ui/menus/main_menu.gd" id="1_mainmenu"]
+[ext_resource type="Script" uid="uid://c0gl3ekiyt5jy" path="res://ui/menus/main_menu.gd" id="1_mainmenu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.12549, 0.12549, 0.219608, 0.941176)
@@ -9,7 +9,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1742619817]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mainmenu")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=771429149]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,7 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0666667, 0.0666667, 0.109804, 1)
 
-[node name="MenuContainer" type="CenterContainer" parent="."]
+[node name="MenuContainer" type="CenterContainer" parent="." unique_id=2044190350]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,63 +35,58 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Content" type="VBoxContainer" parent="MenuContainer"]
+[node name="Content" type="VBoxContainer" parent="MenuContainer" unique_id=727786316]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="TitleContainer" type="VBoxContainer" parent="MenuContainer/Content"]
+[node name="TitleContainer" type="VBoxContainer" parent="MenuContainer/Content" unique_id=1285664460]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="MenuContainer/Content/TitleContainer"]
+[node name="TitleLabel" type="Label" parent="MenuContainer/Content/TitleContainer" unique_id=1223092349]
 layout_mode = 2
 theme_override_font_sizes/font_size = 96
 text = "OOKAMI"
 horizontal_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="MenuContainer/Content/TitleContainer"]
+[node name="SubtitleLabel" type="Label" parent="MenuContainer/Content/TitleContainer" unique_id=1279259609]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.501961, 0.501961, 0.705882, 1)
 theme_override_font_sizes/font_size = 28
 text = "MIYAKO HALL"
 horizontal_alignment = 1
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="MenuContainer/Content"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="MenuContainer/Content" unique_id=1708218577]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="StoryButton" type="Button" parent="MenuContainer/Content/ButtonsContainer"]
+[node name="EndlessButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=976956675]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "Story Mode"
+text = "Start
+"
 
-[node name="EndlessButton" type="Button" parent="MenuContainer/Content/ButtonsContainer"]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Endless Mode"
-
-[node name="OptionsButton" type="Button" parent="MenuContainer/Content/ButtonsContainer"]
+[node name="OptionsButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=2040219256]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Options"
 
-[node name="CreditsButton" type="Button" parent="MenuContainer/Content/ButtonsContainer"]
+[node name="CreditsButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=2054434640]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Credits"
 
-[node name="ExitButton" type="Button" parent="MenuContainer/Content/ButtonsContainer"]
+[node name="ExitButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=1537158876]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Exit"
 
-[node name="CreditsPanel" type="PanelContainer" parent="."]
+[node name="CreditsPanel" type="PanelContainer" parent="." unique_id=736856803]
 visible = false
 custom_minimum_size = Vector2(600, 450)
 layout_mode = 1
@@ -108,38 +103,38 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="CreditsContent" type="VBoxContainer" parent="CreditsPanel"]
+[node name="CreditsContent" type="VBoxContainer" parent="CreditsPanel" unique_id=2046864793]
 layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="CreditsTitle" type="Label" parent="CreditsPanel/CreditsContent"]
+[node name="CreditsTitle" type="Label" parent="CreditsPanel/CreditsContent" unique_id=1934282205]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "CREDITS"
 horizontal_alignment = 1
 
-[node name="CreditsList" type="Label" parent="CreditsPanel/CreditsContent"]
+[node name="CreditsList" type="Label" parent="CreditsPanel/CreditsContent" unique_id=1402683920]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.823529, 0.823529, 0.862745, 1)
 theme_override_font_sizes/font_size = 22
 text = "Core Development Team
 
-MENDOU - Programming & Systems
+MENDOU - Lead Developer
 GORIEE - Programming & Systems
 YUKI - Lead Artist & Asset Designer
 
 Thank you for playing!"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="CreditsPanel/CreditsContent"]
+[node name="BackButton" type="Button" parent="CreditsPanel/CreditsContent" unique_id=1730897679]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 24
 text = "Back"
 
-[node name="OptionsPanel" type="PanelContainer" parent="."]
+[node name="OptionsPanel" type="PanelContainer" parent="." unique_id=992117516]
 visible = false
 custom_minimum_size = Vector2(600, 450)
 layout_mode = 1
@@ -156,65 +151,65 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="OptionsContent" type="VBoxContainer" parent="OptionsPanel"]
+[node name="OptionsContent" type="VBoxContainer" parent="OptionsPanel" unique_id=128774997]
 layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="OptionsTitle" type="Label" parent="OptionsPanel/OptionsContent"]
+[node name="OptionsTitle" type="Label" parent="OptionsPanel/OptionsContent" unique_id=2032018692]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "OPTIONS"
 horizontal_alignment = 1
 
-[node name="SettingsGrid" type="GridContainer" parent="OptionsPanel/OptionsContent"]
+[node name="SettingsGrid" type="GridContainer" parent="OptionsPanel/OptionsContent" unique_id=953275518]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 40
 theme_override_constants/v_separation = 25
 columns = 2
 
-[node name="WindowModeLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="WindowModeLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=229884080]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Window Mode"
 
-[node name="WindowModeButton" type="Button" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="WindowModeButton" type="Button" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=1232104306]
 custom_minimum_size = Vector2(200, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Windowed"
 
-[node name="VolumeLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="VolumeLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=1323963686]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Master Volume"
 
-[node name="VolumeSlider" type="HSlider" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="VolumeSlider" type="HSlider" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=1096919018]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 size_flags_vertical = 4
 value = 80.0
 
-[node name="SFXLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="SFXLabel" type="Label" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=1027435674]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "SFX Volume"
 
-[node name="SFXSlider" type="HSlider" parent="OptionsPanel/OptionsContent/SettingsGrid"]
+[node name="SFXSlider" type="HSlider" parent="OptionsPanel/OptionsContent/SettingsGrid" unique_id=1282894198]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 size_flags_vertical = 4
 value = 80.0
 
-[node name="BackButton" type="Button" parent="OptionsPanel/OptionsContent"]
+[node name="BackButton" type="Button" parent="OptionsPanel/OptionsContent" unique_id=107665369]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 24
 text = "Back"
 
-[node name="UnderConstructionPanel" type="PanelContainer" parent="."]
+[node name="UnderConstructionPanel" type="PanelContainer" parent="." unique_id=1819083418]
 visible = false
 custom_minimum_size = Vector2(600, 450)
 layout_mode = 1
@@ -231,18 +226,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="ConstructionContent" type="VBoxContainer" parent="UnderConstructionPanel"]
+[node name="ConstructionContent" type="VBoxContainer" parent="UnderConstructionPanel" unique_id=137107656]
 layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="ConstructionTitle" type="Label" parent="UnderConstructionPanel/ConstructionContent"]
+[node name="ConstructionTitle" type="Label" parent="UnderConstructionPanel/ConstructionContent" unique_id=203965075]
 layout_mode = 2
 theme_override_font_sizes/font_size = 44
 text = "STORY MODE"
 horizontal_alignment = 1
 
-[node name="ConstructionMessage" type="Label" parent="UnderConstructionPanel/ConstructionContent"]
+[node name="ConstructionMessage" type="Label" parent="UnderConstructionPanel/ConstructionContent" unique_id=818947146]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.823529, 0.823529, 0.862745, 1)
 theme_override_font_sizes/font_size = 24
@@ -252,7 +247,7 @@ UNDER CONSTRUCTION
 Please try Endless Mode instead!"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="UnderConstructionPanel/ConstructionContent"]
+[node name="BackButton" type="Button" parent="UnderConstructionPanel/ConstructionContent" unique_id=1977626005]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
 size_flags_horizontal = 4

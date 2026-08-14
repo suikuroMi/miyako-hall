@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://ci6ff21j7gnbo"]
 
 [ext_resource type="Script" uid="uid://f5cmq7fj7ute" path="res://ui/menus/level_up_cards.gd" id="1_a8gpy"]
+[ext_resource type="Texture2D" uid="uid://bdxpnxbyj20ta" path="res://ui/hud/Card.png" id="2_6vbgu"]
 
 [node name="LevelUpCards" type="PanelContainer" unique_id=1772498664]
-visible = false
-offset_left = 140.0
-offset_top = 80.0
-offset_right = 500.0
-offset_bottom = 220.0
+offset_left = 758.0
+offset_top = 471.0
+offset_right = 1118.0
+offset_bottom = 611.0
 script = ExtResource("1_a8gpy")
 
 [node name="Content" type="VBoxContainer" parent="." unique_id=1508822575]
@@ -36,3 +36,15 @@ text = "SPD +2"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "INT +2"
+
+[node name="Card" type="Sprite2D" parent="Content/CardsRow" unique_id=45244115]
+position = Vector2(-111, 359)
+texture = ExtResource("2_6vbgu")
+
+[node name="Card2" type="Sprite2D" parent="Content/CardsRow" unique_id=1252827231]
+position = Vector2(208, 360)
+texture = ExtResource("2_6vbgu")
+
+[node name="Card3" type="Sprite2D" parent="Content/CardsRow" unique_id=681045290]
+position = Vector2(530, 361)
+texture = ExtResource("2_6vbgu")

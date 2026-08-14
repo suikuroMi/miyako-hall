@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Item" format=3 uid="uid://gyxd61h25o7q"]
+
+[ext_resource type="Script" uid="uid://dysvcbv414i68" path="res://ui/inventory/item.gd" id="1_yjf5w"]
+[ext_resource type="Texture2D" uid="uid://5mn3qo0b65l6" path="res://ui/inventory/textures/scyte_128.png" id="2_qdtk3"]
+
+[resource]
+script = ExtResource("1_yjf5w")
+texture = ExtResource("2_qdtk3")
+name = "Sycte"
+id = "sycte"
+type = "weapon"
