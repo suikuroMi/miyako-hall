@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dlsa4je7lbkwu"]
 
 [ext_resource type="Script" uid="uid://4x3w8h3n4qps" path="res://entities/player/player.gd" id="1_monf5"]
-[ext_resource type="Resource" uid="uid://bwj3xm1ywo3u1" path="res://entities/character/Ookami Mio/Ookami Mio.tres" id="2_mio"]
+[ext_resource type="Resource" path="res://data/characters/ookami_mio.tres" id="2_mio"]
 [ext_resource type="Script" path="res://core/components/stats_component.gd" id="3_stats"]
 [ext_resource type="Script" path="res://core/components/movement_component.gd" id="4_move"]
 [ext_resource type="Script" path="res://core/components/skill_caster_component.gd" id="5_skills"]

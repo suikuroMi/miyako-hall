@@ -48,3 +48,19 @@ position = Vector2(1180, 520)
 
 [node name="Slime3" parent="." instance=ExtResource("5_slime")]
 position = Vector2(960, 720)
+
+[node name="SpawnFromGym" parent="." instance=ExtResource("3_spawn")]
+position = Vector2(960, 860)
+spawn_id = "from_gym"
+facing_direction = Vector2(0, -1)
+
+[node name="GateToGym" type="Area2D" parent="."]
+position = Vector2(960, 970)
+collision_layer = 0
+script = ExtResource("4_warp_script")
+target_map_path = "res://modes_and_maps/story_mode/gyms/nakiri_dojo_gym.tscn"
+target_spawn_id = "from_forest"
+prompt_message = "Enter the Haunted Dojo (Nakiri Ayame Boss Gym)"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateToGym"]
+shape = SubResource("RectangleShape2D_north_gate")

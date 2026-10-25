@@ -1,5 +1,8 @@
-extends Resource
+# character_data.gd
+# Data container for player characters, unlockable Holomembers, and boss profiles.
+
 class_name CharacterData
+extends Resource
 
 enum Archetype {
 	SHRINE_MAIDEN,
@@ -27,12 +30,12 @@ enum WeaponType { SWORD, GREATSWORD, SCYTHE, GUN, TALISMAN }
 @export var anim_library: String = ""
 
 @export_group("Base Stats (Level 1)")
-@export var base_health: float 
-@export var base_power: float 
-@export var base_speed: float 
-@export var base_intelligence: int 
-@export var mana: bool 
-@export var base_mana: float
+@export var base_health: float = 100.0
+@export var base_power: float = 20.0
+@export var base_speed: float = 30.0
+@export var base_intelligence: int = 15
+@export var mana: bool = true
+@export var base_mana: float = 100.0
 
 @export var base_defense: float = 5.0
 @export_range(0.0, 1.0) var crit_rate: float = 0.05

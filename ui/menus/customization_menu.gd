@@ -65,7 +65,7 @@ func toggle_menu() -> void:
 
 func _preload_characters() -> void:
 	var paths := {
-		"ookami_mio": "res://entities/character/Ookami Mio/Ookami Mio.tres",
+		"ookami_mio": "res://data/characters/ookami_mio.tres",
 		"shirakami_fubuki": "res://data/characters/shirakami_fubuki.tres",
 		"nakiri_ayame": "res://data/characters/nakiri_ayame.tres"
 	}

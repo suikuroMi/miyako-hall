@@ -1,6 +1,6 @@
 extends Button
 
-@export var data: Item
+@export var data: ItemData
 @export var count: int
 @export var armor: bool
 @export var crafting_output: bool

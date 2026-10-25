@@ -128,15 +128,16 @@ func unlock_character(char_id: String) -> void:
 	if not unlocked_characters.has(char_id):
 		unlocked_characters.append(char_id)
 		EventBus.character_unlocked.emit(char_id)
+		if SaveManager:
+			SaveManager.save_game()
 
 func is_character_unlocked(char_id: String) -> bool:
 	return unlocked_characters.has(char_id)
 
 func set_story_flag(flag_name: String, value: Variant = true) -> void:
 	story_flags[flag_name] = value
-
-func get_story_flag(flag_name: String, default_value: Variant = false) -> Variant:
-	return story_flags.get(flag_name, default_value)
+	if SaveManager:
+		SaveManager.save_game()
 
 # ---------------------------------------------------------------------------
 # Signal Listeners
@@ -146,6 +147,8 @@ func _on_boss_defeated(boss_id: String) -> void:
 	if not purified_bosses.has(boss_id):
 		purified_bosses.append(boss_id)
 	set_story_flag("boss_defeated_" + boss_id, true)
+	if SaveManager:
+		SaveManager.save_game()
 
 func _on_enemy_purified(_enemy_data: Resource, _pos: Vector2, _exp: int) -> void:
 	register_enemy_kill()
@@ -157,11 +160,15 @@ func _on_enemy_purified(_enemy_data: Resource, _pos: Vector2, _exp: int) -> void
 func add_coins(amount: int) -> void:
 	shrine_coins += amount
 	EventBus.currency_changed.emit(shrine_coins)
+	if SaveManager:
+		SaveManager.save_game()
 
 func spend_coins(amount: int) -> bool:
 	if shrine_coins >= amount:
 		shrine_coins -= amount
 		EventBus.currency_changed.emit(shrine_coins)
+		if SaveManager:
+			SaveManager.save_game()
 		return true
 	return false
 
@@ -173,6 +180,8 @@ func upgrade_faith_rank(char_id: String) -> int:
 	var new_rank: int = min(current_rank + 1, 6)
 	faith_ranks[char_id] = new_rank
 	EventBus.faith_resonance_upgraded.emit(char_id, new_rank)
+	if SaveManager:
+		SaveManager.save_game()
 	return new_rank
 
 ## Performs single or multi-pulls on a GachaBannerData

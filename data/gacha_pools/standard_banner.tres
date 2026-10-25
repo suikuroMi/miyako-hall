@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://core/resources/gacha_banner_data.gd" id="1_gbanner"]
 [ext_resource type="Resource" path="res://data/characters/shirakami_fubuki.tres" id="2_fubuki"]
 [ext_resource type="Resource" path="res://data/characters/nakiri_ayame.tres" id="3_ayame"]
-[ext_resource type="Resource" path="res://entities/character/Ookami Mio/Ookami Mio.tres" id="4_mio"]
+[ext_resource type="Resource" path="res://data/characters/ookami_mio.tres" id="4_mio"]
 [ext_resource type="Resource" path="res://data/weapons/talisman.tres" id="5_talisman"]
 [ext_resource type="Resource" path="res://data/weapons/scythe.tres" id="6_scythe"]
 [ext_resource type="Resource" path="res://data/weapons/spirit_blade.tres" id="7_blade"]

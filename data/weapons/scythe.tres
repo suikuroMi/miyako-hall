@@ -1,11 +1,14 @@
 [gd_resource type="Resource" script_class="WeaponData" format=3]
 
 [ext_resource type="Script" path="res://core/resources/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://ui/inventory/textures/scyte_128.png" id="2_tex"]
 
 [resource]
 script = ExtResource("1")
 id = "scythe"
+name = "Scythe"
 display_name = "Scythe"
+texture = ExtResource("2_tex")
 description = "A wide-arc reaping weapon favoured by the Reaper archetype."
 weapon_type = 2
 damage = 28.0

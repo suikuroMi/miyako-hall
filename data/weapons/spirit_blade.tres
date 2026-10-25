@@ -1,11 +1,14 @@
 [gd_resource type="Resource" script_class="WeaponData" format=3]
 
 [ext_resource type="Script" path="res://core/resources/weapon_data.gd" id="1_wdata"]
+[ext_resource type="Texture2D" path="res://ui/inventory/textures/sword.png" id="2_tex"]
 
 [resource]
 script = ExtResource("1_wdata")
 id = "spirit_blade"
+name = "Spirit Blade"
 display_name = "Spirit Blade"
+texture = ExtResource("2_tex")
 description = "A swift sacred katana that cleaves corrupted spirits with blinding speed."
 weapon_type = 0
 damage = 24.0

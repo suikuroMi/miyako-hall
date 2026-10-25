@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://entities/enemy/base_enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://core/components/stats_component.gd" id="2_stats"]
+[ext_resource type="Script" path="res://core/components/movement_component.gd" id="3_move"]
+[ext_resource type="Script" path="res://core/components/vision_aggro_component.gd" id="4_vision"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="6_hitbox"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 10.0
+height = 24.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hurt"]
+radius = 12.0
+height = 26.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hit"]
+radius = 16.0
+
+[node name="BaseEnemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_enemy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("2_stats")
+max_hp = 50.0
+
+[node name="MovementComponent" type="Node" parent="."]
+script = ExtResource("3_move")
+base_speed = 80.0
+
+[node name="VisionAggroComponent" type="Node" parent="."]
+script = ExtResource("4_vision")
+detection_radius = 180.0
+lose_sight_radius = 280.0
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("5_hurtbox")
+team = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CapsuleShape2D_hurt")
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("6_hitbox")
+damage = 10.0
+team = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_hit")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 10.0
+target_desired_distance = 15.0

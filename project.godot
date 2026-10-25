@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 EventBus="*res://core/autoloads/event_bus.gd"
 SceneManager="*res://core/autoloads/scene_manager.gd"
 GameManager="*res://core/autoloads/game_manager.gd"
+SaveManager="*res://core/autoloads/save_manager.gd"
 List="*res://ui/inventory/item_list.gd"
 
 [display]

@@ -229,7 +229,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		match event.physical_keycode:
 			KEY_1:
-				var mio_res = load("res://entities/character/Ookami Mio/Ookami Mio.tres")
+				var mio_res = load("res://data/characters/ookami_mio.tres")
 				if mio_res:
 					switch_character(mio_res)
 			KEY_H:

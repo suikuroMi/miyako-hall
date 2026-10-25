@@ -1,18 +1,18 @@
-class_name WeaponData
-extends Resource
+# weapon_data.gd
+# Dedicated weapon resource extending ItemData.
+# Works seamlessly in Inventory slots and connects directly to WeaponPivotComponent.
 
-# Weapon archetypes that map to CharacterData.WeaponType enum
+class_name WeaponData
+extends ItemData
+
+# Weapon archetypes mapping to CharacterData.WeaponType enum
 enum WeaponType { SWORD, GREATSWORD, SCYTHE, GUN, TALISMAN }
 
-@export_group("Identity")
-@export var id: String = "weapon_id"
+@export_group("Weapon Archetype")
 @export var display_name: String = "Weapon"
-@export var description: String = ""
-@export var icon: Texture2D
 @export var weapon_type: WeaponType = WeaponType.SWORD
 
 @export_group("Stats")
-@export var damage: float = 20.0
 @export var attack_speed: float = 1.0        # attacks per second (used by WeaponPivot cooldown)
 @export var attack_range: float = 80.0       # pixels — melee swing radius or bullet range
 @export var knockback_force: float = 120.0
@@ -32,3 +32,9 @@ enum WeaponType { SWORD, GREATSWORD, SCYTHE, GUN, TALISMAN }
 @export var synergy_damage_bonus: float = 0.0
 @export var synergy_speed_bonus: float = 0.0
 @export var synergy_cooldown_reduction: float = 0.0   # 0.0–1.0, fraction reduction to attack_speed cooldown
+
+func _init() -> void:
+	type = "weapon"
+	stackable = false
+	if display_name != "" and (name == "" or name == "Item"):
+		name = display_name
