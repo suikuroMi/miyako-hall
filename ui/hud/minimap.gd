@@ -41,10 +41,18 @@ func _ready() -> void:
 		toggle_pill_button.visible = false
 
 	# Re-acquire target and viewport world when scene transitions occur
-	if SceneManager:
-		SceneManager.transition_completed.connect(func(_map): _setup_minimap_world())
+	if SceneManager and not SceneManager.transition_completed.is_connected(_on_scene_transition_completed):
+		SceneManager.transition_completed.connect(_on_scene_transition_completed)
 
 	call_deferred("_setup_minimap_world")
+
+func _on_scene_transition_completed(_map: String) -> void:
+	if is_inside_tree():
+		_setup_minimap_world()
+
+func _exit_tree() -> void:
+	if SceneManager and SceneManager.transition_completed.is_connected(_on_scene_transition_completed):
+		SceneManager.transition_completed.disconnect(_on_scene_transition_completed)
 
 func _setup_minimap_world() -> void:
 	if sub_viewport:

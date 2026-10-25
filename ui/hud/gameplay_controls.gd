@@ -16,6 +16,7 @@ var _skill_labels: Dictionary = {
 # Controller / Gamepad & UI state
 var _is_gamepad_mode: bool = false
 var _attack_hint: Label = null
+var _time_btn: Button = null
 
 # Settings menu modal
 var _settings_panel: PanelContainer
@@ -136,18 +137,33 @@ func _build_top_bar() -> void:
 	top_bar.add_child(roster_btn)
 	roster_btn.pressed.connect(_toggle_customization_menu)
 
-	var time_btn := Button.new()
-	time_btn.text = "☀️ Day (T)"
-	time_btn.custom_minimum_size = Vector2(110, 42)
-	top_bar.add_child(time_btn)
-	time_btn.pressed.connect(func():
-		if TimeManager:
-			TimeManager.advance_time_period()
-	)
+	_time_btn = Button.new()
+	_update_time_button_text(TimeManager.current_period if TimeManager else 1, TimeManager.get_period_name() if TimeManager else "Day")
+	_time_btn.custom_minimum_size = Vector2(110, 42)
+	top_bar.add_child(_time_btn)
+	_time_btn.pressed.connect(_on_time_button_pressed)
+
+	if TimeManager and not TimeManager.period_changed.is_connected(_on_time_period_changed):
+		TimeManager.period_changed.connect(_on_time_period_changed)
+
+func _on_time_button_pressed() -> void:
 	if TimeManager:
-		TimeManager.period_changed.connect(func(_p, p_name):
-			time_btn.text = ("🌑 " if TimeManager.is_eclipse else "☀️ ") + p_name + " (T)"
-		)
+		TimeManager.advance_time_period()
+
+func _on_time_period_changed(period: int, period_name: String) -> void:
+	_update_time_button_text(period, period_name)
+
+func _update_time_button_text(_period: int, period_name: String) -> void:
+	if not is_instance_valid(_time_btn):
+		return
+	var icon := "🌑 " if (TimeManager and TimeManager.is_eclipse) else "☀️ "
+	_time_btn.text = "%s%s (T)" % [icon, period_name]
+
+func _exit_tree() -> void:
+	if TimeManager and TimeManager.period_changed.is_connected(_on_time_period_changed):
+		TimeManager.period_changed.disconnect(_on_time_period_changed)
+	if Input and Input.joy_connection_changed.is_connected(_on_joy_connection_changed):
+		Input.joy_connection_changed.disconnect(_on_joy_connection_changed)
 
 func _toggle_quest_log() -> void:
 	var ql = get_tree().root.find_child("QuestLog", true, false)

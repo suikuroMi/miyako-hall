@@ -84,8 +84,14 @@ func _ready() -> void:
 	EventBus.weapon_equipped.connect(_on_weapon_equipped)
 
 	# Dialogue handling: pause player action during conversations
-	EventBus.dialogue_started.connect(func(_lines): _is_in_dialogue = true)
-	EventBus.dialogue_ended.connect(func(): _is_in_dialogue = false)
+	EventBus.dialogue_started.connect(_on_dialogue_started)
+	EventBus.dialogue_ended.connect(_on_dialogue_ended)
+
+func _on_dialogue_started(_lines: Array) -> void:
+	_is_in_dialogue = true
+
+func _on_dialogue_ended() -> void:
+	_is_in_dialogue = false
 
 # ---------------------------------------------------------------------------
 # Bridge callbacks (EventBus -> local signals)

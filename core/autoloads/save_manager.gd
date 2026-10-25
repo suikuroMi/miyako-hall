@@ -157,7 +157,11 @@ func load_game(slot: int = current_slot) -> bool:
 			game_mgr.active_chaos_modifiers = mods
 
 		if data.has("idle_expeditions") and data["idle_expeditions"] is Array:
-			game_mgr.idle_expeditions = data["idle_expeditions"]
+			var exps: Array[Dictionary] = []
+			for e in data["idle_expeditions"]:
+				if e is Dictionary:
+					exps.append(e)
+			game_mgr.idle_expeditions = exps
 
 		if data.has("talisman_hp_bonus"):
 			game_mgr.talisman_hp_bonus = float(data["talisman_hp_bonus"])
