@@ -69,6 +69,12 @@ func receive_damage(amount: float, knockback_force: float, source_position: Vect
 	if stats:
 		stats.take_damage(amount)
 
+	# Trigger visual on-hit flash and camera shake
+	_trigger_hit_flash()
+	var parent = get_parent()
+	if parent and parent.is_in_group("player") and CameraManager:
+		CameraManager.shake(9.0, 0.22)
+
 	# Apply knockback to CharacterBody2D parents
 	_apply_knockback(knockback_force, source_position)
 
@@ -79,16 +85,36 @@ func receive_damage(amount: float, knockback_force: float, source_position: Vect
 # Private helpers
 # ---------------------------------------------------------------------------
 
+func _trigger_hit_flash() -> void:
+	var parent = get_parent()
+	if not parent:
+		return
+	var sprite: CanvasItem = parent.get_node_or_null("CharacterSprite")
+	if not sprite:
+		sprite = parent.get_node_or_null("Sprite2D")
+	if sprite:
+		var orig_mod: Color = sprite.modulate
+		sprite.modulate = Color(2.5, 2.5, 2.5, 1.0)
+		var tw: Tween = sprite.create_tween()
+		tw.tween_property(sprite, "modulate", orig_mod, 0.12)
+
 func _apply_knockback(knockback_force: float, source_position: Vector2) -> void:
 	if knockback_force <= 0.0:
 		return
 
 	var parent = get_parent()
-	if not parent is CharacterBody2D:
+	if not parent:
 		return
 
 	var direction: Vector2 = (parent.global_position - source_position).normalized()
-	parent.velocity += direction * knockback_force
+	if direction.is_zero_approx():
+		direction = Vector2.RIGHT
+
+	var move_comp: MovementComponent = parent.get_node_or_null("MovementComponent")
+	if move_comp and move_comp.has_method("apply_knockback"):
+		move_comp.apply_knockback(direction * knockback_force)
+	elif parent is CharacterBody2D:
+		parent.velocity += direction * knockback_force
 
 func _start_invincibility() -> void:
 	_is_invincible = true

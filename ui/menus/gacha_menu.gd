@@ -58,7 +58,8 @@ func _refresh_banner_info() -> void:
 		_banner_desc.text = default_banner.description
 	
 	var coins: int = GameManager.shrine_coins if GameManager else 500
-	_coins_label.text = "🪙 Shrine Coins: %d" % coins
+	var pity: int = GameManager.gacha_pity if GameManager else 0
+	_coins_label.text = "🪙 Coins: %d   |   🎯 Pity: %d/10" % [coins, pity]
 
 func _on_currency_changed(new_amount: int) -> void:
 	_coins_label.text = "🪙 Shrine Coins: %d" % new_amount

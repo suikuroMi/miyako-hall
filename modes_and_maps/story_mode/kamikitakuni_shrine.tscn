@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" path="res://entities/objects/shrine_upgrade_station/shrine_upgrade_station.tscn" id="9_station"]
 [ext_resource type="PackedScene" path="res://entities/objects/shrine_turret/shrine_turret.tscn" id="10_turret"]
 [ext_resource type="PackedScene" path="res://entities/objects/hidden_item/hidden_item.tscn" id="11_hidden"]
+[ext_resource type="PackedScene" path="res://entities/objects/shrine_resident/shrine_resident.tscn" id="12_resident"]
+[ext_resource type="PackedScene" path="res://entities/objects/cooking_crafting_station/cooking_crafting_station.tscn" id="13_cook"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(260, 60)
@@ -143,3 +145,10 @@ position = Vector2(1160, 260)
 position = Vector2(780, 520)
 item_id = "shrine_secret_cache_01"
 coin_reward = 100
+
+[node name="ResidentSpirit" parent="." instance=ExtResource("12_resident")]
+position = Vector2(850, 480)
+resident_name = "Shrine Maiden Attendant"
+
+[node name="CookingStation" parent="." instance=ExtResource("13_cook")]
+position = Vector2(1160, 560)

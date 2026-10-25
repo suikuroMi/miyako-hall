@@ -39,6 +39,23 @@ var stat_intelligence: float = 5.0
 var has_mana: bool = false
 var max_mana: float = 100.0
 var current_mana: float = 100.0
+var faith_meter: float = 20.0
+const MAX_FAITH_METER: float = 100.0
+signal faith_meter_changed(current: float, max_val: float)
+
+func add_faith(amount: float) -> void:
+	faith_meter = clamp(faith_meter + amount, 0.0, MAX_FAITH_METER)
+	faith_meter_changed.emit(faith_meter, MAX_FAITH_METER)
+
+func is_ultimate_ready() -> bool:
+	return faith_meter >= MAX_FAITH_METER
+
+func consume_ultimate() -> bool:
+	if is_ultimate_ready():
+		faith_meter = 0.0
+		faith_meter_changed.emit(faith_meter, MAX_FAITH_METER)
+		return true
+	return false
 
 # Cards and blessings acquired during run
 var acquired_cards: Array[Resource] = []
@@ -68,9 +85,9 @@ func initialize_from_data(data: CharacterData) -> void:
 
 	# Apply permanent Faith Web / Talent Tree upgrades for Player
 	if get_parent().is_in_group("player") and GameManager:
-		max_hp += GameManager.get_talent_hp_bonus()
+		max_hp += GameManager.get_talent_hp_bonus() + GameManager.talisman_hp_bonus
 		stat_attack += GameManager.get_talent_attack_bonus()
-		stat_speed += GameManager.get_talent_speed_bonus() * 100.0
+		stat_speed += GameManager.get_talent_speed_bonus() * 100.0 + GameManager.talisman_speed_bonus
 		crit_rate += GameManager.get_talent_crit_bonus()
 
 	current_hp             = max_hp
@@ -215,6 +232,8 @@ func get_total_attack(equipped_weapon: Resource = null) -> float:
 	var base: float = stat_attack
 	if equipped_weapon and "damage_bonus" in equipped_weapon:
 		base += equipped_weapon.damage_bonus
+	if get_parent().is_in_group("player") and GameManager and not GameManager.active_meal_buff.is_empty():
+		base *= float(GameManager.active_meal_buff.get("attack_mult", 1.0))
 	return base
 
 ## Returns total speed factoring in an optional equipped weapon Resource.
@@ -223,6 +242,8 @@ func get_total_speed(equipped_weapon: Resource = null) -> float:
 	var base: float = stat_speed
 	if equipped_weapon and "speed_bonus" in equipped_weapon:
 		base += equipped_weapon.speed_bonus
+	if get_parent().is_in_group("player") and GameManager and not GameManager.active_meal_buff.is_empty():
+		base *= float(GameManager.active_meal_buff.get("speed_mult", 1.0))
 	return base
 
 # ---------------------------------------------------------------------------

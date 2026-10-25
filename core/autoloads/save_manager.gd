@@ -5,27 +5,44 @@
 
 extends Node
 
-const SAVE_PATH: String = "user://save_data.json"
+const LEGACY_SAVE_PATH: String = "user://save_data.json"
+var current_slot: int = 1
 
 signal game_saved()
 signal game_loaded()
 
 var _is_saving: bool = false
 
+func get_save_path(slot: int = current_slot) -> String:
+	return "user://save_slot_%d.json" % slot
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# Migrate legacy save if slot 1 does not exist yet
+	if FileAccess.file_exists(LEGACY_SAVE_PATH) and not FileAccess.file_exists(get_save_path(1)):
+		var f_in = FileAccess.open(LEGACY_SAVE_PATH, FileAccess.READ)
+		if f_in:
+			var txt = f_in.get_as_text()
+			f_in.close()
+			var f_out = FileAccess.open(get_save_path(1), FileAccess.WRITE)
+			if f_out:
+				f_out.store_string(txt)
+				f_out.close()
+
 	# Delay load slightly to let other autoloads (like GameManager) initialize first
-	call_deferred("load_game")
+	call_deferred("load_game", current_slot)
 
 ## Saves all player progression data to disk in JSON format
-func save_game() -> bool:
+func save_game(slot: int = current_slot) -> bool:
 	if _is_saving:
 		return false
 	_is_saving = true
 
+	var save_file_path := get_save_path(slot)
 	var game_mgr = get_node_or_null("/root/GameManager")
 	var save_dict := {
 		"version": 1,
+		"slot": slot,
 		"timestamp": Time.get_datetime_string_from_system(),
 		"unlocked_characters": game_mgr.unlocked_characters if game_mgr else ["ookami_mio", "shirakami_fubuki"],
 		"active_party": game_mgr.active_party if game_mgr else ["ookami_mio", "shirakami_fubuki"],
@@ -39,13 +56,15 @@ func save_game() -> bool:
 		"talent_ranks": game_mgr.talent_ranks if game_mgr else {},
 		"active_chaos_modifiers": game_mgr.active_chaos_modifiers if game_mgr else [],
 		"idle_expeditions": game_mgr.idle_expeditions if game_mgr else [],
+		"talisman_hp_bonus": game_mgr.talisman_hp_bonus if game_mgr else 0.0,
+		"talisman_speed_bonus": game_mgr.talisman_speed_bonus if game_mgr else 0.0,
 		"faith_ranks": game_mgr.faith_ranks if game_mgr else {"ookami_mio": 0},
 		"purified_bosses": game_mgr.purified_bosses if game_mgr else [],
 		"story_flags": game_mgr.story_flags if game_mgr else {}
 	}
 
 	var json_str := JSON.stringify(save_dict, "\t")
-	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var file := FileAccess.open(save_file_path, FileAccess.WRITE)
 	if not file:
 		push_warning("[SaveManager] Failed to open save file for writing: " + str(FileAccess.get_open_error()))
 		_is_saving = false
@@ -58,11 +77,12 @@ func save_game() -> bool:
 	return true
 
 ## Loads player progression from disk and applies it to GameManager
-func load_game() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH):
+func load_game(slot: int = current_slot) -> bool:
+	var path: String = get_save_path(slot)
+	if not FileAccess.file_exists(path):
 		return false
 
-	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var file := FileAccess.open(path, FileAccess.READ)
 	if not file:
 		push_warning("[SaveManager] Failed to open save file for reading: " + str(FileAccess.get_open_error()))
 		return false
@@ -139,6 +159,12 @@ func load_game() -> bool:
 		if data.has("idle_expeditions") and data["idle_expeditions"] is Array:
 			game_mgr.idle_expeditions = data["idle_expeditions"]
 
+		if data.has("talisman_hp_bonus"):
+			game_mgr.talisman_hp_bonus = float(data["talisman_hp_bonus"])
+
+		if data.has("talisman_speed_bonus"):
+			game_mgr.talisman_speed_bonus = float(data["talisman_speed_bonus"])
+
 		if data.has("faith_ranks") and data["faith_ranks"] is Dictionary:
 			var ranks: Dictionary = {}
 			for k in data["faith_ranks"].keys():
@@ -158,6 +184,7 @@ func load_game() -> bool:
 	return true
 
 ## Deletes the save file (reset progress)
-func delete_save() -> void:
-	if FileAccess.file_exists(SAVE_PATH):
-		DirAccess.remove_absolute(SAVE_PATH)
+func delete_save(slot: int = current_slot) -> void:
+	var path: String = get_save_path(slot)
+	if FileAccess.file_exists(path):
+		DirAccess.remove_absolute(path)

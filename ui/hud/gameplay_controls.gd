@@ -13,6 +13,10 @@ var _skill_labels: Dictionary = {
 	"R": "R: Ult"
 }
 
+# Controller / Gamepad & UI state
+var _is_gamepad_mode: bool = false
+var _attack_hint: Label = null
+
 # Settings menu modal
 var _settings_panel: PanelContainer
 var _window_mode_btn: Button
@@ -39,11 +43,53 @@ func _ready() -> void:
 		GameManager.party_swapped.connect(_on_party_swapped)
 		GameManager.party_composition_changed.connect(_on_party_composition_changed)
 
+	Input.joy_connection_changed.connect(_on_joy_connection_changed)
+	if Input.get_connected_joypads().size() > 0:
+		_set_gamepad_mode(true)
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
+	if event is InputEventJoypadButton:
+		if not _is_gamepad_mode:
+			_set_gamepad_mode(true)
+		if event.pressed:
+			match event.button_index:
+				JOY_BUTTON_START:
+					_toggle_settings_menu()
+					get_viewport().set_input_as_handled()
+				JOY_BUTTON_BACK:
+					_toggle_quest_log()
+					get_viewport().set_input_as_handled()
+				JOY_BUTTON_A:
+					_on_dash_button_pressed()
+				JOY_BUTTON_X:
+					_on_skill_button_pressed("Q")
+				JOY_BUTTON_Y:
+					_on_skill_button_pressed("E")
+				JOY_BUTTON_B:
+					_on_skill_button_pressed("R")
+				JOY_BUTTON_LEFT_SHOULDER:
+					if GameManager and GameManager.active_party.size() > 0:
+						var prev_idx: int = (GameManager.active_party_index - 1 + GameManager.active_party.size()) % GameManager.active_party.size()
+						GameManager.swap_to_party_slot(prev_idx)
+				JOY_BUTTON_RIGHT_SHOULDER:
+					if GameManager and GameManager.active_party.size() > 0:
+						var next_idx: int = (GameManager.active_party_index + 1) % GameManager.active_party.size()
+						GameManager.swap_to_party_slot(next_idx)
+	elif event is InputEventJoypadMotion and abs(event.axis_value) > 0.4:
+		if not _is_gamepad_mode:
+			_set_gamepad_mode(true)
+	elif event is InputEventKey and event.pressed and not event.echo:
+		if _is_gamepad_mode:
+			_set_gamepad_mode(false)
 		if event.physical_keycode == KEY_ESCAPE:
 			_toggle_settings_menu()
 			get_viewport().set_input_as_handled()
+		elif event.physical_keycode == KEY_O:
+			_toggle_cooking_station()
+			get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed:
+		if _is_gamepad_mode:
+			_set_gamepad_mode(false)
 
 # ---------------------------------------------------------------------------
 # Top Bar (Centered, avoids HealthBar & StatsHUD on the left, Minimap on right)
@@ -137,6 +183,11 @@ func _toggle_photo_mode() -> void:
 	var pm = get_tree().root.find_child("PhotoMode", true, false)
 	if is_instance_valid(pm) and pm.has_method("toggle_photo_mode"):
 		pm.toggle_photo_mode()
+
+func _toggle_cooking_station() -> void:
+	var cook = get_tree().root.find_child("CookingStationMenu", true, false)
+	if is_instance_valid(cook) and cook.has_method("toggle_menu"):
+		cook.toggle_menu()
 
 # ---------------------------------------------------------------------------
 # Party HUD (Quick-Swap Bar underneath Stats HUD)
@@ -266,6 +317,15 @@ func _build_settings_menu() -> void:
 		_toggle_expedition_board()
 	)
 	col.add_child(dispatch_btn)
+
+	var kitchen_btn := Button.new()
+	kitchen_btn.text = "🍲 Kitchen & Talismans (O)"
+	kitchen_btn.custom_minimum_size = Vector2(0, 34)
+	kitchen_btn.pressed.connect(func():
+		_close_settings_menu()
+		_toggle_cooking_station()
+	)
+	col.add_child(kitchen_btn)
 
 	_window_mode_btn = Button.new()
 	_update_window_mode_button_text()
@@ -415,6 +475,7 @@ func _build_skill_placeholders() -> void:
 	attack_hint.offset_right = 230
 	attack_hint.offset_bottom = -82
 	attack_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_attack_hint = attack_hint
 	add_child(attack_hint)
 
 func _on_dash_button_pressed() -> void:
@@ -445,6 +506,36 @@ func _on_skill_cast(slot: String, skill_data: Resource) -> void:
 		_skill_labels[slot] = "%s: %s" % [slot, skill_data.display_name]
 		if _skill_buttons.has(slot):
 			_skill_buttons[slot].text = _skill_labels[slot]
+
+func _set_gamepad_mode(enabled: bool) -> void:
+	if _is_gamepad_mode == enabled and _attack_hint != null:
+		return
+	_is_gamepad_mode = enabled
+
+	if _is_gamepad_mode:
+		_skill_labels["DASH"] = "Dash (A)"
+		_skill_labels["Q"] = "X: Skill 1"
+		_skill_labels["E"] = "Y: Skill 2"
+		_skill_labels["R"] = "B: Ult"
+		if _attack_hint:
+			_attack_hint.text = "LB/RB: Swap Party   |   [A]: Dash   |   [X]/[Y]/[B]: Skills   |   [RT]: Attack"
+	else:
+		_skill_labels["DASH"] = "Dash (Space)"
+		_skill_labels["Q"] = "Q: Skill 1"
+		_skill_labels["E"] = "E: Skill 2"
+		_skill_labels["R"] = "R: Ult"
+		if _attack_hint:
+			_attack_hint.text = "1/2/3: Swap Party   |   Space: Dash   |   Q/E/R: Skills   |   R-Click: Attack"
+
+	for k in ["DASH", "Q", "E", "R"]:
+		if _skill_buttons.has(k) and not _skill_buttons[k].disabled:
+			_skill_buttons[k].text = _skill_labels.get(k, k)
+
+func _on_joy_connection_changed(_device: int, connected: bool) -> void:
+	if connected:
+		_set_gamepad_mode(true)
+	elif Input.get_connected_joypads().size() == 0:
+		_set_gamepad_mode(false)
 
 # ---------------------------------------------------------------------------
 # Dummy Controls (Bottom-Left Corner)

@@ -60,6 +60,7 @@ var character_shards: Dictionary = {
 	"shirakami_fubuki": 0,
 	"nakiri_ayame": 0
 }
+var gacha_pity: int = 0
 
 # --- Shrine Base-Building & World Progression ---
 var shrine_tier: int = 1
@@ -86,6 +87,11 @@ var active_chaos_modifiers: Array[String] = []
 var idle_expeditions: Array[Dictionary] = []
 var museum_milestones: Array[String] = []
 
+# --- Cooking Meal Buffs & Talisman Artifacts ---
+var active_meal_buff: Dictionary = {}
+var talisman_hp_bonus: float = 0.0
+var talisman_speed_bonus: float = 0.0
+
 # ---------------------------------------------------------------------------
 # Lifecycle
 # ---------------------------------------------------------------------------
@@ -98,6 +104,14 @@ func _ready() -> void:
 		EventBus.enemy_purified.connect(_on_enemy_purified)
 
 func _process(delta: float) -> void:
+	# Tick down meal buff if active
+	if not active_meal_buff.is_empty():
+		var tr: float = float(active_meal_buff.get("time_remaining", 0.0)) - delta
+		if tr <= 0.0:
+			active_meal_buff.clear()
+		else:
+			active_meal_buff["time_remaining"] = tr
+
 	if current_mode == GameMode.ENDLESS and is_game_active:
 		survival_time += delta
 		wave_timer += delta
@@ -336,7 +350,12 @@ func pull_gacha(banner: GachaBannerData, count: int = 1) -> Array[Dictionary]:
 		var roll: float = randf()
 		var pull_result: Dictionary = {}
 
+		# Guaranteed Pity trigger on 10th pull
+		if gacha_pity >= 9:
+			roll = 0.0
+
 		if roll < banner.character_rate and banner.pool_characters.size() > 0:
+			gacha_pity = 0
 			var char_data: CharacterData = banner.pool_characters.pick_random() as CharacterData
 			var char_id: String = char_data.id if char_data else "unknown"
 			var char_name: String = char_data.name if char_data else "Holomember"
@@ -366,6 +385,7 @@ func pull_gacha(banner: GachaBannerData, count: int = 1) -> Array[Dictionary]:
 					"message": "New Holomember Unlocked!"
 				}
 		else:
+			gacha_pity += 1
 			var weapon_data: WeaponData = banner.pool_weapons.pick_random() as WeaponData
 			var w_name: String = weapon_data.display_name if weapon_data else "Sacred Weapon"
 			pull_result = {
@@ -560,3 +580,29 @@ func claim_expedition(index: int) -> Dictionary:
 	if SaveManager:
 		SaveManager.save_game()
 	return exp_data
+
+# ---------------------------------------------------------------------------
+# Cooking & Talisman Crafting Systems
+# ---------------------------------------------------------------------------
+
+func apply_meal_buff(meal_name: String, duration: float, speed_mult: float, attack_mult: float, cooldown_mult: float) -> void:
+	active_meal_buff = {
+		"name": meal_name,
+		"time_remaining": duration,
+		"speed_mult": speed_mult,
+		"attack_mult": attack_mult,
+		"cooldown_mult": cooldown_mult
+	}
+	if SaveManager:
+		SaveManager.save_game()
+
+func add_talisman_hp(amount: float) -> void:
+	talisman_hp_bonus += amount
+	if SaveManager:
+		SaveManager.save_game()
+
+func add_talisman_speed(amount: float) -> void:
+	talisman_speed_bonus += amount
+	if SaveManager:
+		SaveManager.save_game()
+

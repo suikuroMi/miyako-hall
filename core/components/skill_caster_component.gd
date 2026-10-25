@@ -171,6 +171,14 @@ func _execute_skill_effect(skill: SkillData) -> void:
 		var stat_val: float = _stats.stat_attack if skill.scaling_stat == "attack" else _stats.stat_intelligence
 		final_damage += stat_val * skill.damage_scaling
 
+		# If casting R and ultimate faith is full, trigger amplified Grand Ultimate!
+		if skill.slot == "R" and _stats.consume_ultimate():
+			final_damage *= 2.0
+			if CameraManager:
+				CameraManager.shake(15.0, 0.45)
+		else:
+			_stats.add_faith(12.0)
+
 	match skill.skill_type:
 		SkillData.SkillType.AOE_DAMAGE:
 			_cast_aoe_damage(parent.global_position, skill.radius, final_damage, skill.knockback_force, skill)

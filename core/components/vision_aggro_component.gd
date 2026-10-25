@@ -123,10 +123,13 @@ func _check_aggro() -> void:
 			return
 
 	var dist: float = get_parent().global_position.distance_to(_target.global_position)
+	var effective_detection_radius: float = detection_radius
+	if _target.has_meta("is_stealthed") and _target.get_meta("is_stealthed"):
+		effective_detection_radius *= 0.35
 
 	match state:
 		AggroState.IDLE:
-			if dist <= detection_radius:
+			if dist <= effective_detection_radius:
 				state = AggroState.ALERT
 				_alert_timer = alert_delay
 				_last_known_position = _target.global_position
@@ -141,7 +144,7 @@ func _check_aggro() -> void:
 				investigating_started.emit(_last_known_position)
 
 		AggroState.INVESTIGATING:
-			if dist <= detection_radius:
+			if dist <= effective_detection_radius:
 				state = AggroState.ALERT
 				_alert_timer = alert_delay * 0.5
 				_last_known_position = _target.global_position

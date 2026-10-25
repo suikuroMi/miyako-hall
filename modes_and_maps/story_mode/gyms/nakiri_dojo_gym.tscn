@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/endless.png" id="7_arena_bg"]
 [ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="8_torii"]
 [ext_resource type="PackedScene" path="res://entities/objects/spirit_brazier/spirit_brazier.tscn" id="9_brazier"]
+[ext_resource type="PackedScene" path="res://entities/objects/hazard_zone/hazard_zone.tscn" id="10_hazard"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bg"]
 bg_color = Color(0.12, 0.08, 0.08, 0.9)
@@ -78,6 +79,18 @@ brazier_id = "left"
 [node name="BrazierRight" parent="." instance=ExtResource("9_brazier")]
 position = Vector2(1160, 600)
 brazier_id = "right"
+
+[node name="SpikeHazardLeft" parent="." instance=ExtResource("10_hazard")]
+position = Vector2(740, 480)
+is_periodic_cycle = true
+active_cycle_time = 2.5
+inactive_cycle_time = 1.5
+
+[node name="SpikeHazardRight" parent="." instance=ExtResource("10_hazard")]
+position = Vector2(1180, 480)
+is_periodic_cycle = true
+active_cycle_time = 2.5
+inactive_cycle_time = 1.5
 
 [node name="BossUI" type="CanvasLayer" parent="."]
 layer = 50

@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" path="res://entities/objects/kami_obstacle/kami_obstacle.tscn" id="9_obstacle"]
 [ext_resource type="PackedScene" path="res://entities/objects/hidden_item/hidden_item.tscn" id="10_hidden"]
 [ext_resource type="PackedScene" path="res://entities/enemy/trainer_encounter/stigmata_duelist.tscn" id="11_duelist"]
+[ext_resource type="PackedScene" path="res://entities/objects/jizo_shrine/jizo_shrine.tscn" id="12_jizo"]
+[ext_resource type="PackedScene" path="res://entities/objects/treasure_chest/treasure_chest.tscn" id="13_chest"]
+[ext_resource type="PackedScene" path="res://entities/objects/tall_grass/tall_grass_zone.tscn" id="14_grass"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_north_gate"]
 size = Vector2(260, 50)
@@ -115,3 +118,14 @@ coin_reward = 80
 position = Vector2(1100, 360)
 encounter_id = "trainer_duelist_forest_01"
 facing_direction = Vector2(0, 1)
+
+[node name="JizoRoadsideShrine" parent="." instance=ExtResource("12_jizo")]
+position = Vector2(960, 520)
+
+[node name="ForestChest" parent="." instance=ExtResource("13_chest")]
+position = Vector2(400, 720)
+chest_id = "route1_treasure_chest_01"
+reward_coins = 120
+
+[node name="TallGrassPatch" parent="." instance=ExtResource("14_grass")]
+position = Vector2(1100, 480)

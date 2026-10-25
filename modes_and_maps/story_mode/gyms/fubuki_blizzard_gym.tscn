@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://modes_and_maps/spawn_point.tscn" id="4_spawn"]
 [ext_resource type="Script" path="res://modes_and_maps/map_transition_zone.gd" id="5_warp"]
 [ext_resource type="PackedScene" path="res://entities/enemy/boss/boss_shirakami_fubuki.tscn" id="6_boss"]
+[ext_resource type="PackedScene" path="res://entities/objects/hazard_zone/hazard_zone.tscn" id="7_hazard"]
 [ext_resource type="Texture2D" path="res://assets/tileset/endless.png" id="7_arena_bg"]
 [ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="8_torii"]
 
@@ -71,6 +72,18 @@ prompt_message = "Return to Kamikitakuni Shrine"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GateToShrine"]
 shape = SubResource("RectangleShape2D_exit_gate")
+
+[node name="BlizzardChasmLeft" parent="." instance=ExtResource("7_hazard")]
+position = Vector2(740, 500)
+hazard_type = 3
+damage_per_tick = 6.0
+tick_interval = 0.7
+
+[node name="BlizzardChasmRight" parent="." instance=ExtResource("7_hazard")]
+position = Vector2(1180, 500)
+hazard_type = 3
+damage_per_tick = 6.0
+tick_interval = 0.7
 
 [node name="BossUI" type="CanvasLayer" parent="."]
 layer = 50
