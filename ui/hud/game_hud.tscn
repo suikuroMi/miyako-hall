@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ui/menus/level_up_cards.tscn" id="6_cards"]
 [ext_resource type="PackedScene" path="res://ui/menus/gacha_menu.tscn" id="7_gacha"]
 [ext_resource type="PackedScene" path="res://ui/menus/customization_menu.tscn" id="8_custom"]
+[ext_resource type="PackedScene" path="res://ui/hud/dialogue_box.tscn" id="9_dlg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.137, 0.137, 0.137, 1)
@@ -65,3 +66,5 @@ script = ExtResource("4_hp")
 [node name="GachaMenu" parent="." instance=ExtResource("7_gacha")]
 
 [node name="CustomizationMenu" parent="." instance=ExtResource("8_custom")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("9_dlg")]

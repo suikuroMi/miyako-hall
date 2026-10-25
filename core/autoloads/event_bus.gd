@@ -36,3 +36,10 @@ signal gacha_pull_completed(results: Array)
 # World events
 signal map_transition_requested(target_map_path: String, spawn_point_id: String)
 signal aggro_state_changed(is_chased: bool)
+
+# Interaction & Dialogue events
+signal interaction_prompt_shown(prompt_text: String)
+signal interaction_prompt_hidden()
+signal dialogue_started(dialogue_lines: Array)
+signal dialogue_advanced(line_index: int, line_data: Dictionary)
+signal dialogue_ended()

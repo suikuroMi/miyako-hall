@@ -38,6 +38,7 @@ signal level_up_choices_changed(pending_choices: int)
 var equipped_weapon: Resource = null
 var last_horizontal_direction: float = 1.0
 var anim_library: String = ""
+var _is_in_dialogue: bool = false
 
 # ---------------------------------------------------------------------------
 # Permanent child references (must exist in player.tscn)
@@ -81,6 +82,10 @@ func _ready() -> void:
 
 	# Connect EventBus weapon_equipped to forward to WeaponPivotComponent if present
 	EventBus.weapon_equipped.connect(_on_weapon_equipped)
+
+	# Dialogue handling: pause player action during conversations
+	EventBus.dialogue_started.connect(func(_lines): _is_in_dialogue = true)
+	EventBus.dialogue_ended.connect(func(): _is_in_dialogue = false)
 
 # ---------------------------------------------------------------------------
 # Bridge callbacks (EventBus -> local signals)
@@ -157,6 +162,12 @@ func switch_character(new_character_data: CharacterData) -> void:
 # ---------------------------------------------------------------------------
 
 func _physics_process(_delta: float) -> void:
+	if _is_in_dialogue:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		_update_animation(Vector2.ZERO)
+		return
+
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if direction != Vector2.ZERO:
@@ -212,6 +223,9 @@ func dash() -> void:
 # ---------------------------------------------------------------------------
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _is_in_dialogue:
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var pivot = get_node_or_null("WeaponPivot")
 		if pivot and pivot.has_method("try_attack"):

@@ -7,9 +7,16 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="5_torii"]
 [ext_resource type="Texture2D" path="res://assets/tileset/lamp.png" id="6_lamp"]
 [ext_resource type="Texture2D" path="res://assets/tileset/main map/Road.png" id="7_road"]
+[ext_resource type="Script" path="res://core/components/interactable_component.gd" id="8_interact"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(260, 60)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shrine_altar"]
+radius = 65.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tablet"]
+radius = 45.0
 
 [node name="KamikitakuniShrine" type="Node2D"]
 y_sort_enabled = true
@@ -58,3 +65,45 @@ prompt_message = "Step into Route 1 Forest"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GateToForest"]
 shape = SubResource("RectangleShape2D_gate")
+
+[node name="ShrineAltarInteractable" type="Area2D" parent="."]
+position = Vector2(960, 360)
+collision_layer = 0
+script = ExtResource("8_interact")
+interaction_type = 1
+prompt_action = "Pray at Sacred Shrine"
+prompt_key = "E"
+dialogue_lines = [{
+"speaker": "⛩️ Kamikitakuni Shrine",
+"text": "A sacred mist flows from the Torii gate. The spiritual bell chimes warmly in your heart."
+}, {
+"speaker": "Ookami Mio",
+"text": "Spirits of the land, please watch over us and purify the darkened hearts of our friends."
+}, {
+"speaker": "✨ Divine Blessing",
+"text": "Your HP and Mana are fully restored! (+100 Shrine Coins received)"
+}]
+restore_health_and_mana = true
+shrine_coin_reward = 100
+story_flag_on_interact = "prayed_at_shrine"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShrineAltarInteractable"]
+shape = SubResource("CircleShape2D_shrine_altar")
+
+[node name="LoreMonumentInteractable" type="Area2D" parent="."]
+position = Vector2(740, 520)
+collision_layer = 0
+script = ExtResource("8_interact")
+interaction_type = 2
+prompt_action = "Read Ancient Monument"
+prompt_key = "E"
+dialogue_lines = [{
+"speaker": "Ancient Stone Monument",
+"text": "\"Beyond the southern boundary of Route 1 Forest stands the Haunted Dojo Gym.\""
+}, {
+"speaker": "Ancient Stone Monument",
+"text": "\"An Oni swordswoman dwells there, gripped by fiery stigmata. Defeating her will purify her soul and welcome her into your party.\""
+}]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LoreMonumentInteractable"]
+shape = SubResource("CircleShape2D_tablet")

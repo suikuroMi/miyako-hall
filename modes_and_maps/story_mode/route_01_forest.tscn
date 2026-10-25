@@ -6,9 +6,13 @@
 [ext_resource type="Script" path="res://modes_and_maps/map_transition_zone.gd" id="4_warp_script"]
 [ext_resource type="PackedScene" path="res://entities/enemy/slime/slime.tscn" id="5_slime"]
 [ext_resource type="Texture2D" path="res://assets/tileset/map.png" id="6_forest_bg"]
+[ext_resource type="Script" path="res://core/components/interactable_component.gd" id="7_interact"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_north_gate"]
 size = Vector2(260, 50)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sign"]
+radius = 45.0
 
 [node name="Route01Forest" type="Node2D"]
 y_sort_enabled = true
@@ -64,3 +68,21 @@ prompt_message = "Enter the Haunted Dojo (Nakiri Ayame Boss Gym)"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GateToGym"]
 shape = SubResource("RectangleShape2D_north_gate")
+
+[node name="ForestWaypointSign" type="Area2D" parent="."]
+position = Vector2(850, 890)
+collision_layer = 0
+script = ExtResource("7_interact")
+interaction_type = 2
+prompt_action = "Read Waypoint Sign"
+prompt_key = "E"
+dialogue_lines = [{
+"speaker": "Route 1 Waypoint Sign",
+"text": "[color=yellow]▲ NORTH:[/color] Kamikitakuni Shrine (Safe Sanctuary)\n[color=red]▼ SOUTH:[/color] Haunted Dojo Gym (Nakiri Ayame - Level 5 Boss)"
+}, {
+"speaker": "Route 1 Waypoint Sign",
+"text": "Tip: Make sure you have dashed around and leveled up by purifying slimes before challenging the Gym Boss!"
+}]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ForestWaypointSign"]
+shape = SubResource("CircleShape2D_sign")

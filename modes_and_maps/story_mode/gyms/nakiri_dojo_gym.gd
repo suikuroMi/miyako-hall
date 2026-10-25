@@ -17,6 +17,29 @@ func _ready() -> void:
 		boss.purified.connect(_on_boss_purified)
 		boss.phase_changed.connect(_on_boss_phase_changed)
 
+	# Trigger Pre-Fight Dialogue if not yet cleared
+	if GameManager and not GameManager.get_story_flag("gym_cleared_nakiri_ayame"):
+		var intro_lines := [
+			{
+				"speaker": "🔥 Corrupted Nakiri Ayame",
+				"text": "...Who goes there? The spiritual flames... they burn within my soul... I can't hold back!"
+			},
+			{
+				"speaker": "Ookami Mio",
+				"text": "Ayame! Hang on, I will purify this dark stigmata and bring you back!"
+			},
+			{
+				"speaker": "🔥 Corrupted Nakiri Ayame",
+				"text": "Draw your weapon! Let us see if your spirit is strong enough to pierce my blades!"
+			}
+		]
+		# Defer slightly so HUD has fully initialized
+		call_deferred("_trigger_intro_dialogue", intro_lines)
+
+func _trigger_intro_dialogue(lines: Array) -> void:
+	if EventBus:
+		EventBus.dialogue_started.emit(lines)
+
 func _on_boss_hp_changed(current: float, max_hp: float) -> void:
 	if boss_hp_bar:
 		boss_hp_bar.max_value = max_hp
@@ -37,3 +60,24 @@ func _on_boss_purified() -> void:
 		boss_name_label.modulate = Color(0.4, 1.0, 0.5, 1.0)
 	if return_gate:
 		return_gate.visible = true
+
+	var outro_lines := [
+		{
+			"speaker": "Nakiri Ayame",
+			"text": "Mio...? The darkness... it has completely vanished. My mind is clear again."
+		},
+		{
+			"speaker": "Ookami Mio",
+			"text": "Welcome back, Ayame! I'm so glad you're safe."
+		},
+		{
+			"speaker": "Nakiri Ayame",
+			"text": "I owe you my life. From this day forth, my dual blades are yours to command in battle!"
+		},
+		{
+			"speaker": "🎉 Holomember Unlocked",
+			"text": "Nakiri Ayame has joined your active roster! Press [C] anytime to swap to her!"
+		}
+	]
+	if EventBus:
+		EventBus.dialogue_started.emit(outro_lines)

@@ -139,6 +139,9 @@ func set_story_flag(flag_name: String, value: Variant = true) -> void:
 	if SaveManager:
 		SaveManager.save_game()
 
+func get_story_flag(flag_name: String, default_value: Variant = false) -> Variant:
+	return story_flags.get(flag_name, default_value)
+
 # ---------------------------------------------------------------------------
 # Signal Listeners
 # ---------------------------------------------------------------------------
