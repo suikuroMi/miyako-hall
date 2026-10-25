@@ -120,17 +120,12 @@ func _select_character(char_id: String) -> void:
 	_faith_perks_label.text = perks_text
 
 func _on_select_char_pressed() -> void:
-	var char_data: CharacterData = _character_cache.get(_selected_character_id, null)
-	if not char_data:
+	if not GameManager:
 		return
-
-	var player = get_tree().root.find_child("Player", true, false)
-	if is_instance_valid(player) and player.has_method("switch_character"):
-		player.switch_character(char_data)
-		if GameManager:
-			GameManager.active_character_id = _selected_character_id
-		if EventBus:
-			EventBus.active_character_swapped.emit(char_data)
+	# Assign to active party slot and deploy
+	GameManager.set_party_slot(GameManager.active_party_index, _selected_character_id)
+	GameManager.swap_to_party_slot(GameManager.active_party_index)
+	toggle_menu()
 
 func _on_palette_selected(index: int) -> void:
 	var presets := ["default", "shrine_crimson", "spirit_azure", "midnight_shadow", "solar_gold"]

@@ -5,7 +5,7 @@
 extends Node
 
 # ---------------------------------------------------------------------------
-# Enums
+# Enums & Signals
 # ---------------------------------------------------------------------------
 enum GameMode {
 	STORY,
@@ -13,14 +13,22 @@ enum GameMode {
 	GYM_BOSS
 }
 
+signal party_swapped(slot_index: int, character_data: CharacterData)
+signal party_composition_changed(active_party: Array[String])
+
 # ---------------------------------------------------------------------------
 # State Variables
 # ---------------------------------------------------------------------------
 var current_mode: GameMode = GameMode.STORY
 
-# --- Story Progression State ---
-var unlocked_characters: Array[String] = ["ookami_mio"]
+# --- Story Progression & Party State ---
+var unlocked_characters: Array[String] = ["ookami_mio", "shirakami_fubuki"]
+var active_party: Array[String] = ["ookami_mio", "shirakami_fubuki"]
+var active_party_index: int = 0
 var active_character_id: String = "ookami_mio"
+var party_health: Dictionary = {}
+var _char_cache: Dictionary = {}
+
 var purified_bosses: Array[String] = []
 var story_flags: Dictionary = {
 	"tutorial_completed": false,
@@ -124,9 +132,102 @@ func trigger_game_over() -> void:
 # Story & Progression API
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Party & Live Swapping API
+# ---------------------------------------------------------------------------
+
+## Retrieves CharacterData resource for a given character ID
+func get_character_data(char_id: String) -> CharacterData:
+	if _char_cache.has(char_id):
+		return _char_cache[char_id]
+	var path := "res://data/characters/%s.tres" % char_id
+	if ResourceLoader.exists(path):
+		var res: CharacterData = load(path) as CharacterData
+		_char_cache[char_id] = res
+		return res
+	return null
+
+## Live hot-swap to active party slot (0, 1, or 2)
+func swap_to_party_slot(slot_idx: int) -> bool:
+	if slot_idx < 0 or slot_idx >= active_party.size():
+		return false
+	if slot_idx == active_party_index and active_character_id == active_party[slot_idx]:
+		return false
+
+	var player: CharacterBody2D = get_tree().root.find_child("Player", true, false) as CharacterBody2D
+	if not is_instance_valid(player):
+		return false
+
+	# Save current active character HP
+	if player.has_node("StatsComponent"):
+		var stats_comp: StatsComponent = player.get_node("StatsComponent")
+		party_health[active_character_id] = stats_comp.current_hp
+
+	# Swap to requested slot
+	active_party_index = slot_idx
+	active_character_id = active_party[slot_idx]
+	var new_data: CharacterData = get_character_data(active_character_id)
+	if not new_data:
+		return false
+
+	# Apply new character data to player entity
+	if player.has_method("switch_character"):
+		player.switch_character(new_data)
+
+	# Restore individual HP for this character if saved
+	if party_health.has(active_character_id) and player.has_node("StatsComponent"):
+		var stats_comp: StatsComponent = player.get_node("StatsComponent")
+		stats_comp.current_hp = clamp(party_health[active_character_id], 1.0, stats_comp.max_hp)
+		if player.has_signal("health_changed"):
+			player.health_changed.emit(stats_comp.current_hp, stats_comp.max_hp)
+		if EventBus:
+			EventBus.player_hp_changed.emit(stats_comp.current_hp, stats_comp.max_hp)
+
+	party_swapped.emit(active_party_index, new_data)
+	if EventBus:
+		EventBus.active_character_swapped.emit(new_data)
+	if SaveManager:
+		SaveManager.save_game()
+	return true
+
+## Cycle to the next party member
+func swap_to_next_party_member() -> void:
+	if active_party.size() <= 1:
+		return
+	var next_slot := (active_party_index + 1) % active_party.size()
+	swap_to_party_slot(next_slot)
+
+## Assigns or swaps a character into an active party slot
+func set_party_slot(slot_idx: int, char_id: String) -> void:
+	if not unlocked_characters.has(char_id):
+		return
+	if slot_idx < 0 or slot_idx > 2:
+		return
+
+	var existing_idx := active_party.find(char_id)
+	if existing_idx != -1 and existing_idx != slot_idx:
+		var temp := active_party[slot_idx] if slot_idx < active_party.size() else ""
+		active_party[slot_idx] = char_id
+		if temp != "":
+			active_party[existing_idx] = temp
+		else:
+			active_party.remove_at(existing_idx)
+	else:
+		if slot_idx < active_party.size():
+			active_party[slot_idx] = char_id
+		else:
+			active_party.append(char_id)
+
+	party_composition_changed.emit(active_party)
+	if SaveManager:
+		SaveManager.save_game()
+
 func unlock_character(char_id: String) -> void:
 	if not unlocked_characters.has(char_id):
 		unlocked_characters.append(char_id)
+		if active_party.size() < 3 and not active_party.has(char_id):
+			active_party.append(char_id)
+			party_composition_changed.emit(active_party)
 		EventBus.character_unlocked.emit(char_id)
 		if SaveManager:
 			SaveManager.save_game()

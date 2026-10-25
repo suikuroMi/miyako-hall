@@ -150,6 +150,19 @@ func switch_character(new_character_data: CharacterData) -> void:
 	if skill_caster:
 		skill_caster.load_from_character_data(stats_data)
 
+	# 4c. Visual modulation & spirit swap juice
+	match stats_data.id:
+		"shirakami_fubuki":
+			modulate = Color(0.85, 0.95, 1.25, 1.0)
+		"nakiri_ayame":
+			modulate = Color(1.25, 0.85, 0.88, 1.0)
+		_:
+			modulate = Color(1.0, 1.0, 1.0, 1.0)
+
+	var swap_tween := create_tween()
+	scale = Vector2(0.82, 1.22)
+	swap_tween.tween_property(self, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 	# 5. Notify bridge listeners
 	health_changed.emit(stats.current_hp, stats.max_hp)
 	stats_changed.emit()
@@ -241,11 +254,28 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
+		if event.physical_keycode == KEY_TAB:
+			if GameManager:
+				GameManager.swap_to_next_party_member()
+			get_viewport().set_input_as_handled()
+			return
+
 		match event.physical_keycode:
 			KEY_1:
-				var mio_res = load("res://data/characters/ookami_mio.tres")
-				if mio_res:
-					switch_character(mio_res)
+				if GameManager:
+					GameManager.swap_to_party_slot(0)
+				get_viewport().set_input_as_handled()
+				return
+			KEY_2:
+				if GameManager:
+					GameManager.swap_to_party_slot(1)
+				get_viewport().set_input_as_handled()
+				return
+			KEY_3:
+				if GameManager:
+					GameManager.swap_to_party_slot(2)
+				get_viewport().set_input_as_handled()
+				return
 			KEY_H:
 				take_damage(10.0)
 			KEY_J:

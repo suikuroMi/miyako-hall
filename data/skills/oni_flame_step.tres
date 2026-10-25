@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "oni_flame_step"
+display_name = "Oni Flame Step"
+description = "Dashes forward at blinding speed, slashing all targets in the path with demonic fire."
+skill_type = 2
+base_damage = 26.0
+scaling_stat = "attack"
+damage_scaling = 0.6
+cooldown = 2.5
+mana_cost = 10.0
+dash_speed = 520.0
+radius = 65.0
+knockback_force = 120.0

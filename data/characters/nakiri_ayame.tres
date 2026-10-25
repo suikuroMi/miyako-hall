@@ -1,6 +1,10 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3]
 
 [ext_resource type="Script" path="res://core/resources/character_data.gd" id="1_cdata"]
+[ext_resource type="PackedScene" uid="uid://ywnr4fpagbmg" path="res://entities/character/Ookami Mio/ookami mio.tscn" id="2_visuals"]
+[ext_resource type="Resource" path="res://data/skills/oni_flame_step.tres" id="3_skill_q"]
+[ext_resource type="Resource" path="res://data/skills/asura_blade_dance.tres" id="4_skill_e"]
+[ext_resource type="Resource" path="res://data/skills/demon_king_enrage.tres" id="5_skill_r"]
 
 [resource]
 script = ExtResource("1_cdata")
@@ -9,6 +13,8 @@ id = "nakiri_ayame"
 description = "Demon realm shrine maiden. Dual-blade assassin striking with fiery critical hits."
 archetype = 2
 favored_weapon = 0
+character_visual_scene = ExtResource("2_visuals")
+anim_library = "mio_animation"
 base_health = 920.0
 base_power = 34.0
 base_speed = 38.0
@@ -19,3 +25,6 @@ crit_damage = 1.85
 hp_per_level = 14.0
 atk_per_level = 4.0
 def_per_level = 1.1
+skill_q = ExtResource("3_skill_q")
+skill_e = ExtResource("4_skill_e")
+skill_r = ExtResource("5_skill_r")

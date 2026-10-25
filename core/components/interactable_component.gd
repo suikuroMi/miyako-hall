@@ -96,12 +96,15 @@ func trigger_interaction(player: Node2D = null) -> void:
 		_prompt_label.visible = false
 
 	# Apply rewards / blessings
-	if restore_health_and_mana and is_instance_valid(player):
-		var stats = player.get_node_or_null("StatsComponent")
-		if stats:
-			stats.heal(stats.max_hp)
-			if "current_mana" in stats:
-				stats.current_mana = stats.max_mana
+	if restore_health_and_mana:
+		if is_instance_valid(player):
+			var stats = player.get_node_or_null("StatsComponent")
+			if stats:
+				stats.heal(stats.max_hp)
+				if "current_mana" in stats:
+					stats.current_mana = stats.max_mana
+		if GameManager:
+			GameManager.party_health.clear()
 
 	if shrine_coin_reward > 0:
 		if GameManager:

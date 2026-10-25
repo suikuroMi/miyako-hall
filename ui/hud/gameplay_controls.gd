@@ -17,11 +17,16 @@ var _skill_labels: Dictionary = {
 var _settings_panel: PanelContainer
 var _window_mode_btn: Button
 
+# Party HUD
+var _party_buttons: Array[Button] = []
+var _party_bar: HBoxContainer
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	_build_top_bar()
+	_build_party_bar()
 	_build_settings_menu()
 	_build_skill_placeholders()
 	_build_dummy_controls()
@@ -29,6 +34,10 @@ func _ready() -> void:
 	if EventBus:
 		EventBus.skill_cooldown_updated.connect(_on_skill_cooldown_updated)
 		EventBus.skill_cast.connect(_on_skill_cast)
+
+	if GameManager:
+		GameManager.party_swapped.connect(_on_party_swapped)
+		GameManager.party_composition_changed.connect(_on_party_composition_changed)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -78,6 +87,62 @@ func _toggle_customization_menu() -> void:
 	var roster = get_tree().root.find_child("CustomizationMenu", true, false)
 	if is_instance_valid(roster) and roster.has_method("toggle_menu"):
 		roster.toggle_menu()
+
+# ---------------------------------------------------------------------------
+# Party HUD (Quick-Swap Bar underneath Stats HUD)
+# ---------------------------------------------------------------------------
+
+func _build_party_bar() -> void:
+	_party_bar = HBoxContainer.new()
+	_party_bar.position = Vector2(68, 114)
+	_party_bar.add_theme_constant_override("separation", 8)
+	add_child(_party_bar)
+	_refresh_party_bar()
+
+func _refresh_party_bar() -> void:
+	if not _party_bar or not GameManager:
+		return
+
+	for child in _party_bar.get_children():
+		child.queue_free()
+	_party_buttons.clear()
+
+	var active_party: Array[String] = GameManager.active_party
+	for i in range(3):
+		var btn := Button.new()
+		btn.custom_minimum_size = Vector2(136, 36)
+
+		if i < active_party.size():
+			var char_id: String = active_party[i]
+			var char_data: CharacterData = GameManager.get_character_data(char_id)
+			var display_name: String = char_data.name if char_data else char_id
+			btn.text = "[%d] %s" % [i + 1, display_name]
+
+			var style := StyleBoxFlat.new()
+			style.set_corner_radius_all(6)
+			if i == GameManager.active_party_index:
+				style.bg_color = Color(0.25, 0.2, 0.08, 0.95)
+				style.border_color = Color(1.0, 0.85, 0.35, 1.0)
+				style.set_border_width_all(2)
+			else:
+				style.bg_color = Color(0.1, 0.1, 0.14, 0.8)
+				style.border_color = Color(0.35, 0.35, 0.4, 0.8)
+				style.set_border_width_all(1)
+
+			btn.add_theme_stylebox_override("normal", style)
+			btn.pressed.connect(func(): GameManager.swap_to_party_slot(i))
+		else:
+			btn.text = "[%d] Empty" % (i + 1)
+			btn.disabled = true
+
+		_party_bar.add_child(btn)
+		_party_buttons.append(btn)
+
+func _on_party_swapped(_slot_idx: int, _char_data: Resource) -> void:
+	_refresh_party_bar()
+
+func _on_party_composition_changed(_party: Array) -> void:
+	_refresh_party_bar()
 
 # ---------------------------------------------------------------------------
 # Settings & Pause Menu Modal
@@ -219,7 +284,7 @@ func _build_skill_placeholders() -> void:
 		button.pressed.connect(_on_skill_button_pressed.bind(key))
 
 	var attack_hint := Label.new()
-	attack_hint.text = "Space / Shift: Dash   |   Q/E/R: Skills   |   Right click: Attack"
+	attack_hint.text = "1/2/3: Swap Party   |   Space: Dash   |   Q/E/R: Skills   |   R-Click: Attack"
 	attack_hint.anchor_left = 0.5
 	attack_hint.anchor_top = 1.0
 	attack_hint.anchor_right = 0.5

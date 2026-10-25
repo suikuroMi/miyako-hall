@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "asura_blade_dance"
+display_name = "Asura Blade Dance"
+description = "A rapid 360-degree dual-katana whirlwind that shreds surrounding foes."
+skill_type = 0
+base_damage = 38.0
+scaling_stat = "attack"
+damage_scaling = 0.8
+cooldown = 4.5
+mana_cost = 18.0
+radius = 95.0
+knockback_force = 190.0

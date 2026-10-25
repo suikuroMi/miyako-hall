@@ -1,6 +1,10 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3]
 
 [ext_resource type="Script" path="res://core/resources/character_data.gd" id="1_cdata"]
+[ext_resource type="PackedScene" uid="uid://ywnr4fpagbmg" path="res://entities/character/Ookami Mio/ookami mio.tscn" id="2_visuals"]
+[ext_resource type="Resource" path="res://data/skills/blizzard_darts.tres" id="3_skill_q"]
+[ext_resource type="Resource" path="res://data/skills/frost_sanctuary.tres" id="4_skill_e"]
+[ext_resource type="Resource" path="res://data/skills/konkon_blizzard.tres" id="5_skill_r"]
 
 [resource]
 script = ExtResource("1_cdata")
@@ -9,6 +13,8 @@ id = "shirakami_fubuki"
 description = "White fox kami of the mountain shrine. Swift marksman wielding icy spiritual barrages."
 archetype = 4
 favored_weapon = 3
+character_visual_scene = ExtResource("2_visuals")
+anim_library = "mio_animation"
 base_health = 850.0
 base_power = 28.0
 base_speed = 36.0
@@ -19,3 +25,6 @@ crit_damage = 1.7
 hp_per_level = 12.0
 atk_per_level = 3.5
 def_per_level = 1.0
+skill_q = ExtResource("3_skill_q")
+skill_e = ExtResource("4_skill_e")
+skill_r = ExtResource("5_skill_r")

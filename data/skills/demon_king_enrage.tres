@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "demon_king_enrage"
+display_name = "Demon King Enrage"
+description = "Ignites demonic spirit fire, boosting movement speed and granting temporary lifesteal/heal."
+skill_type = 4
+base_damage = 0.0
+cooldown = 11.0
+mana_cost = 25.0
+heal_amount = 25.0
+speed_boost = 90.0
+buff_duration = 5.0

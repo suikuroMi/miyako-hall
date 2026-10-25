@@ -27,7 +27,9 @@ func save_game() -> bool:
 	var save_dict := {
 		"version": 1,
 		"timestamp": Time.get_datetime_string_from_system(),
-		"unlocked_characters": game_mgr.unlocked_characters if game_mgr else ["ookami_mio"],
+		"unlocked_characters": game_mgr.unlocked_characters if game_mgr else ["ookami_mio", "shirakami_fubuki"],
+		"active_party": game_mgr.active_party if game_mgr else ["ookami_mio", "shirakami_fubuki"],
+		"active_party_index": game_mgr.active_party_index if game_mgr else 0,
 		"active_character_id": game_mgr.active_character_id if game_mgr else "ookami_mio",
 		"shrine_coins": game_mgr.shrine_coins if game_mgr else 600,
 		"faith_ranks": game_mgr.faith_ranks if game_mgr else {"ookami_mio": 0},
@@ -78,6 +80,15 @@ func load_game() -> bool:
 			for c in data["unlocked_characters"]:
 				chars.append(str(c))
 			game_mgr.unlocked_characters = chars
+
+		if data.has("active_party") and data["active_party"] is Array:
+			var party: Array[String] = []
+			for p in data["active_party"]:
+				party.append(str(p))
+			game_mgr.active_party = party
+
+		if data.has("active_party_index"):
+			game_mgr.active_party_index = int(data["active_party_index"])
 
 		if data.has("active_character_id"):
 			game_mgr.active_character_id = str(data["active_character_id"])
