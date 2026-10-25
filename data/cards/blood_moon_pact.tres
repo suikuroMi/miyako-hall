@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "blood_moon_pact"
+title = "Blood Moon Pact"
+description = "🔥 [CURSE] Pact with the False Moon. Massive +14 Attack, but sacrifices -30 Max HP to corruption."
+rarity = 2
+stat_type = 0
+modifier_value = 14.0
+has_secondary = true
+secondary_stat_type = 3
+secondary_modifier_value = -30.0
+is_unique = false
+weight = 40

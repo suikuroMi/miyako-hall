@@ -36,6 +36,9 @@ func save_game() -> bool:
 		"rescued_spirits": game_mgr.rescued_spirits if game_mgr else [],
 		"character_awakenings": game_mgr.character_awakenings if game_mgr else {},
 		"character_shards": game_mgr.character_shards if game_mgr else {},
+		"talent_ranks": game_mgr.talent_ranks if game_mgr else {},
+		"active_chaos_modifiers": game_mgr.active_chaos_modifiers if game_mgr else [],
+		"idle_expeditions": game_mgr.idle_expeditions if game_mgr else [],
 		"faith_ranks": game_mgr.faith_ranks if game_mgr else {"ookami_mio": 0},
 		"purified_bosses": game_mgr.purified_bosses if game_mgr else [],
 		"story_flags": game_mgr.story_flags if game_mgr else {}
@@ -120,6 +123,21 @@ func load_game() -> bool:
 			for k in data["character_shards"].keys():
 				shards[str(k)] = int(data["character_shards"][k])
 			game_mgr.character_shards = shards
+
+		if data.has("talent_ranks") and data["talent_ranks"] is Dictionary:
+			var talents: Dictionary = {}
+			for k in data["talent_ranks"].keys():
+				talents[str(k)] = int(data["talent_ranks"][k])
+			game_mgr.talent_ranks = talents
+
+		if data.has("active_chaos_modifiers") and data["active_chaos_modifiers"] is Array:
+			var mods: Array[String] = []
+			for m in data["active_chaos_modifiers"]:
+				mods.append(str(m))
+			game_mgr.active_chaos_modifiers = mods
+
+		if data.has("idle_expeditions") and data["idle_expeditions"] is Array:
+			game_mgr.idle_expeditions = data["idle_expeditions"]
 
 		if data.has("faith_ranks") and data["faith_ranks"] is Dictionary:
 			var ranks: Dictionary = {}

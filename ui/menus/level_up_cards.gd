@@ -9,6 +9,9 @@ var _active_archetype_counts: Dictionary = {
 	"Fox": 0
 }
 
+var _banished_card_ids: Array[String] = []
+var _pending_choices_cache: int = 0
+
 @onready var _title_label: Label = $Content/TitleLabel
 @onready var _card_a: Button = $Content/CardsRow/CardA
 @onready var _card_b: Button = $Content/CardsRow/CardB
@@ -27,13 +30,16 @@ const ARCHETYPE_MAP: Dictionary = {
 	"spirit_font": "Purification",
 	"celestial_crit": "Blade",
 	"divine_barrier": "Blade",
-	"haste_blessing": "Fox"
+	"haste_blessing": "Fox",
+	"blood_moon_pact": "Curse",
+	"stigmata_greed": "Curse"
 }
 
 const ARCHETYPE_ICONS: Dictionary = {
 	"Purification": "✨ [Purification Spells]",
 	"Blade": "⚔️ [Physical Blade]",
-	"Fox": "🦊 [Spirit Fox Swiftness]"
+	"Fox": "🦊 [Spirit Fox Swiftness]",
+	"Curse": "🌑 [Cursed Stigma]"
 }
 
 func _ready() -> void:
@@ -53,6 +59,13 @@ func _ready() -> void:
 	_card_b.pressed.connect(_on_card_pressed.bind(1))
 	_card_c.pressed.connect(_on_card_pressed.bind(2))
 
+	var reroll = get_node_or_null("Content/ActionsRow/RerollBtn")
+	if reroll:
+		reroll.pressed.connect(reroll_choices)
+	var banish = get_node_or_null("Content/ActionsRow/BanishBtn")
+	if banish:
+		banish.pressed.connect(func(): banish_choice(0))
+
 	if "pending_level_up_choices" in _player:
 		_on_level_up_choices_changed(_player.pending_level_up_choices)
 
@@ -62,15 +75,18 @@ func _load_card_pool() -> void:
 		"res://data/cards/haste_blessing.tres",
 		"res://data/cards/divine_barrier.tres",
 		"res://data/cards/celestial_crit.tres",
-		"res://data/cards/spirit_font.tres"
+		"res://data/cards/spirit_font.tres",
+		"res://data/cards/blood_moon_pact.tres",
+		"res://data/cards/stigmata_greed.tres"
 	]
 	for path in card_paths:
 		if ResourceLoader.exists(path):
 			var res = load(path)
-			if res is CardData:
+			if res is CardData and res.id not in _banished_card_ids:
 				_card_pool.append(res)
 
 func _on_level_up_choices_changed(pending_choices: int) -> void:
+	_pending_choices_cache = pending_choices
 	if pending_choices <= 0:
 		visible = false
 		get_tree().paused = false
@@ -81,6 +97,7 @@ func _on_level_up_choices_changed(pending_choices: int) -> void:
 	get_tree().paused = true
 
 func _show_new_choices(pending_choices: int) -> void:
+	_pending_choices_cache = pending_choices
 	var synergy_hint := ""
 	for arch in _active_archetype_counts.keys():
 		var count: int = _active_archetype_counts[arch]
@@ -89,12 +106,17 @@ func _show_new_choices(pending_choices: int) -> void:
 
 	_title_label.text = "LEVEL UP! Choose 1 Blessing (%d remaining)%s" % [pending_choices, synergy_hint]
 
-	if _card_pool.size() >= 3:
-		var pool := _card_pool.duplicate()
+	var available_pool: Array[CardData] = []
+	for c in _card_pool:
+		if c.id not in _banished_card_ids:
+			available_pool.append(c)
+
+	if available_pool.size() >= 3:
+		var pool := available_pool.duplicate()
 		pool.shuffle()
 		_current_choices = [pool[0], pool[1], pool[2]]
 	else:
-		_current_choices = _card_pool.duplicate()
+		_current_choices = available_pool.duplicate()
 
 	var buttons := [_card_a, _card_b, _card_c]
 	for i in range(buttons.size()):
@@ -116,6 +138,30 @@ func _show_new_choices(pending_choices: int) -> void:
 			buttons[i].visible = true
 		else:
 			buttons[i].visible = false
+
+func reroll_choices() -> void:
+	if not GameManager or GameManager.shrine_coins < 25:
+		return
+	GameManager.shrine_coins -= 25
+	if EventBus:
+		EventBus.currency_changed.emit(GameManager.shrine_coins)
+	if AudioManager:
+		AudioManager.play_sfx("coin")
+	_show_new_choices(_pending_choices_cache)
+
+func banish_choice(index: int) -> void:
+	if not GameManager or GameManager.shrine_coins < 35:
+		return
+	if index < 0 or index >= _current_choices.size():
+		return
+	var card_to_banish: CardData = _current_choices[index]
+	_banished_card_ids.append(card_to_banish.id)
+	GameManager.shrine_coins -= 35
+	if EventBus:
+		EventBus.currency_changed.emit(GameManager.shrine_coins)
+	if AudioManager:
+		AudioManager.play_sfx("purified")
+	_show_new_choices(_pending_choices_cache)
 
 func _on_card_pressed(index: int) -> void:
 	if not _player:

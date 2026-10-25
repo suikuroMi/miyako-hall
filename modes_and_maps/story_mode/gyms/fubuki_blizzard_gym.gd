@@ -35,6 +35,8 @@ func _ready() -> void:
 		call_deferred("_trigger_intro_dialogue", intro_lines)
 
 func _trigger_intro_dialogue(lines: Array) -> void:
+	if boss and boss.has_method("trigger_cinematic_intro"):
+		boss.trigger_cinematic_intro()
 	if EventBus:
 		EventBus.dialogue_started.emit(lines)
 

@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/map.png" id="6_forest_bg"]
 [ext_resource type="Script" path="res://core/components/interactable_component.gd" id="7_interact"]
 [ext_resource type="PackedScene" path="res://entities/objects/lost_soul/lost_soul.tscn" id="8_soul"]
+[ext_resource type="PackedScene" path="res://entities/objects/kami_obstacle/kami_obstacle.tscn" id="9_obstacle"]
+[ext_resource type="PackedScene" path="res://entities/objects/hidden_item/hidden_item.tscn" id="10_hidden"]
+[ext_resource type="PackedScene" path="res://entities/enemy/trainer_encounter/stigmata_duelist.tscn" id="11_duelist"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_north_gate"]
 size = Vector2(260, 50)
@@ -97,3 +100,18 @@ soul_name = "Shrine Pilgrim Spirit"
 position = Vector2(1320, 640)
 soul_id = "route1_soul_02"
 soul_name = "Lost Forest Traveler"
+
+[node name="KamiBramble" parent="." instance=ExtResource("9_obstacle")]
+position = Vector2(480, 500)
+obstacle_type = 0
+obstacle_id = "route1_bramble_01"
+
+[node name="HiddenCache" parent="." instance=ExtResource("10_hidden")]
+position = Vector2(380, 500)
+item_id = "route1_secret_cache_01"
+coin_reward = 80
+
+[node name="TrainerDuelist" parent="." instance=ExtResource("11_duelist")]
+position = Vector2(1100, 360)
+encounter_id = "trainer_duelist_forest_01"
+facing_direction = Vector2(0, 1)

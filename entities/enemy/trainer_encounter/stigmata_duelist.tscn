@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://entities/enemy/trainer_encounter/stigmata_duelist.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy.png" id="2_texture"]
+[ext_resource type="Script" path="res://core/components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="4_hurtbox"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_duelist"]
+radius = 16.0
+height = 42.0
+
+[node name="StigmataDuelist" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+modulate = Color(1.2, 0.5, 0.6, 1)
+texture = ExtResource("2_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_duelist")
+
+[node name="SightRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, 240)
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+max_hp = 120.0
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_hurtbox")
+team = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CapsuleShape2D_duelist")

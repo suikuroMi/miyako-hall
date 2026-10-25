@@ -45,6 +45,8 @@ func _trigger_intro_hint() -> void:
 func _on_brazier_lit(_id: String) -> void:
 	_braziers_lit += 1
 	if _braziers_lit >= 2:
+		if boss and boss.has_method("trigger_cinematic_intro"):
+			boss.trigger_cinematic_intro()
 		if AudioManager:
 			AudioManager.play_sfx("purified")
 		var intro_lines := [

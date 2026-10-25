@@ -65,6 +65,14 @@ func initialize_from_data(data: CharacterData) -> void:
 	base_defense           = data.base_defense
 	crit_rate              = data.crit_rate
 	crit_damage_multiplier = data.crit_damage
+
+	# Apply permanent Faith Web / Talent Tree upgrades for Player
+	if get_parent().is_in_group("player") and GameManager:
+		max_hp += GameManager.get_talent_hp_bonus()
+		stat_attack += GameManager.get_talent_attack_bonus()
+		stat_speed += GameManager.get_talent_speed_bonus() * 100.0
+		crit_rate += GameManager.get_talent_crit_bonus()
+
 	current_hp             = max_hp
 	has_mana               = data.mana if "mana" in data else false
 	max_mana               = data.base_mana if ("base_mana" in data and data.base_mana > 0.0) else 100.0

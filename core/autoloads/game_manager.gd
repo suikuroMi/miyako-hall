@@ -70,6 +70,22 @@ var shrine_upgrades: Dictionary = {
 	"garden": 0
 }
 
+# --- Permanent Faith Web / Talent Tree State ---
+var talent_ranks: Dictionary = {
+	"vitality": 0,
+	"power": 0,
+	"swiftness": 0,
+	"spirit_fortune": 0,
+	"divine_harvest": 0
+}
+
+# --- Chaos Artifacts & Run Modifiers ---
+var active_chaos_modifiers: Array[String] = []
+
+# --- Idle Expeditions & Museum Milestones ---
+var idle_expeditions: Array[Dictionary] = []
+var museum_milestones: Array[String] = []
+
 # ---------------------------------------------------------------------------
 # Lifecycle
 # ---------------------------------------------------------------------------
@@ -442,3 +458,105 @@ func awaken_character(char_id: String) -> bool:
 
 func get_character_awakening_stars(char_id: String) -> int:
 	return character_awakenings.get(char_id, 0)
+
+# ---------------------------------------------------------------------------
+# Faith Web / Permanent Talent Tree
+# ---------------------------------------------------------------------------
+
+func get_talent_cost(talent_id: String) -> int:
+	var rank: int = talent_ranks.get(talent_id, 0)
+	var base_costs: Dictionary = {
+		"vitality": 80,
+		"power": 100,
+		"swiftness": 90,
+		"spirit_fortune": 120,
+		"divine_harvest": 150
+	}
+	return int(base_costs.get(talent_id, 100) * (rank + 1))
+
+func upgrade_talent(talent_id: String) -> bool:
+	var rank: int = talent_ranks.get(talent_id, 0)
+	if rank >= 5:
+		return false
+
+	var cost: int = get_talent_cost(talent_id)
+	if shrine_coins < cost:
+		return false
+
+	shrine_coins -= cost
+	talent_ranks[talent_id] = rank + 1
+
+	if EventBus:
+		EventBus.currency_changed.emit(shrine_coins)
+	if AudioManager:
+		AudioManager.play_sfx("level_up")
+	if SaveManager:
+		SaveManager.save_game()
+	return true
+
+func get_talent_hp_bonus() -> float:
+	return float(talent_ranks.get("vitality", 0) * 15.0)
+
+func get_talent_attack_bonus() -> float:
+	return float(talent_ranks.get("power", 0) * 3.0)
+
+func get_talent_speed_bonus() -> float:
+	return float(talent_ranks.get("swiftness", 0) * 0.05)
+
+func get_talent_crit_bonus() -> float:
+	return float(talent_ranks.get("spirit_fortune", 0) * 0.04)
+
+func get_talent_harvest_bonus() -> float:
+	return float(talent_ranks.get("divine_harvest", 0) * 0.10)
+
+# ---------------------------------------------------------------------------
+# Chaos Artifacts / Run Modifiers
+# ---------------------------------------------------------------------------
+
+func toggle_chaos_modifier(mod_id: String) -> void:
+	if mod_id in active_chaos_modifiers:
+		active_chaos_modifiers.erase(mod_id)
+	else:
+		active_chaos_modifiers.append(mod_id)
+
+func is_chaos_modifier_active(mod_id: String) -> bool:
+	return mod_id in active_chaos_modifiers
+
+# ---------------------------------------------------------------------------
+# Idle Expeditions
+# ---------------------------------------------------------------------------
+
+func dispatch_expedition(char_id: String, destination: String, duration_seconds: float) -> void:
+	var exp_data: Dictionary = {
+		"character_id": char_id,
+		"destination": destination,
+		"end_time": Time.get_unix_time_from_system() + duration_seconds,
+		"duration": duration_seconds,
+		"reward_coins": int(duration_seconds * 1.5),
+		"reward_shards": 5
+	}
+	idle_expeditions.append(exp_data)
+	if SaveManager:
+		SaveManager.save_game()
+
+func claim_expedition(index: int) -> Dictionary:
+	if index < 0 or index >= idle_expeditions.size():
+		return {}
+
+	var exp_data: Dictionary = idle_expeditions[index]
+	var now: float = Time.get_unix_time_from_system()
+	if now < float(exp_data.get("end_time", 0.0)):
+		return {}
+
+	shrine_coins += int(exp_data.get("reward_coins", 50))
+	var char_id: String = str(exp_data.get("character_id", "ookami_mio"))
+	add_character_shards(char_id, int(exp_data.get("reward_shards", 5)))
+
+	idle_expeditions.remove_at(index)
+	if EventBus:
+		EventBus.currency_changed.emit(shrine_coins)
+	if AudioManager:
+		AudioManager.play_sfx("coin")
+	if SaveManager:
+		SaveManager.save_game()
+	return exp_data

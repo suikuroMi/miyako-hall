@@ -123,6 +123,21 @@ func _toggle_customization_menu() -> void:
 	if is_instance_valid(roster) and roster.has_method("toggle_menu"):
 		roster.toggle_menu()
 
+func _toggle_talent_tree() -> void:
+	var tt = get_tree().root.find_child("TalentTree", true, false)
+	if is_instance_valid(tt) and tt.has_method("toggle_menu"):
+		tt.toggle_menu()
+
+func _toggle_expedition_board() -> void:
+	var eb = get_tree().root.find_child("ExpeditionBoard", true, false)
+	if is_instance_valid(eb) and eb.has_method("toggle_board"):
+		eb.toggle_board()
+
+func _toggle_photo_mode() -> void:
+	var pm = get_tree().root.find_child("PhotoMode", true, false)
+	if is_instance_valid(pm) and pm.has_method("toggle_photo_mode"):
+		pm.toggle_photo_mode()
+
 # ---------------------------------------------------------------------------
 # Party HUD (Quick-Swap Bar underneath Stats HUD)
 # ---------------------------------------------------------------------------
@@ -192,8 +207,8 @@ func _build_settings_menu() -> void:
 	_settings_panel.anchor_bottom = 0.5
 	_settings_panel.offset_left = -220
 	_settings_panel.offset_right = 220
-	_settings_panel.offset_top = -275
-	_settings_panel.offset_bottom = 275
+	_settings_panel.offset_top = -325
+	_settings_panel.offset_bottom = 325
 	_settings_panel.visible = false
 
 	# Dark styled panel
@@ -210,7 +225,7 @@ func _build_settings_menu() -> void:
 	add_child(_settings_panel)
 
 	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 10)
+	col.add_theme_constant_override("separation", 8)
 	_settings_panel.add_child(col)
 
 	var title := Label.new()
@@ -221,13 +236,40 @@ func _build_settings_menu() -> void:
 
 	var resume_btn := Button.new()
 	resume_btn.text = "Resume Game"
-	resume_btn.custom_minimum_size = Vector2(0, 36)
+	resume_btn.custom_minimum_size = Vector2(0, 34)
 	resume_btn.pressed.connect(_close_settings_menu)
 	col.add_child(resume_btn)
 
+	var photo_btn := Button.new()
+	photo_btn.text = "📸 Photo Mode (P)"
+	photo_btn.custom_minimum_size = Vector2(0, 34)
+	photo_btn.pressed.connect(func():
+		_close_settings_menu()
+		_toggle_photo_mode()
+	)
+	col.add_child(photo_btn)
+
+	var talents_btn := Button.new()
+	talents_btn.text = "🕸️ Talent Web (K)"
+	talents_btn.custom_minimum_size = Vector2(0, 34)
+	talents_btn.pressed.connect(func():
+		_close_settings_menu()
+		_toggle_talent_tree()
+	)
+	col.add_child(talents_btn)
+
+	var dispatch_btn := Button.new()
+	dispatch_btn.text = "🚀 Expeditions (U)"
+	dispatch_btn.custom_minimum_size = Vector2(0, 34)
+	dispatch_btn.pressed.connect(func():
+		_close_settings_menu()
+		_toggle_expedition_board()
+	)
+	col.add_child(dispatch_btn)
+
 	_window_mode_btn = Button.new()
 	_update_window_mode_button_text()
-	_window_mode_btn.custom_minimum_size = Vector2(0, 36)
+	_window_mode_btn.custom_minimum_size = Vector2(0, 34)
 	_window_mode_btn.pressed.connect(_toggle_window_mode)
 	col.add_child(_window_mode_btn)
 

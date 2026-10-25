@@ -154,3 +154,19 @@ func _on_died() -> void:
 
 	defeated.emit(exp_reward)
 	queue_free()
+
+func trigger_cinematic_intro() -> void:
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_node("Camera2D"):
+		var cam: Camera2D = player.get_node("Camera2D")
+		var orig_offset: Vector2 = cam.offset
+		var orig_zoom: Vector2 = cam.zoom
+
+		var tw := create_tween()
+		tw.tween_property(cam, "zoom", orig_zoom * 1.35, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tw.tween_property(cam, "zoom", orig_zoom, 0.45)
+
+		for i in range(5):
+			cam.offset = Vector2(randf_range(-12, 12), randf_range(-12, 12))
+			await get_tree().create_timer(0.04).timeout
+		cam.offset = orig_offset

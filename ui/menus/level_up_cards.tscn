@@ -48,3 +48,17 @@ texture = ExtResource("2_6vbgu")
 [node name="Card3" type="Sprite2D" parent="Content/CardsRow" unique_id=681045290]
 position = Vector2(530, 361)
 texture = ExtResource("2_6vbgu")
+
+[node name="ActionsRow" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="RerollBtn" type="Button" parent="Content/ActionsRow"]
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+text = "🎲 Reroll (25 Coins)"
+
+[node name="BanishBtn" type="Button" parent="Content/ActionsRow"]
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+text = "🚫 Banish Card (35 Coins)"

@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/main map/Road.png" id="7_road"]
 [ext_resource type="Script" path="res://core/components/interactable_component.gd" id="8_interact"]
 [ext_resource type="PackedScene" path="res://entities/objects/shrine_upgrade_station/shrine_upgrade_station.tscn" id="9_station"]
+[ext_resource type="PackedScene" path="res://entities/objects/shrine_turret/shrine_turret.tscn" id="10_turret"]
+[ext_resource type="PackedScene" path="res://entities/objects/hidden_item/hidden_item.tscn" id="11_hidden"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(260, 60)
@@ -130,3 +132,14 @@ shape = SubResource("CircleShape2D_tablet")
 
 [node name="ShrineUpgradeStation" parent="." instance=ExtResource("9_station")]
 position = Vector2(1160, 420)
+
+[node name="ShrineTurretLeft" parent="." instance=ExtResource("10_turret")]
+position = Vector2(760, 420)
+
+[node name="ShrineTurretRight" parent="." instance=ExtResource("10_turret")]
+position = Vector2(1160, 260)
+
+[node name="HiddenCache" parent="." instance=ExtResource("11_hidden")]
+position = Vector2(780, 520)
+item_id = "shrine_secret_cache_01"
+coin_reward = 100

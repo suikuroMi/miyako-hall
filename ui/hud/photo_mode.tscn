@@ -1,0 +1,101 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/hud/photo_mode.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_photo_bg"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.6, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="PhotoMode" type="CanvasLayer"]
+layer = 120
+script = ExtResource("1_script")
+
+[node name="FilterRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="ShutterFlash" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="ControlsPanel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -120.0
+offset_right = 260.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_photo_bg")
+
+[node name="VBox" type="VBoxContainer" parent="ControlsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ZoomRow" type="HBoxContainer" parent="ControlsPanel/VBox"]
+layout_mode = 2
+
+[node name="ZoomLabel" type="Label" parent="ControlsPanel/VBox/ZoomRow"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🔍 Zoom:"
+
+[node name="ZoomSlider" type="HSlider" parent="ControlsPanel/VBox/ZoomRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.8
+max_value = 3.5
+step = 0.1
+value = 2.0
+
+[node name="FilterRow" type="HBoxContainer" parent="ControlsPanel/VBox"]
+layout_mode = 2
+
+[node name="FilterLabel" type="Label" parent="ControlsPanel/VBox/FilterRow"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🎨 Filter:"
+
+[node name="FilterOption" type="OptionButton" parent="ControlsPanel/VBox/FilterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnRow" type="HBoxContainer" parent="ControlsPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="SnapBtn" type="Button" parent="ControlsPanel/VBox/BtnRow"]
+custom_minimum_size = Vector2(160, 32)
+layout_mode = 2
+text = "📸 Capture Photo"
+
+[node name="ExitBtn" type="Button" parent="ControlsPanel/VBox/BtnRow"]
+custom_minimum_size = Vector2(120, 32)
+layout_mode = 2
+text = "Exit Photo (P)"

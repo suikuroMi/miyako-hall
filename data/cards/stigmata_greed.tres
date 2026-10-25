@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "stigmata_greed"
+title = "Stigmata Greed"
+description = "💰 [CURSE] Greed of the Stigmata. Grants +20% Critical Rate, but reduces Defense by -6."
+rarity = 1
+stat_type = 5
+modifier_value = 0.2
+has_secondary = true
+secondary_stat_type = 4
+secondary_modifier_value = -6.0
+is_unique = false
+weight = 50
