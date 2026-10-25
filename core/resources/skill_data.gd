@@ -12,6 +12,7 @@ enum SkillType {
 @export_group("Identity")
 @export var id: String = "skill_id"
 @export var display_name: String = "Skill"
+@export var slot: String = ""
 @export_multiline var description: String = ""
 @export var icon: Texture2D
 @export var skill_type: SkillType = SkillType.AOE_DAMAGE

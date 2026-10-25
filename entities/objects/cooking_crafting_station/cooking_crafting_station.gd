@@ -5,7 +5,7 @@
 class_name CookingCraftingStation
 extends Node2D
 
-@onready var interactable: InteractableComponent = $InteractableComponent
+@onready var interactable = get_node_or_null("InteractableComponent")
 
 func _ready() -> void:
 	if interactable:

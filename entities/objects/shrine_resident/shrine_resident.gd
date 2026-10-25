@@ -7,7 +7,7 @@ extends Node2D
 
 @export var resident_name: String = "Peaceful Villager Spirit"
 
-@onready var interactable: InteractableComponent = $InteractableComponent
+@onready var interactable = get_node_or_null("InteractableComponent")
 @onready var sprite: Sprite2D = $Sprite2D
 
 const FLAVOR_DIALOGUES: Array[String] = [

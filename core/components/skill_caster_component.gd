@@ -76,6 +76,8 @@ func equip_skill(slot: String, skill: SkillData) -> void:
 	slot = slot.to_upper()
 	if not _skills.has(slot):
 		return
+	if skill:
+		skill.slot = slot
 	_skills[slot] = skill
 	_cooldowns[slot] = 0.0
 	_max_cooldowns[slot] = skill.cooldown if skill else 1.0
@@ -133,7 +135,7 @@ func cast_skill(slot: String) -> bool:
 	_cooldowns[slot] = skill.cooldown
 
 	# Perform the skill's mechanical action
-	_execute_skill_effect(skill)
+	_execute_skill_effect(skill, slot)
 
 	skill_cast_success.emit(slot, skill)
 	if get_parent() and get_parent().is_in_group("player"):
@@ -160,7 +162,7 @@ func get_max_cooldown(slot: String) -> float:
 # Internal Execution
 # ---------------------------------------------------------------------------
 
-func _execute_skill_effect(skill: SkillData) -> void:
+func _execute_skill_effect(skill: SkillData, slot: String = "") -> void:
 	var parent: Node2D = get_parent() as Node2D
 	if not parent:
 		return
@@ -172,7 +174,8 @@ func _execute_skill_effect(skill: SkillData) -> void:
 		final_damage += stat_val * skill.damage_scaling
 
 		# If casting R and ultimate faith is full, trigger amplified Grand Ultimate!
-		if skill.slot == "R" and _stats.consume_ultimate():
+		var is_ult := slot == "R" or ("slot" in skill and skill.slot == "R")
+		if is_ult and _stats.consume_ultimate():
 			final_damage *= 2.0
 			if CameraManager:
 				CameraManager.shake(15.0, 0.45)
