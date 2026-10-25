@@ -139,6 +139,8 @@ func cast_skill(slot: String) -> bool:
 	if get_parent() and get_parent().is_in_group("player"):
 		EventBus.skill_cast.emit(slot, skill)
 		EventBus.skill_cooldown_updated.emit(slot, _cooldowns[slot], _max_cooldowns[slot])
+		if AudioManager:
+			AudioManager.play_sfx("skill")
 
 	return true
 
@@ -171,7 +173,7 @@ func _execute_skill_effect(skill: SkillData) -> void:
 
 	match skill.skill_type:
 		SkillData.SkillType.AOE_DAMAGE:
-			_cast_aoe_damage(parent.global_position, skill.radius, final_damage, skill.knockback_force)
+			_cast_aoe_damage(parent.global_position, skill.radius, final_damage, skill.knockback_force, skill)
 
 		SkillData.SkillType.PROJECTILE:
 			_cast_projectiles(parent, skill, final_damage)
@@ -183,7 +185,7 @@ func _execute_skill_effect(skill: SkillData) -> void:
 			if _stats and skill.heal_amount > 0.0:
 				_stats.heal(skill.heal_amount)
 			if skill.radius > 0.0 and final_damage > 0.0:
-				_cast_aoe_damage(parent.global_position, skill.radius, final_damage, skill.knockback_force)
+				_cast_aoe_damage(parent.global_position, skill.radius, final_damage, skill.knockback_force, skill)
 
 		SkillData.SkillType.BUFF:
 			if _stats and skill.heal_amount > 0.0:
@@ -191,7 +193,24 @@ func _execute_skill_effect(skill: SkillData) -> void:
 			if _movement and skill.speed_boost > 0.0 and skill.buff_duration > 0.0:
 				_apply_speed_buff(skill.speed_boost, skill.buff_duration)
 
-func _cast_aoe_damage(center: Vector2, radius: float, damage: float, knockback: float) -> void:
+func _apply_elemental_reaction(target: Node, skill: SkillData) -> void:
+	if not is_instance_valid(target):
+		return
+	var status: StatusEffectComponent = target.get_node_or_null("StatusEffectComponent")
+	if not status:
+		status = StatusEffectComponent.new()
+		status.name = "StatusEffectComponent"
+		target.add_child(status)
+
+	var s_name: String = skill.id.to_lower()
+	if "blizzard" in s_name or "frost" in s_name or "ice" in s_name:
+		status.apply_element(StatusEffectComponent.ElementType.FROST)
+	elif "flame" in s_name or "oni" in s_name or "fire" in s_name:
+		status.apply_element(StatusEffectComponent.ElementType.BURN)
+	elif "tarot" in s_name or "purif" in s_name or "curse" in s_name or "spirit" in s_name:
+		status.apply_element(StatusEffectComponent.ElementType.CURSE)
+
+func _cast_aoe_damage(center: Vector2, radius: float, damage: float, knockback: float, skill: SkillData = null) -> void:
 	var target_group: String = "enemies" if team == 0 else "player"
 	var targets: Array[Node] = get_tree().get_nodes_in_group(target_group)
 	for t in targets:
@@ -201,6 +220,8 @@ func _cast_aoe_damage(center: Vector2, radius: float, damage: float, knockback: 
 		if dist <= radius:
 			if t.has_method("take_damage"):
 				t.take_damage(damage)
+			if skill:
+				_apply_elemental_reaction(t, skill)
 			for child in t.get_children():
 				if child is HurtboxComponent and child.team != team:
 					child.receive_damage(damage, knockback, center)

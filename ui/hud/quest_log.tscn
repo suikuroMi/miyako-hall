@@ -1,0 +1,97 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/hud/quest_log.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quest_bg"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.55, 0.25, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="QuestLog" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -240.0
+offset_right = 280.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_quest_bg")
+script = ExtResource("1_script")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBox/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "📜 QUEST LOG & FAITH TRACKER"
+
+[node name="CloseBtn" type="Button" parent="VBox/HeaderRow"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "✕"
+
+[node name="HSeparator" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="ObjectiveSection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SectionTitle" type="Label" parent="VBox/ObjectiveSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "⚔️ MAIN STORY OBJECTIVES"
+
+[node name="ObjectivesList" type="Label" parent="VBox/ObjectiveSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• Loading objectives..."
+
+[node name="FaithSection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SectionTitle" type="Label" parent="VBox/FaithSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "⛩️ SHRINE FAITH & RESCUES"
+
+[node name="FaithList" type="Label" parent="VBox/FaithSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• Loading faith data..."
+
+[node name="CorruptionSection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SectionTitle" type="Label" parent="VBox/CorruptionSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "🌑 REGIONAL CORRUPTION STATUS"
+
+[node name="CorruptionList" type="Label" parent="VBox/CorruptionSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• Loading corruption status..."

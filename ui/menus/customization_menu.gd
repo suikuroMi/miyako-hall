@@ -112,11 +112,19 @@ func _select_character(char_id: String) -> void:
 
 	# Faith Resonance (Constellation) Display
 	var rank: int = GameManager.get_faith_rank(char_id) if GameManager else 0
-	_faith_rank_label.text = "✨ Faith Resonance Rank: %d / 6" % rank
+	var stars: int = GameManager.get_character_awakening_stars(char_id) if GameManager else 0
+	var shards: int = GameManager.character_shards.get(char_id, 0) if GameManager else 0
+	var star_str := ""
+	for s in range(5):
+		star_str += "★" if s < stars else "☆"
+
+	_faith_rank_label.text = "✨ Faith Resonance: Rank %d   |   Awakening: %s (%d/20 Shards)" % [rank, star_str, shards]
 	
 	var perks_text: String = ""
 	for i in range(rank + 1):
 		perks_text += FAITH_PERKS[i] + "\n"
+	if stars > 0:
+		perks_text += "🌟 Awakening Passive: +%d%% Base Stats & Trait Amplification\n" % (stars * 5)
 	_faith_perks_label.text = perks_text
 
 func _on_select_char_pressed() -> void:

@@ -9,6 +9,10 @@ extends Node2D
 @onready var boss_name_label: Label = $BossUI/VBox/BossName
 @onready var victory_banner: Label = $BossUI/VictoryBanner
 @onready var return_gate: Area2D = $GateToForest
+@onready var brazier_left: SpiritBrazier = get_node_or_null("BrazierLeft") as SpiritBrazier
+@onready var brazier_right: SpiritBrazier = get_node_or_null("BrazierRight") as SpiritBrazier
+
+var _braziers_lit: int = 0
 
 func _ready() -> void:
 	victory_banner.visible = false
@@ -17,9 +21,37 @@ func _ready() -> void:
 		boss.purified.connect(_on_boss_purified)
 		boss.phase_changed.connect(_on_boss_phase_changed)
 
-	# Trigger Pre-Fight Dialogue if not yet cleared
-	if GameManager and not GameManager.get_story_flag("gym_cleared_nakiri_ayame"):
+	var is_cleared: bool = GameManager and GameManager.get_story_flag("gym_cleared_nakiri_ayame")
+
+	if is_cleared:
+		if brazier_left: brazier_left.is_lit = true; brazier_left._update_visuals()
+		if brazier_right: brazier_right.is_lit = true; brazier_right._update_visuals()
+	else:
+		if brazier_left: brazier_left.lit.connect(_on_brazier_lit)
+		if brazier_right: brazier_right.lit.connect(_on_brazier_lit)
+		# Defer prompt slightly so HUD has fully initialized
+		call_deferred("_trigger_intro_hint")
+
+func _trigger_intro_hint() -> void:
+	var hint_lines := [
+		{
+			"speaker": "⛩️ Sacred Dojo Ward",
+			"text": "An oppressive flame barrier shields Nakiri Ayame. Ignite both Spirit Braziers to dispel the ward and challenge the Gym Leader!"
+		}
+	]
+	if EventBus:
+		EventBus.dialogue_started.emit(hint_lines)
+
+func _on_brazier_lit(_id: String) -> void:
+	_braziers_lit += 1
+	if _braziers_lit >= 2:
+		if AudioManager:
+			AudioManager.play_sfx("purified")
 		var intro_lines := [
+			{
+				"speaker": "⛩️ Sacred Dojo Ward",
+				"text": "The Spirit Braziers ignite in radiant unison! The flame barrier shatters!"
+			},
 			{
 				"speaker": "🔥 Corrupted Nakiri Ayame",
 				"text": "...Who goes there? The spiritual flames... they burn within my soul... I can't hold back!"
@@ -33,12 +65,8 @@ func _ready() -> void:
 				"text": "Draw your weapon! Let us see if your spirit is strong enough to pierce my blades!"
 			}
 		]
-		# Defer slightly so HUD has fully initialized
-		call_deferred("_trigger_intro_dialogue", intro_lines)
-
-func _trigger_intro_dialogue(lines: Array) -> void:
-	if EventBus:
-		EventBus.dialogue_started.emit(lines)
+		if EventBus:
+			EventBus.dialogue_started.emit(intro_lines)
 
 func _on_boss_hp_changed(current: float, max_hp: float) -> void:
 	if boss_hp_bar:

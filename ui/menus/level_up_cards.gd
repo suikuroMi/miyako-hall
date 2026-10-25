@@ -3,6 +3,11 @@ extends PanelContainer
 var _player: Node
 var _card_pool: Array[CardData] = []
 var _current_choices: Array[CardData] = []
+var _active_archetype_counts: Dictionary = {
+	"Purification": 0,
+	"Blade": 0,
+	"Fox": 0
+}
 
 @onready var _title_label: Label = $Content/TitleLabel
 @onready var _card_a: Button = $Content/CardsRow/CardA
@@ -16,6 +21,20 @@ const RARITY_COLORS: Array[Color] = [
 	Color(0.8, 0.4, 1.0),
 	Color(1.0, 0.8, 0.2)
 ]
+
+const ARCHETYPE_MAP: Dictionary = {
+	"faith_surge": "Purification",
+	"spirit_font": "Purification",
+	"celestial_crit": "Blade",
+	"divine_barrier": "Blade",
+	"haste_blessing": "Fox"
+}
+
+const ARCHETYPE_ICONS: Dictionary = {
+	"Purification": "✨ [Purification Spells]",
+	"Blade": "⚔️ [Physical Blade]",
+	"Fox": "🦊 [Spirit Fox Swiftness]"
+}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
@@ -62,7 +81,13 @@ func _on_level_up_choices_changed(pending_choices: int) -> void:
 	get_tree().paused = true
 
 func _show_new_choices(pending_choices: int) -> void:
-	_title_label.text = "LEVEL UP! Choose 1 Blessing (%d remaining)" % pending_choices
+	var synergy_hint := ""
+	for arch in _active_archetype_counts.keys():
+		var count: int = _active_archetype_counts[arch]
+		if count >= 2:
+			synergy_hint += " | %s SET BONUS ACTIVE! (x%d)" % [arch.to_upper(), count]
+
+	_title_label.text = "LEVEL UP! Choose 1 Blessing (%d remaining)%s" % [pending_choices, synergy_hint]
 
 	if _card_pool.size() >= 3:
 		var pool := _card_pool.duplicate()
@@ -76,7 +101,18 @@ func _show_new_choices(pending_choices: int) -> void:
 		if i < _current_choices.size():
 			var card: CardData = _current_choices[i]
 			var rarity_idx: int = clamp(int(card.rarity), 0, RARITY_NAMES.size() - 1)
-			buttons[i].text = "[%s]\n%s\n%s" % [RARITY_NAMES[rarity_idx], card.title, card.description]
+			var arch_name: String = ARCHETYPE_MAP.get(card.id, "Purification")
+			var arch_tag: String = ARCHETYPE_ICONS.get(arch_name, "[Blessing]")
+			var active_stacks: int = _active_archetype_counts.get(arch_name, 0)
+			var stack_msg: String = " (Set: %d/2)" % active_stacks if active_stacks < 2 else " (★ SET BONUS ACTIVE)"
+
+			buttons[i].text = "[%s] %s%s\n%s\n%s" % [
+				RARITY_NAMES[rarity_idx],
+				arch_tag,
+				stack_msg,
+				card.title,
+				card.description
+			]
 			buttons[i].visible = true
 		else:
 			buttons[i].visible = false
@@ -88,6 +124,9 @@ func _on_card_pressed(index: int) -> void:
 		return
 
 	var chosen_card: CardData = _current_choices[index]
+	var arch_name: String = ARCHETYPE_MAP.get(chosen_card.id, "Purification")
+	_active_archetype_counts[arch_name] = _active_archetype_counts.get(arch_name, 0) + 1
+
 	if _player.has_method("apply_card_resource"):
 		_player.apply_card_resource(chosen_card)
 	elif _player.has_method("apply_level_up_choice"):

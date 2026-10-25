@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://ui/menus/gacha_menu.tscn" id="7_gacha"]
 [ext_resource type="PackedScene" path="res://ui/menus/customization_menu.tscn" id="8_custom"]
 [ext_resource type="PackedScene" path="res://ui/hud/dialogue_box.tscn" id="9_dlg"]
+[ext_resource type="PackedScene" path="res://ui/hud/quest_log.tscn" id="10_quest"]
+[ext_resource type="PackedScene" path="res://ui/menus/holo_archive.tscn" id="11_archive"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.137, 0.137, 0.137, 1)
@@ -43,10 +45,6 @@ offset_right = 957.0
 offset_bottom = 532.0
 
 [node name="minimap" parent="." instance=ExtResource("3_mini")]
-offset_left = 1610.0
-offset_top = 57.0
-offset_right = 1610.0
-offset_bottom = 57.0
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = 68.0
@@ -68,3 +66,7 @@ script = ExtResource("4_hp")
 [node name="CustomizationMenu" parent="." instance=ExtResource("8_custom")]
 
 [node name="DialogueBox" parent="." instance=ExtResource("9_dlg")]
+
+[node name="QuestLog" parent="." instance=ExtResource("10_quest")]
+
+[node name="HoloArchive" parent="." instance=ExtResource("11_archive")]

@@ -65,11 +65,19 @@ func _physics_process(delta: float) -> void:
 	if _damage_timer > 0.0:
 		_damage_timer -= delta
 
-	if vision and vision.is_chasing():
+	if vision and vision.is_alert():
+		# Brief hesitation upon spotting the player
+		if movement:
+			velocity = movement.get_full_velocity(Vector2.ZERO)
+		else:
+			velocity = Vector2.ZERO
+		_update_idle_visuals()
+
+	elif vision and (vision.is_chasing() or vision.is_investigating()):
 		var target: Node2D = vision.get_target()
 		var move_dir: Vector2 = Vector2.ZERO
 
-		if use_navigation and nav_agent and is_instance_valid(target):
+		if vision.is_chasing() and use_navigation and nav_agent and is_instance_valid(target):
 			nav_agent.target_position = target.global_position
 			if not nav_agent.is_navigation_finished():
 				var next_path_pos: Vector2 = nav_agent.get_next_path_position()
@@ -77,13 +85,17 @@ func _physics_process(delta: float) -> void:
 		else:
 			move_dir = vision.get_direction_to_target()
 
+		var current_speed: float = move_speed if vision.is_chasing() else move_speed * 0.65
+
 		if movement:
-			movement.base_speed = move_speed
+			movement.base_speed = current_speed
 			velocity = movement.get_full_velocity(move_dir)
 		else:
-			velocity = move_dir * move_speed
+			velocity = move_dir * current_speed
 
-		_try_touch_damage(target)
+		if vision.is_chasing():
+			_try_touch_damage(target)
+
 		_update_chase_visuals(move_dir)
 	else:
 		if movement:

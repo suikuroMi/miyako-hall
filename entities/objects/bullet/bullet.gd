@@ -21,21 +21,22 @@ var _travelled: float = 0.0
 # ---------------------------------------------------------------------------
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 
 func _physics_process(delta: float) -> void:
 	var move: Vector2 = Vector2.RIGHT.rotated(rotation) * speed * delta
 	position += move
 	_travelled += move.length()
 	if _travelled >= range:
-		queue_free()
+		_destroy()
 
 # ---------------------------------------------------------------------------
 # Collision
 # ---------------------------------------------------------------------------
 
 func _on_body_entered(body: Node2D) -> void:
-	queue_free()
+	_destroy()
 
 	# Legacy path: body exposes take_damage() directly
 	if body.has_method("take_damage"):
@@ -47,3 +48,9 @@ func _on_body_entered(body: Node2D) -> void:
 		if child is HurtboxComponent and child.team != team:
 			child.receive_damage(damage, 0.0, global_position)
 			return
+
+func _destroy() -> void:
+	if ObjectPool:
+		ObjectPool.recycle(self)
+	else:
+		queue_free()

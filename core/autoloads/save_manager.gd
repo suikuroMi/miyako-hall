@@ -32,6 +32,10 @@ func save_game() -> bool:
 		"active_party_index": game_mgr.active_party_index if game_mgr else 0,
 		"active_character_id": game_mgr.active_character_id if game_mgr else "ookami_mio",
 		"shrine_coins": game_mgr.shrine_coins if game_mgr else 600,
+		"shrine_tier": game_mgr.shrine_tier if game_mgr else 1,
+		"rescued_spirits": game_mgr.rescued_spirits if game_mgr else [],
+		"character_awakenings": game_mgr.character_awakenings if game_mgr else {},
+		"character_shards": game_mgr.character_shards if game_mgr else {},
 		"faith_ranks": game_mgr.faith_ranks if game_mgr else {"ookami_mio": 0},
 		"purified_bosses": game_mgr.purified_bosses if game_mgr else [],
 		"story_flags": game_mgr.story_flags if game_mgr else {}
@@ -95,6 +99,27 @@ func load_game() -> bool:
 
 		if data.has("shrine_coins"):
 			game_mgr.shrine_coins = int(data["shrine_coins"])
+
+		if data.has("shrine_tier"):
+			game_mgr.shrine_tier = int(data["shrine_tier"])
+
+		if data.has("rescued_spirits") and data["rescued_spirits"] is Array:
+			var spirits: Array[String] = []
+			for s in data["rescued_spirits"]:
+				spirits.append(str(s))
+			game_mgr.rescued_spirits = spirits
+
+		if data.has("character_awakenings") and data["character_awakenings"] is Dictionary:
+			var awk: Dictionary = {}
+			for k in data["character_awakenings"].keys():
+				awk[str(k)] = int(data["character_awakenings"][k])
+			game_mgr.character_awakenings = awk
+
+		if data.has("character_shards") and data["character_shards"] is Dictionary:
+			var shards: Dictionary = {}
+			for k in data["character_shards"].keys():
+				shards[str(k)] = int(data["character_shards"][k])
+			game_mgr.character_shards = shards
 
 		if data.has("faith_ranks") and data["faith_ranks"] is Dictionary:
 			var ranks: Dictionary = {}

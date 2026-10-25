@@ -91,24 +91,50 @@ func has_weapon() -> bool:
 # ---------------------------------------------------------------------------
 
 func _fire_projectile() -> void:
-	if not _weapon_data.projectile_scene:
-		return
+	var proj_scene: PackedScene = _weapon_data.projectile_scene
+	if not proj_scene:
+		proj_scene = preload("res://entities/objects/bullet/bullet.tscn")
 
-	var proj = _weapon_data.projectile_scene.instantiate()
-	proj.global_transform = global_transform
+	var dmg: float = _weapon_data.damage + _weapon_data.damage_bonus
+	var spd: float = 900.0
+	var rng: float = _weapon_data.attack_range
 
-	# Pass weapon properties to the projectile when it supports them
-	if "damage" in proj:
-		proj.damage = _weapon_data.damage + _weapon_data.damage_bonus
-	if "range" in proj:
-		proj.range = _weapon_data.attack_range
-	if "team" in proj:
-		proj.team = team
-
-	get_tree().current_scene.add_child(proj)
+	if ObjectPool and proj_scene.resource_path == "res://entities/objects/bullet/bullet.tscn":
+		ObjectPool.spawn_bullet(global_position, rotation, dmg, spd, rng, team)
+	else:
+		var proj = proj_scene.instantiate()
+		proj.global_transform = global_transform
+		if "damage" in proj:
+			proj.damage = dmg
+		if "range" in proj:
+			proj.range = rng
+		if "team" in proj:
+			proj.team = team
+		get_tree().current_scene.add_child(proj)
 
 func _swing_melee() -> void:
 	if _hitbox == null:
 		return
 	_hitbox.damage = _weapon_data.damage + _weapon_data.damage_bonus
+	_hitbox.knockback_force = _weapon_data.knockback_force
 	_hitbox.activate(_weapon_data.swing_duration)
+
+	# Dynamic Melee Arc Sweep:
+	# Sweeps hitbox through a 100-degree cutting arc with expanding impact scale
+	var swing_arc: float = 1.7
+	_hitbox.rotation = -swing_arc * 0.5
+	_hitbox.scale = Vector2(0.8, 0.8)
+	var tween: Tween = create_tween()
+	tween.tween_property(_hitbox, "rotation", swing_arc * 0.5, _weapon_data.swing_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(_hitbox, "scale", Vector2(1.3, 1.3), _weapon_data.swing_duration * 0.4)
+	tween.tween_property(_hitbox, "scale", Vector2(1.0, 1.0), _weapon_data.swing_duration * 0.6)
+
+	# Animate weapon sprite if available
+	var parent = get_parent()
+	if parent:
+		var wp_sprite = parent.get_node_or_null("WeaponSprite")
+		if wp_sprite:
+			var orig_rot: float = wp_sprite.rotation
+			var sp_tween: Tween = create_tween()
+			sp_tween.tween_property(wp_sprite, "rotation", orig_rot + 1.2, _weapon_data.swing_duration * 0.5)
+			sp_tween.tween_property(wp_sprite, "rotation", orig_rot, _weapon_data.swing_duration * 0.5)

@@ -39,6 +39,25 @@ func _ready() -> void:
 # Public API
 # ---------------------------------------------------------------------------
 
+## Sets invincibility state directly
+func set_invincible(val: bool) -> void:
+	_is_invincible = val
+
+## Returns whether the hurtbox is currently invincible
+func is_invincible() -> bool:
+	return _is_invincible
+
+## Activates temporary invulnerability (e.g., during dash i-frames)
+func set_invincible_for(duration: float) -> void:
+	_is_invincible = true
+	var timer: Timer = Timer.new()
+	timer.wait_time  = duration
+	timer.one_shot   = true
+	timer.autostart  = true
+	add_child(timer)
+	timer.timeout.connect(func(): _is_invincible = false)
+	timer.timeout.connect(timer.queue_free)
+
 ## Called by HitboxComponent when a collision is confirmed.
 ## source_position is used to calculate knockback direction.
 func receive_damage(amount: float, knockback_force: float, source_position: Vector2) -> void:

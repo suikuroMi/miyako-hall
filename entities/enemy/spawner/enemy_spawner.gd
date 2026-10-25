@@ -110,16 +110,13 @@ func _spawn_enemy() -> void:
 	var angle: float = randf_range(0.0, TAU)
 	var spawn_pos: Vector2 = _player.global_position + Vector2(cos(angle), sin(angle)) * spawn_distance
 
-	# Instantiate and configure the enemy.
-	var enemy: Node = enemy_scene.instantiate()
+	# Instantiate and configure the enemy (pooled if ObjectPool available).
+	var enemy: Node = ObjectPool.spawn(enemy_scene) if ObjectPool else enemy_scene.instantiate()
 	enemy.global_position = spawn_pos
 
 	# Listen for defeat so we can decrement the counter and reward the player.
-	if enemy.has_signal("defeated"):
+	if enemy.has_signal("defeated") and not enemy.defeated.is_connected(_on_enemy_defeated):
 		enemy.defeated.connect(_on_enemy_defeated)
-
-	# Add to the scene root so the enemy persists independently of this spawner.
-	get_tree().current_scene.add_child(enemy)
 	_active_enemy_count += 1
 
 # ---------------------------------------------------------------------------

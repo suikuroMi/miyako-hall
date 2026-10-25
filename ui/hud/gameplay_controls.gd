@@ -53,30 +53,65 @@ func _build_top_bar() -> void:
 	var top_bar := HBoxContainer.new()
 	top_bar.anchor_left = 0.5
 	top_bar.anchor_right = 0.5
-	top_bar.offset_left = -210
-	top_bar.offset_right = 210
+	top_bar.offset_left = -390
+	top_bar.offset_right = 390
 	top_bar.offset_top = 18
 	top_bar.offset_bottom = 60
-	top_bar.add_theme_constant_override("separation", 12)
+	top_bar.add_theme_constant_override("separation", 10)
 	add_child(top_bar)
 
 	var settings_btn := Button.new()
-	settings_btn.text = "⚙️ Settings (Esc)"
-	settings_btn.custom_minimum_size = Vector2(130, 42)
+	settings_btn.text = "⚙️ Settings"
+	settings_btn.custom_minimum_size = Vector2(110, 42)
 	top_bar.add_child(settings_btn)
 	settings_btn.pressed.connect(_toggle_settings_menu)
 
+	var quests_btn := Button.new()
+	quests_btn.text = "📜 Quests (J)"
+	quests_btn.custom_minimum_size = Vector2(115, 42)
+	top_bar.add_child(quests_btn)
+	quests_btn.pressed.connect(_toggle_quest_log)
+
+	var archive_btn := Button.new()
+	archive_btn.text = "📖 Codex (L)"
+	archive_btn.custom_minimum_size = Vector2(115, 42)
+	top_bar.add_child(archive_btn)
+	archive_btn.pressed.connect(_toggle_holo_archive)
+
 	var gacha_btn := Button.new()
 	gacha_btn.text = "🌸 Gacha (G)"
-	gacha_btn.custom_minimum_size = Vector2(120, 42)
+	gacha_btn.custom_minimum_size = Vector2(115, 42)
 	top_bar.add_child(gacha_btn)
 	gacha_btn.pressed.connect(_toggle_gacha_menu)
 
 	var roster_btn := Button.new()
 	roster_btn.text = "⛩️ Roster (C)"
-	roster_btn.custom_minimum_size = Vector2(120, 42)
+	roster_btn.custom_minimum_size = Vector2(115, 42)
 	top_bar.add_child(roster_btn)
 	roster_btn.pressed.connect(_toggle_customization_menu)
+
+	var time_btn := Button.new()
+	time_btn.text = "☀️ Day (T)"
+	time_btn.custom_minimum_size = Vector2(110, 42)
+	top_bar.add_child(time_btn)
+	time_btn.pressed.connect(func():
+		if TimeManager:
+			TimeManager.advance_time_period()
+	)
+	if TimeManager:
+		TimeManager.period_changed.connect(func(_p, p_name):
+			time_btn.text = ("🌑 " if TimeManager.is_eclipse else "☀️ ") + p_name + " (T)"
+		)
+
+func _toggle_quest_log() -> void:
+	var ql = get_tree().root.find_child("QuestLog", true, false)
+	if is_instance_valid(ql) and ql.has_method("toggle_log"):
+		ql.toggle_log()
+
+func _toggle_holo_archive() -> void:
+	var ha = get_tree().root.find_child("HoloArchive", true, false)
+	if is_instance_valid(ha) and ha.has_method("toggle_archive"):
+		ha.toggle_archive()
 
 func _toggle_gacha_menu() -> void:
 	var gacha = get_tree().root.find_child("GachaMenu", true, false)
@@ -155,10 +190,10 @@ func _build_settings_menu() -> void:
 	_settings_panel.anchor_right = 0.5
 	_settings_panel.anchor_top = 0.5
 	_settings_panel.anchor_bottom = 0.5
-	_settings_panel.offset_left = -190
-	_settings_panel.offset_right = 190
-	_settings_panel.offset_top = -210
-	_settings_panel.offset_bottom = 210
+	_settings_panel.offset_left = -220
+	_settings_panel.offset_right = 220
+	_settings_panel.offset_top = -275
+	_settings_panel.offset_bottom = 275
 	_settings_panel.visible = false
 
 	# Dark styled panel
@@ -169,13 +204,13 @@ func _build_settings_menu() -> void:
 	style_box.set_corner_radius_all(10)
 	style_box.content_margin_left = 24
 	style_box.content_margin_right = 24
-	style_box.content_margin_top = 20
-	style_box.content_margin_bottom = 20
+	style_box.content_margin_top = 18
+	style_box.content_margin_bottom = 18
 	_settings_panel.add_theme_stylebox_override("panel", style_box)
 	add_child(_settings_panel)
 
 	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 14)
+	col.add_theme_constant_override("separation", 10)
 	_settings_panel.add_child(col)
 
 	var title := Label.new()
@@ -186,27 +221,71 @@ func _build_settings_menu() -> void:
 
 	var resume_btn := Button.new()
 	resume_btn.text = "Resume Game"
-	resume_btn.custom_minimum_size = Vector2(0, 42)
+	resume_btn.custom_minimum_size = Vector2(0, 36)
 	resume_btn.pressed.connect(_close_settings_menu)
 	col.add_child(resume_btn)
 
 	_window_mode_btn = Button.new()
 	_update_window_mode_button_text()
-	_window_mode_btn.custom_minimum_size = Vector2(0, 42)
+	_window_mode_btn.custom_minimum_size = Vector2(0, 36)
 	_window_mode_btn.pressed.connect(_toggle_window_mode)
 	col.add_child(_window_mode_btn)
 
+	# Audio Volume Sliders
+	_build_volume_row(col, "Master Vol", func() -> float: return AudioManager.master_volume if AudioManager else 0.8, func(v: float):
+		if AudioManager: AudioManager.set_master_volume(v)
+	)
+	_build_volume_row(col, "Music (BGM)", func() -> float: return AudioManager.bgm_volume if AudioManager else 0.7, func(v: float):
+		if AudioManager: AudioManager.set_bgm_volume(v)
+	)
+	_build_volume_row(col, "Sound (SFX)", func() -> float: return AudioManager.sfx_volume if AudioManager else 0.85, func(v: float):
+		if AudioManager:
+			AudioManager.set_sfx_volume(v)
+			AudioManager.play_sfx("coin")
+	)
+
 	var main_menu_btn := Button.new()
 	main_menu_btn.text = "Return to Main Menu"
-	main_menu_btn.custom_minimum_size = Vector2(0, 42)
+	main_menu_btn.custom_minimum_size = Vector2(0, 36)
 	main_menu_btn.pressed.connect(_return_to_main_menu)
 	col.add_child(main_menu_btn)
 
 	var quit_btn := Button.new()
 	quit_btn.text = "Quit to Desktop"
-	quit_btn.custom_minimum_size = Vector2(0, 42)
+	quit_btn.custom_minimum_size = Vector2(0, 36)
 	quit_btn.pressed.connect(_quit_game)
 	col.add_child(quit_btn)
+
+func _build_volume_row(parent: Control, label_text: String, get_val_fn: Callable, set_val_fn: Callable) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	parent.add_child(row)
+
+	var lbl := Label.new()
+	lbl.text = label_text
+	lbl.custom_minimum_size = Vector2(95, 0)
+	lbl.add_theme_font_size_override("font_size", 13)
+	row.add_child(lbl)
+
+	var slider := HSlider.new()
+	slider.min_value = 0.0
+	slider.max_value = 100.0
+	slider.step = 1.0
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.value = get_val_fn.call() * 100.0
+	row.add_child(slider)
+
+	var val_lbl := Label.new()
+	val_lbl.text = "%d%%" % int(slider.value)
+	val_lbl.custom_minimum_size = Vector2(40, 0)
+	val_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	val_lbl.add_theme_font_size_override("font_size", 13)
+	row.add_child(val_lbl)
+
+	slider.value_changed.connect(func(new_val: float):
+		val_lbl.text = "%d%%" % int(new_val)
+		set_val_fn.call(new_val / 100.0)
+	)
 
 func _toggle_settings_menu() -> void:
 	if _settings_panel.visible:

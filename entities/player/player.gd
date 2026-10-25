@@ -230,6 +230,28 @@ func dash() -> void:
 
 	movement.base_speed = get_movement_speed()
 	movement.try_dash(direction)
+	_spawn_ghost_trail()
+	if AudioManager:
+		AudioManager.play_sfx("dash")
+
+func _spawn_ghost_trail() -> void:
+	for i in range(3):
+		get_tree().create_timer(i * 0.05).timeout.connect(func():
+			if not is_instance_valid(self) or not is_inside_tree():
+				return
+			var ghost := Sprite2D.new()
+			if _animated_sprite and _animated_sprite.sprite_frames and _animated_sprite.sprite_frames.has_animation(_animated_sprite.animation):
+				ghost.texture = _animated_sprite.sprite_frames.get_frame_texture(_animated_sprite.animation, _animated_sprite.frame)
+			ghost.global_position = global_position
+			ghost.scale = scale
+			ghost.flip_h = _animated_sprite.flip_h if _animated_sprite else false
+			ghost.modulate = Color(0.6, 0.9, 1.3, 0.7) # spirit cyan glow
+			ghost.z_index = z_index - 1
+			get_tree().current_scene.add_child(ghost)
+			var tw := ghost.create_tween()
+			tw.tween_property(ghost, "modulate:a", 0.0, 0.22)
+			tw.finished.connect(ghost.queue_free)
+		)
 
 # ---------------------------------------------------------------------------
 # Input (debug & placeholder attack)
@@ -338,9 +360,12 @@ func unequip_weapon() -> void:
 # ---------------------------------------------------------------------------
 
 func get_movement_speed() -> float:
+	var base_spd: float = 240.0
 	if stats:
-		return 180.0 + (stats.get_total_speed(equipped_weapon) * 2.5)
-	return 240.0
+		base_spd = 180.0 + (stats.get_total_speed(equipped_weapon) * 2.5)
+	if GameManager:
+		base_spd *= (1.0 + GameManager.get_shrine_speed_bonus())
+	return base_spd
 
 func get_attack_damage() -> float:
 	return stats.get_total_attack(equipped_weapon)
@@ -359,7 +384,12 @@ func heal(amount: float) -> void:
 	stats.heal(amount)
 
 func add_experience(amount: int) -> void:
-	stats.add_experience(amount)
+	var total_amount: float = float(amount)
+	if GameManager:
+		total_amount *= (1.0 + GameManager.get_shrine_exp_bonus())
+	if TimeManager:
+		total_amount *= TimeManager.get_exp_multiplier()
+	stats.add_experience(int(total_amount))
 
 func apply_level_up_choice(choice_id: String) -> void:
 	stats.apply_card_upgrade(choice_id)

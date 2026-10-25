@@ -1,0 +1,121 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://modes_and_maps/story_mode/gyms/fubuki_blizzard_gym.gd" id="1_gym_script"]
+[ext_resource type="PackedScene" path="res://ui/hud/game_hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://modes_and_maps/spawn_point.tscn" id="4_spawn"]
+[ext_resource type="Script" path="res://modes_and_maps/map_transition_zone.gd" id="5_warp"]
+[ext_resource type="PackedScene" path="res://entities/enemy/boss/boss_shirakami_fubuki.tscn" id="6_boss"]
+[ext_resource type="Texture2D" path="res://assets/tileset/endless.png" id="7_arena_bg"]
+[ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="8_torii"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bg"]
+bg_color = Color(0.08, 0.1, 0.14, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.5, 0.8, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_fill"]
+bg_color = Color(0.25, 0.65, 0.95, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_gate"]
+size = Vector2(260, 60)
+
+[node name="FubukiBlizzardGym" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_gym_script")
+
+[node name="SummitFloor" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(960, 540)
+scale = Vector2(2.5, 2.5)
+modulate = Color(0.8, 0.9, 1.15, 1)
+texture = ExtResource("7_arena_bg")
+
+[node name="ToriiShrine" type="Sprite2D" parent="."]
+position = Vector2(960, 260)
+scale = Vector2(1.8, 1.8)
+modulate = Color(0.85, 0.95, 1.2, 1)
+texture = ExtResource("8_torii")
+
+[node name="GameHUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(960, 800)
+
+[node name="SpawnFromShrine" parent="." instance=ExtResource("4_spawn")]
+position = Vector2(960, 800)
+spawn_id = "from_shrine"
+facing_direction = Vector2(0, -1)
+
+[node name="BossShirakamiFubuki" parent="." instance=ExtResource("6_boss")]
+position = Vector2(960, 480)
+
+[node name="GateToShrine" type="Area2D" parent="."]
+position = Vector2(960, 940)
+collision_layer = 0
+script = ExtResource("5_warp")
+target_map_path = "res://modes_and_maps/story_mode/kamikitakuni_shrine.tscn"
+target_spawn_id = "from_blizzard"
+prompt_message = "Return to Kamikitakuni Shrine"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateToShrine"]
+shape = SubResource("RectangleShape2D_exit_gate")
+
+[node name="BossUI" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="VBox" type="VBoxContainer" parent="BossUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 64.0
+offset_right = 320.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_constants/separation = 6
+
+[node name="BossName" type="Label" parent="BossUI/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+text = "❄️ CORRUPTED SHIRAKAMI FUBUKI — BLIZZARD KAMI"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="BossUI/VBox"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_boss_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
+max_value = 750.0
+value = 750.0
+show_percentage = false
+
+[node name="VictoryBanner" type="Label" parent="BossUI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -40.0
+offset_right = 300.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "🎉 SHIRAKAMI FUBUKI PURIFIED!
+FubuMio Bond Deepened!"
+horizontal_alignment = 1

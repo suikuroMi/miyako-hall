@@ -50,6 +50,25 @@ var shrine_coins: int = 600
 var faith_ranks: Dictionary = {
 	"ookami_mio": 0
 }
+var character_awakenings: Dictionary = {
+	"ookami_mio": 0,
+	"shirakami_fubuki": 0,
+	"nakiri_ayame": 0
+}
+var character_shards: Dictionary = {
+	"ookami_mio": 20,
+	"shirakami_fubuki": 0,
+	"nakiri_ayame": 0
+}
+
+# --- Shrine Base-Building & World Progression ---
+var shrine_tier: int = 1
+var rescued_spirits: Array[String] = []
+var shrine_upgrades: Dictionary = {
+	"torii": 1,
+	"altar": 1,
+	"garden": 0
+}
 
 # ---------------------------------------------------------------------------
 # Lifecycle
@@ -307,15 +326,16 @@ func pull_gacha(banner: GachaBannerData, count: int = 1) -> Array[Dictionary]:
 			var char_name: String = char_data.name if char_data else "Holomember"
 
 			if is_character_unlocked(char_id):
-				# DUPLICATE -> Convert to Faith Resonance Token!
+				# DUPLICATE -> Convert to Faith Resonance Token & 20 Awakening Shards!
 				var new_rank: int = upgrade_faith_rank(char_id)
+				add_character_shards(char_id, 20)
 				pull_result = {
 					"type": "character",
 					"is_duplicate": true,
 					"item": char_data,
 					"name": char_name,
 					"faith_rank": new_rank,
-					"message": "Duplicate converted into Faith Resonance Rank %d!" % new_rank
+					"message": "Duplicate converted into 20 Awakening Shards & Faith Rank %d!" % new_rank
 				}
 			else:
 				# NEW CHARACTER UNLOCKED!
@@ -344,3 +364,81 @@ func pull_gacha(banner: GachaBannerData, count: int = 1) -> Array[Dictionary]:
 
 	EventBus.gacha_pull_completed.emit(results)
 	return results
+
+# ---------------------------------------------------------------------------
+# Spirit Rescue & Overworld Exploration
+# ---------------------------------------------------------------------------
+
+func is_spirit_rescued(soul_id: String) -> bool:
+	return soul_id in rescued_spirits
+
+func rescue_spirit(soul_id: String) -> void:
+	if soul_id not in rescued_spirits:
+		rescued_spirits.append(soul_id)
+		if SaveManager:
+			SaveManager.save_game()
+
+# ---------------------------------------------------------------------------
+# Shrine Base-Building & Buffs
+# ---------------------------------------------------------------------------
+
+func upgrade_shrine_tier() -> bool:
+	var upgrade_costs: Array[int] = [0, 150, 300, 600]
+	if shrine_tier >= 3:
+		return false
+
+	var next_tier: int = shrine_tier + 1
+	var cost: int = upgrade_costs[shrine_tier]
+	if shrine_coins < cost:
+		return false
+
+	shrine_coins -= cost
+	shrine_tier = next_tier
+	if EventBus:
+		EventBus.currency_changed.emit(shrine_coins)
+	if SaveManager:
+		SaveManager.save_game()
+	return true
+
+func get_shrine_speed_bonus() -> float:
+	# Tier 2+: +15% movement speed
+	return 0.15 if shrine_tier >= 2 else 0.0
+
+func get_shrine_exp_bonus() -> float:
+	# Tier 3+: +20% bonus EXP
+	return 0.20 if shrine_tier >= 3 else 0.0
+
+func get_shrine_gacha_bonus() -> float:
+	# Tier 3+: +10% 4/5-star rate
+	return 0.10 if shrine_tier >= 3 else 0.0
+
+# ---------------------------------------------------------------------------
+# Character Awakening / Constellation Ranks
+# ---------------------------------------------------------------------------
+
+func add_character_shards(char_id: String, amount: int) -> void:
+	character_shards[char_id] = character_shards.get(char_id, 0) + amount
+	if SaveManager:
+		SaveManager.save_game()
+
+func awaken_character(char_id: String) -> bool:
+	var current_stars: int = character_awakenings.get(char_id, 0)
+	if current_stars >= 5:
+		return false
+
+	var shards: int = character_shards.get(char_id, 0)
+	const COST_PER_STAR: int = 20
+	if shards < COST_PER_STAR:
+		return false
+
+	character_shards[char_id] = shards - COST_PER_STAR
+	character_awakenings[char_id] = current_stars + 1
+
+	if AudioManager:
+		AudioManager.play_sfx("level_up")
+	if SaveManager:
+		SaveManager.save_game()
+	return true
+
+func get_character_awakening_stars(char_id: String) -> int:
+	return character_awakenings.get(char_id, 0)

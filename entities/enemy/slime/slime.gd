@@ -84,20 +84,21 @@ func _physics_process(delta: float) -> void:
 	if _damage_cooldown > 0.0:
 		_damage_cooldown -= delta
 
-	if _vision and _vision.is_chasing():
-		# --- Chase state ---
+	if _vision and (_vision.is_chasing() or _vision.is_investigating()):
+		# --- Chase / Investigate state ---
+		var spd: float = move_speed if _vision.is_chasing() else move_speed * 0.6
 		var dir: Vector2 = _vision.get_direction_to_target()
-		_velocity = dir * move_speed
+		_velocity = dir * spd
 		global_position += _velocity * delta
 
-		# Keep a local reference to the player for touch damage checks.
-		_player = _vision.get_target()
+		if _vision.is_chasing():
+			# Keep a local reference to the player for touch damage checks.
+			_player = _vision.get_target()
+			_try_touch_damage()
 
 		# Only switch to walk anim if the slime isn't currently playing "hurt".
 		if _anim.current_animation != "hurt":
 			_anim.play("walk")
-
-		_try_touch_damage()
 	else:
 		# --- Idle state ---
 		_velocity = Vector2.ZERO

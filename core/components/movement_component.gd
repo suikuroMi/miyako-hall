@@ -27,6 +27,9 @@ class_name MovementComponent extends Node
 ## Cooldown (in seconds) before the entity can dash again.
 @export var dash_cooldown: float = 0.7
 
+## If true, grants invincibility frames (i-frames) to parent HurtboxComponent during dash.
+@export var dash_has_iframes: bool = true
+
 ## Deceleration rate (pixels/s²) applied to knockback velocity each frame.
 @export var knockback_decay: float = 800.0
 
@@ -105,6 +108,15 @@ func try_dash(direction: Vector2) -> void:
 	_dash_timer = dash_duration
 	_dash_cooldown_timer = dash_cooldown
 	_dash_velocity = direction.normalized() * base_speed * dash_speed_multiplier
+
+	# Grant I-Frames to parent's HurtboxComponent
+	if dash_has_iframes:
+		var parent = get_parent()
+		if parent:
+			var hurtbox: HurtboxComponent = parent.get_node_or_null("HurtboxComponent")
+			if hurtbox and hurtbox.has_method("set_invincible_for"):
+				hurtbox.set_invincible_for(dash_duration)
+
 	dash_started.emit()
 
 

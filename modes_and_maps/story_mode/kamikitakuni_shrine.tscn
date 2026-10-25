@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/lamp.png" id="6_lamp"]
 [ext_resource type="Texture2D" path="res://assets/tileset/main map/Road.png" id="7_road"]
 [ext_resource type="Script" path="res://core/components/interactable_component.gd" id="8_interact"]
+[ext_resource type="PackedScene" path="res://entities/objects/shrine_upgrade_station/shrine_upgrade_station.tscn" id="9_station"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(260, 60)
@@ -55,6 +56,22 @@ position = Vector2(960, 800)
 spawn_id = "from_forest"
 facing_direction = Vector2(0, -1)
 
+[node name="SpawnFromBlizzard" parent="." instance=ExtResource("3_spawn")]
+position = Vector2(960, 290)
+spawn_id = "from_blizzard"
+facing_direction = Vector2(0, 1)
+
+[node name="GateToBlizzardGym" type="Area2D" parent="."]
+position = Vector2(960, 180)
+collision_layer = 0
+script = ExtResource("4_warp_script")
+target_map_path = "res://modes_and_maps/story_mode/gyms/fubuki_blizzard_gym.tscn"
+target_spawn_id = "from_shrine"
+prompt_message = "Hike up the Frozen Mountain Pass - Blizzard Gym"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateToBlizzardGym"]
+shape = SubResource("RectangleShape2D_gate")
+
 [node name="GateToForest" type="Area2D" parent="."]
 position = Vector2(960, 920)
 collision_layer = 0
@@ -67,7 +84,7 @@ prompt_message = "Step into Route 1 Forest"
 shape = SubResource("RectangleShape2D_gate")
 
 [node name="ShrineAltarInteractable" type="Area2D" parent="."]
-position = Vector2(960, 360)
+position = Vector2(960, 420)
 collision_layer = 0
 script = ExtResource("8_interact")
 interaction_type = 1
@@ -99,11 +116,17 @@ prompt_action = "Read Ancient Monument"
 prompt_key = "E"
 dialogue_lines = [{
 "speaker": "Ancient Stone Monument",
-"text": "\"Beyond the southern boundary of Route 1 Forest stands the Haunted Dojo Gym.\""
+"text": "\"Southward lies Route 1 Forest, leading to Nakiri Ayame's Haunted Dojo Gym.\""
 }, {
 "speaker": "Ancient Stone Monument",
-"text": "\"An Oni swordswoman dwells there, gripped by fiery stigmata. Defeating her will purify her soul and welcome her into your party.\""
+"text": "\"Northward past the sacred Torii lies the Frozen Mountain Pass, where Shirakami Fubuki battles an icy corruption.\""
+}, {
+"speaker": "Ancient Stone Monument",
+"text": "\"Purifying each Gym Gym Leader will liberate their spirits and invite them into your 3-member battle party!\""
 }]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoreMonumentInteractable"]
 shape = SubResource("CircleShape2D_tablet")
+
+[node name="ShrineUpgradeStation" parent="." instance=ExtResource("9_station")]
+position = Vector2(1160, 420)
