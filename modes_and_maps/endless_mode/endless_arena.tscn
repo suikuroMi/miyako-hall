@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://ui/hud/game_hud.tscn" id="1_hud"]
+[ext_resource type="PackedScene" path="res://ui/hud/endless_hud.tscn" id="2_ehud"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://modes_and_maps/spawn_point.tscn" id="4_spawn"]
+[ext_resource type="PackedScene" path="res://entities/enemy/spawner/enemy_spawner.tscn" id="5_spawner"]
+[ext_resource type="PackedScene" path="res://entities/enemy/slime/slime.tscn" id="6_slime"]
+[ext_resource type="Texture2D" path="res://assets/tileset/endless.png" id="7_tile"]
+
+[node name="EndlessArena" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_offset = Vector2(1714, 378)
+repeat_size = Vector2(64, 64)
+repeat_times = 25
+
+[node name="GroundTexture" type="Sprite2D" parent="Parallax2D"]
+z_index = -10
+position = Vector2(960, 540)
+texture = ExtResource("7_tile")
+
+[node name="GameHUD" parent="." instance=ExtResource("1_hud")]
+
+[node name="EndlessCanvas" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="EndlessHUD" parent="EndlessCanvas" instance=ExtResource("2_ehud")]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(960, 540)
+
+[node name="SpawnDefault" parent="." instance=ExtResource("4_spawn")]
+position = Vector2(960, 540)
+spawn_id = "default"
+
+[node name="EnemySpawner" parent="." instance=ExtResource("5_spawner")]
+enemy_scene = ExtResource("6_slime")
+spawn_rate = 2.0
+max_enemies = 30
+difficulty_scale_interval = 25.0

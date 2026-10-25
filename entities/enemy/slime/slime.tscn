@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://ogik4s70pgwl"]
 
-[ext_resource type="Texture2D" uid="uid://dvgfmy6vtvjji" path="res://characters/slime/slime_body.png" id="1_3j35h"]
-[ext_resource type="Script" uid="uid://dnbjp2524b1py" path="res://characters/slime/slime.gd" id="1_87y5x"]
-[ext_resource type="Texture2D" uid="uid://b7rhtttevhxtj" path="res://characters/ground_shadow.png" id="1_cq7ej"]
-[ext_resource type="Texture2D" uid="uid://c078jrp2yvc4s" path="res://characters/slime/slime_face.png" id="2_ygydt"]
-[ext_resource type="Texture2D" uid="uid://btbxea1f3vwot" path="res://characters/slime/slime_body_hurt.png" id="4_0qu0c"]
-[ext_resource type="Texture2D" uid="uid://cai2ijnbypqtr" path="res://characters/slime/slime_hurt_eyes.png" id="4_hi70h"]
+[ext_resource type="Texture2D" path="res://entities/enemy/slime/slime_body.png" id="1_3j35h"]
+[ext_resource type="Script" path="res://entities/enemy/slime/slime.gd" id="1_87y5x"]
+[ext_resource type="Texture2D" path="res://entities/enemy/slime/slime_face.png" id="2_ygydt"]
+[ext_resource type="Texture2D" path="res://entities/enemy/slime/slime_body_hurt.png" id="4_0qu0c"]
+[ext_resource type="Texture2D" path="res://entities/enemy/slime/slime_hurt_eyes.png" id="4_hi70h"]
+[ext_resource type="Script" path="res://core/components/vision_aggro_component.gd" id="5_vision"]
+[ext_resource type="Script" path="res://core/components/stats_component.gd" id="6_stats"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="7_hurtbox"]
 
 [sub_resource type="Animation" id="Animation_y4lve"]
 length = 0.001
@@ -211,15 +213,11 @@ _data = {
 &"walk": SubResource("Animation_l6fy2")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurt"]
+radius = 28.0
+
 [node name="Slime" type="Node2D" unique_id=2008890567]
 script = ExtResource("1_87y5x")
-
-[node name="GroundShadow" type="Sprite2D" parent="." unique_id=2019923751]
-modulate = Color(0.898039, 0.878431, 0.831373, 1)
-z_index = -1
-z_as_relative = false
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("1_cq7ej")
 
 [node name="Anchor" type="Marker2D" parent="." unique_id=794902193]
 
@@ -241,3 +239,22 @@ texture = ExtResource("2_ygydt")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2007851046]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_j6cum")
+
+[node name="VisionAggroComponent" type="Node" parent="." unique_id=2007851047]
+script = ExtResource("5_vision")
+detection_radius = 160.0
+lose_sight_radius = 280.0
+
+[node name="StatsComponent" type="Node" parent="." unique_id=2007851048]
+script = ExtResource("6_stats")
+max_hp = 40.0
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=2007851049]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("7_hurtbox")
+team = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=2007851050]
+position = Vector2(0, -20)
+shape = SubResource("CircleShape2D_hurt")

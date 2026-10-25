@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "spirit_dash"
+display_name = "Spirit Dash"
+description = "Dash rapidly towards the cursor, damaging any enemies in your wake."
+skill_type = 2
+cooldown = 3.5
+mana_cost = 10.0
+base_damage = 30.0
+damage_scaling = 1.0
+scaling_stat = "attack"
+knockback_force = 180.0
+radius = 80.0
+dash_speed = 520.0
+dash_duration = 0.25
+heal_amount = 0.0
+buff_duration = 0.0
+speed_boost = 0.0

@@ -61,12 +61,17 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 16
 
+[node name="StoryButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=976956674]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Story Mode"
+
 [node name="EndlessButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=976956675]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "Start
-"
+text = "Endless Mode"
 
 [node name="OptionsButton" type="Button" parent="MenuContainer/Content/ButtonsContainer" unique_id=2040219256]
 custom_minimum_size = Vector2(0, 60)

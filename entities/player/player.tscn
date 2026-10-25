@@ -1,13 +1,25 @@
 [gd_scene format=3 uid="uid://dlsa4je7lbkwu"]
 
 [ext_resource type="Script" uid="uid://4x3w8h3n4qps" path="res://entities/player/player.gd" id="1_monf5"]
+[ext_resource type="Resource" uid="uid://bwj3xm1ywo3u1" path="res://entities/character/Ookami Mio/Ookami Mio.tres" id="2_mio"]
+[ext_resource type="Script" path="res://core/components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://core/components/movement_component.gd" id="4_move"]
+[ext_resource type="Script" path="res://core/components/skill_caster_component.gd" id="5_skills"]
+[ext_resource type="Script" path="res://core/components/weapon_pivot_component.gd" id="6_wpivot"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="7_hitbox"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="8_hurtbox"]
+[ext_resource type="Script" path="res://core/components/customization_component.gd" id="9_custom"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_monf5"]
 radius = 7.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pivot"]
+radius = 45.0
+
 [node name="Player" type="CharacterBody2D" unique_id=1544112096]
 platform_floor_layers = 0
 script = ExtResource("1_monf5")
+stats_data = ExtResource("2_mio")
 
 [node name="CharacterSprite" type="AnimatedSprite2D" parent="." unique_id=97514252]
 
@@ -24,3 +36,38 @@ position_smoothing_enabled = true
 [node name="WeaponSprite" type="Sprite2D" parent="." unique_id=1293378198]
 position = Vector2(19.000002, -23)
 scale = Vector2(0.3669019, 0.37265286)
+
+[node name="StatsComponent" type="Node" parent="." unique_id=1029384756]
+script = ExtResource("3_stats")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=1029384757]
+script = ExtResource("4_move")
+base_speed = 120.0
+
+[node name="SkillCasterComponent" type="Node" parent="." unique_id=1029384758]
+script = ExtResource("5_skills")
+
+[node name="WeaponPivot" type="Node2D" parent="." unique_id=1029384759]
+position = Vector2(0, -15)
+script = ExtResource("6_wpivot")
+
+[node name="HitboxComponent" type="Area2D" parent="WeaponPivot" unique_id=1029384760]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("7_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/HitboxComponent" unique_id=1029384761]
+position = Vector2(25, 0)
+shape = SubResource("CircleShape2D_pivot")
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1029384762]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("8_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1029384763]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_monf5")
+
+[node name="CustomizationComponent" type="Node" parent="." unique_id=1029384764]
+script = ExtResource("9_custom")

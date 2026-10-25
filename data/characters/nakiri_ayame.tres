@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://entities/character/character_data.gd" id="1_cdata"]
+
+[resource]
+script = ExtResource("1_cdata")
+name = "Nakiri Ayame"
+id = "nakiri_ayame"
+description = "Demon realm shrine maiden. Dual-blade assassin striking with fiery critical hits."
+archetype = 2
+favored_weapon = 0
+base_health = 920.0
+base_power = 34.0
+base_speed = 38.0
+base_intelligence = 8
+base_defense = 5.0
+crit_rate = 0.15
+crit_damage = 1.85
+hp_per_level = 14.0
+atk_per_level = 4.0
+def_per_level = 1.1

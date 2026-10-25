@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/skill_data.gd" id="1_skill"]
+[ext_resource type="PackedScene" path="res://entities/objects/bullet/bullet.tscn" id="2_bullet"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "mio_tarot_storm"
+display_name = "Tarot Storm"
+description = "Unleash a sacred volley of tarot talismans in a wide arc towards the cursor."
+skill_type = 1
+cooldown = 7.0
+mana_cost = 25.0
+base_damage = 35.0
+damage_scaling = 1.5
+scaling_stat = "intelligence"
+knockback_force = 140.0
+radius = 0.0
+projectile_scene = ExtResource("2_bullet")
+projectile_count = 5
+projectile_spread = 35.0
+projectile_speed = 850.0
+projectile_range = 950.0
+heal_amount = 0.0
+buff_duration = 0.0
+speed_boost = 0.0

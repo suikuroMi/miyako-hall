@@ -2,6 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://ywnr4fpagbmg" path="res://entities/character/Ookami Mio/ookami mio.tscn" id="1_if4sx"]
 [ext_resource type="Script" uid="uid://jinh27anpcv7" path="res://entities/character/character_data.gd" id="1_rrahy"]
+[ext_resource type="Resource" path="res://data/skills/spirit_dash.tres" id="2_dash"]
+[ext_resource type="Resource" path="res://data/skills/purification_pulse.tres" id="3_pulse"]
+[ext_resource type="Resource" path="res://data/skills/mio_tarot_storm.tres" id="4_storm"]
 
 [resource]
 script = ExtResource("1_rrahy")
@@ -10,4 +13,7 @@ base_health = 1000.0
 base_speed = 30.0
 character_visual_scene = ExtResource("1_if4sx")
 anim_library = "mio_animation"
+skill_q = ExtResource("2_dash")
+skill_e = ExtResource("3_pulse")
+skill_r = ExtResource("4_storm")
 metadata/_custom_type_script = "uid://jinh27anpcv7"

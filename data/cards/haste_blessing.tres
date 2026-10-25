@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "haste_blessing"
+title = "Haste Blessing"
+description = "Fleet winds wrap your feet, dramatically accelerating movement speed."
+rarity = 1
+stat_type = 1
+modifier_value = 18.0
+has_secondary = true
+secondary_stat_type = 0
+secondary_modifier_value = 2.0
+is_unique = false
+weight = 80

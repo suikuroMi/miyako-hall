@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "scythe"
+display_name = "Scythe"
+description = "A wide-arc reaping weapon favoured by the Reaper archetype."
+weapon_type = 2
+damage = 28.0
+attack_speed = 0.9
+attack_range = 100.0
+knockback_force = 150.0
+damage_bonus = 0.0
+speed_bonus = 0.0
+crit_chance_bonus = 0.05
+is_ranged = false
+swing_duration = 0.2
+synergy_damage_bonus = 8.0
+synergy_speed_bonus = 0.0
+synergy_cooldown_reduction = 0.1

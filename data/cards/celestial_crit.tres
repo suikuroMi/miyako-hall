@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "celestial_crit"
+title = "Celestial Edge"
+description = "Legendary blessing sharpening all strikes into deadly, armor-piercing criticals."
+rarity = 3
+stat_type = 5
+modifier_value = 0.1
+has_secondary = true
+secondary_stat_type = 6
+secondary_modifier_value = 0.35
+is_unique = false
+weight = 30

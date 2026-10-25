@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="GachaBannerData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/gacha_banner_data.gd" id="1_gbanner"]
+[ext_resource type="Resource" path="res://data/characters/shirakami_fubuki.tres" id="2_fubuki"]
+[ext_resource type="Resource" path="res://data/characters/nakiri_ayame.tres" id="3_ayame"]
+[ext_resource type="Resource" path="res://entities/character/Ookami Mio/Ookami Mio.tres" id="4_mio"]
+[ext_resource type="Resource" path="res://data/weapons/talisman.tres" id="5_talisman"]
+[ext_resource type="Resource" path="res://data/weapons/scythe.tres" id="6_scythe"]
+[ext_resource type="Resource" path="res://data/weapons/spirit_blade.tres" id="7_blade"]
+
+[resource]
+script = ExtResource("1_gbanner")
+id = "standard_banner"
+banner_name = "Kamikitakuni Gathering Banner"
+description = "Call upon the holy spirits of Kamikitakuni. Pull to awaken Holomen and sacred weapons!"
+cost_per_pull = 100
+featured_character = ExtResource("2_fubuki")
+featured_weapon = ExtResource("5_talisman")
+pool_characters = [ExtResource("4_mio"), ExtResource("2_fubuki"), ExtResource("3_ayame")]
+pool_weapons = [ExtResource("5_talisman"), ExtResource("6_scythe"), ExtResource("7_blade")]
+character_rate = 0.35
+weapon_rate = 0.65

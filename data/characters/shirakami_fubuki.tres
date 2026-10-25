@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://entities/character/character_data.gd" id="1_cdata"]
+
+[resource]
+script = ExtResource("1_cdata")
+name = "Shirakami Fubuki"
+id = "shirakami_fubuki"
+description = "White fox kami of the mountain shrine. Swift marksman wielding icy spiritual barrages."
+archetype = 4
+favored_weapon = 3
+base_health = 850.0
+base_power = 28.0
+base_speed = 36.0
+base_intelligence = 14
+base_defense = 4.0
+crit_rate = 0.12
+crit_damage = 1.7
+hp_per_level = 12.0
+atk_per_level = 3.5
+def_per_level = 1.0

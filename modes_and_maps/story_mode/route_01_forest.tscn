@@ -1,0 +1,50 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://ui/hud/game_hud.tscn" id="1_hud"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://modes_and_maps/spawn_point.tscn" id="3_spawn"]
+[ext_resource type="Script" path="res://modes_and_maps/map_transition_zone.gd" id="4_warp_script"]
+[ext_resource type="PackedScene" path="res://entities/enemy/slime/slime.tscn" id="5_slime"]
+[ext_resource type="Texture2D" path="res://assets/tileset/map.png" id="6_forest_bg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_north_gate"]
+size = Vector2(260, 50)
+
+[node name="Route01Forest" type="Node2D"]
+y_sort_enabled = true
+
+[node name="ForestBackground" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(960, 540)
+scale = Vector2(2, 2)
+texture = ExtResource("6_forest_bg")
+
+[node name="GameHUD" parent="." instance=ExtResource("1_hud")]
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(960, 200)
+
+[node name="SpawnFromShrine" parent="." instance=ExtResource("3_spawn")]
+position = Vector2(960, 200)
+spawn_id = "from_shrine"
+facing_direction = Vector2(0, 1)
+
+[node name="GateToShrine" type="Area2D" parent="."]
+position = Vector2(960, 80)
+collision_layer = 0
+script = ExtResource("4_warp_script")
+target_map_path = "res://modes_and_maps/story_mode/kamikitakuni_shrine.tscn"
+target_spawn_id = "from_forest"
+prompt_message = "Return to Kamikitakuni Shrine"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateToShrine"]
+shape = SubResource("RectangleShape2D_north_gate")
+
+[node name="Slime1" parent="." instance=ExtResource("5_slime")]
+position = Vector2(750, 480)
+
+[node name="Slime2" parent="." instance=ExtResource("5_slime")]
+position = Vector2(1180, 520)
+
+[node name="Slime3" parent="." instance=ExtResource("5_slime")]
+position = Vector2(960, 720)

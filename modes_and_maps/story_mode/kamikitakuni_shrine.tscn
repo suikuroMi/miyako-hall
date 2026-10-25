@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://ui/hud/game_hud.tscn" id="1_hud"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://modes_and_maps/spawn_point.tscn" id="3_spawn"]
+[ext_resource type="Script" path="res://modes_and_maps/map_transition_zone.gd" id="4_warp_script"]
+[ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="5_torii"]
+[ext_resource type="Texture2D" path="res://assets/tileset/lamp.png" id="6_lamp"]
+[ext_resource type="Texture2D" path="res://assets/tileset/main map/Road.png" id="7_road"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+size = Vector2(260, 60)
+
+[node name="KamikitakuniShrine" type="Node2D"]
+y_sort_enabled = true
+
+[node name="BackgroundRoad" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(960, 540)
+texture = ExtResource("7_road")
+
+[node name="ToriiGate" type="Sprite2D" parent="."]
+position = Vector2(960, 320)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_torii")
+
+[node name="LampLeft" type="Sprite2D" parent="."]
+position = Vector2(800, 480)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("6_lamp")
+
+[node name="LampRight" type="Sprite2D" parent="."]
+position = Vector2(1120, 480)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("6_lamp")
+
+[node name="GameHUD" parent="." instance=ExtResource("1_hud")]
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(960, 540)
+
+[node name="SpawnDefault" parent="." instance=ExtResource("3_spawn")]
+position = Vector2(960, 540)
+spawn_id = "default"
+
+[node name="SpawnFromForest" parent="." instance=ExtResource("3_spawn")]
+position = Vector2(960, 800)
+spawn_id = "from_forest"
+facing_direction = Vector2(0, -1)
+
+[node name="GateToForest" type="Area2D" parent="."]
+position = Vector2(960, 920)
+collision_layer = 0
+script = ExtResource("4_warp_script")
+target_map_path = "res://modes_and_maps/story_mode/route_01_forest.tscn"
+target_spawn_id = "from_shrine"
+prompt_message = "Step into Route 1 Forest"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateToForest"]
+shape = SubResource("RectangleShape2D_gate")

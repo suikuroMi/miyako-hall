@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/weapon_data.gd" id="1_wdata"]
+
+[resource]
+script = ExtResource("1_wdata")
+id = "spirit_blade"
+display_name = "Spirit Blade"
+description = "A swift sacred katana that cleaves corrupted spirits with blinding speed."
+weapon_type = 0
+damage = 24.0
+attack_speed = 1.3
+attack_range = 90.0
+knockback_force = 110.0
+damage_bonus = 4.0
+speed_bonus = 6.0
+crit_chance_bonus = 0.08
+is_ranged = false
+swing_duration = 0.12
+synergy_damage_bonus = 10.0
+synergy_speed_bonus = 8.0
+synergy_cooldown_reduction = 0.15

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "faith_surge"
+title = "Faith Surge"
+description = "A surge of divine spiritual power bolstering physical and mystic arts."
+rarity = 2
+stat_type = 0
+modifier_value = 6.0
+has_secondary = true
+secondary_stat_type = 2
+secondary_modifier_value = 5.0
+is_unique = false
+weight = 60

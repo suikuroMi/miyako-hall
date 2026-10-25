@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/card_data.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "divine_barrier"
+title = "Divine Barrier"
+description = "A protective shrine talisman shielding your vitality and deflecting blows."
+rarity = 1
+stat_type = 3
+modifier_value = 40.0
+has_secondary = true
+secondary_stat_type = 4
+secondary_modifier_value = 4.0
+is_unique = false
+weight = 85

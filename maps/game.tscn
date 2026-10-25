@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://fwa2hscibahr" path="res://ui/inventory/inventory.tscn" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://ci6ff21j7gnbo" path="res://ui/menus/level_up_cards.tscn" id="6_0tnpc"]
 [ext_resource type="Script" uid="uid://bt6juyl0i5qko" path="res://ui/hud/health_bar.gd" id="6_yd5qc"]
+[ext_resource type="Script" path="res://ui/hud/gameplay_controls.gd" id="7_controls"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_healthbar_bg"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
@@ -25,6 +26,15 @@ corner_radius_bottom_left = 6
 [node name="Game" type="Node2D" unique_id=2007219614]
 
 [node name="GAMEHUD" type="CanvasLayer" parent="." unique_id=1240511976]
+
+[node name="GameplayControls" type="Control" parent="GAMEHUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_controls")
 
 [node name="Inventory" parent="GAMEHUD" unique_id=1460526324 instance=ExtResource("5_iywne")]
 anchors_preset = 0

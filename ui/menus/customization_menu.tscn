@@ -1,0 +1,129 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/menus/customization_menu.gd" id="1_custom"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.4, 0.6, 0.85, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="CustomizationMenu" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -280.0
+offset_right = 450.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+script = ExtResource("1_custom")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "⛩️ Holomember Roster & Customization"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="Left" type="VBoxContainer" parent="Content/Columns"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="RosterHeader" type="Label" parent="Content/Columns/Left"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Unlocked Roster"
+
+[node name="RosterScroll" type="ScrollContainer" parent="Content/Columns/Left"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RosterList" type="VBoxContainer" parent="Content/Columns/Left/RosterScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Right" type="VBoxContainer" parent="Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Profile" type="VBoxContainer" parent="Content/Columns/Right"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="NameLabel" type="Label" parent="Content/Columns/Right/Profile"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Ookami Mio"
+
+[node name="ArchetypeLabel" type="Label" parent="Content/Columns/Right/Profile"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 1.0, 1)
+text = "Archetype: Shrine Maiden"
+
+[node name="StatsLabel" type="Label" parent="Content/Columns/Right/Profile"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+text = "❤️ HP: 1000   ⚔️ ATK: 30   ⚡ SPD: 30   🧠 INT: 10"
+
+[node name="FaithSection" type="VBoxContainer" parent="Content/Columns/Right"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="FaithRankLabel" type="Label" parent="Content/Columns/Right/FaithSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "✨ Faith Resonance Rank: 0 / 6"
+
+[node name="FaithPerksLabel" type="Label" parent="Content/Columns/Right/FaithSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 14
+text = "⭐ Rank 0: Base Resonance"
+
+[node name="Customization" type="HBoxContainer" parent="Content/Columns/Right"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PaletteLabel" type="Label" parent="Content/Columns/Right/Customization"]
+layout_mode = 2
+text = "Outfit Palette:"
+
+[node name="PaletteOptions" type="OptionButton" parent="Content/Columns/Right/Customization"]
+custom_minimum_size = Vector2(200, 36)
+layout_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="Content/Columns/Right"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SelectCharButton" type="Button" parent="Content/Columns/Right/Actions"]
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 2
+text = "Set Active Holomember"
+
+[node name="CloseButton" type="Button" parent="Content/Columns/Right/Actions"]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+text = "Close (C)"

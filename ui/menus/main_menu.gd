@@ -1,5 +1,6 @@
 extends Control
 
+@onready var _story_button: Button = $MenuContainer/Content/ButtonsContainer.get_node_or_null("StoryButton")
 @onready var _endless_button: Button = $MenuContainer/Content/ButtonsContainer/EndlessButton
 @onready var _options_button: Button = $MenuContainer/Content/ButtonsContainer/OptionsButton
 @onready var _credits_button: Button = $MenuContainer/Content/ButtonsContainer/CreditsButton
@@ -17,6 +18,8 @@ extends Control
 @onready var _under_construction_back_button: Button = $UnderConstructionPanel/ConstructionContent/BackButton
 
 func _ready():
+    if _story_button:
+        _story_button.pressed.connect(_on_story_mode_pressed)
     _endless_button.pressed.connect(_on_endless_mode_pressed)
     _options_button.pressed.connect(_on_options_pressed)
     _credits_button.pressed.connect(_on_credits_pressed)
@@ -33,8 +36,21 @@ func _ready():
     _under_construction_panel.visible = false
     _menu_container.visible = true
 
+func _on_story_mode_pressed():
+    if GameManager:
+        GameManager.start_story_mode()
+    elif SceneManager:
+        SceneManager.transition_to_map("res://modes_and_maps/story_mode/kamikitakuni_shrine.tscn", "default")
+    else:
+        get_tree().change_scene_to_file("res://modes_and_maps/story_mode/kamikitakuni_shrine.tscn")
+
 func _on_endless_mode_pressed():
-    get_tree().change_scene_to_file("res://maps/game.tscn")
+    if GameManager:
+        GameManager.start_endless_mode()
+    elif SceneManager:
+        SceneManager.transition_to_map("res://modes_and_maps/endless_mode/endless_arena.tscn", "default")
+    else:
+        get_tree().change_scene_to_file("res://modes_and_maps/endless_mode/endless_arena.tscn")
 
 func _on_under_construction_back_pressed():
     _under_construction_panel.visible = false

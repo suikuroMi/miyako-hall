@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://core/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "talisman"
+display_name = "Tarot Talisman"
+description = "Mio's favoured weapon. Fires spiritual bolts and reduces skill cooldowns."
+weapon_type = 4
+damage = 18.0
+attack_speed = 1.4
+attack_range = 900.0
+knockback_force = 60.0
+damage_bonus = 0.0
+speed_bonus = 0.0
+crit_chance_bonus = 0.0
+is_ranged = true
+swing_duration = 0.15
+synergy_damage_bonus = 0.0
+synergy_speed_bonus = 0.0
+synergy_cooldown_reduction = 0.2

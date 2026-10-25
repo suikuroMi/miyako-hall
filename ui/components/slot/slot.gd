@@ -73,7 +73,9 @@ func update():
 		count_label.text = str(count)
 		tooltip_text = data.name
 		if crafting_slot:
-			get_parent().get_parent().update_recipe(craft_index, data.id)
+			var craft_parent = get_parent().get_parent() if (get_parent() and get_parent().get_parent()) else null
+			if craft_parent and craft_parent.has_method("update_recipe"):
+				craft_parent.update_recipe(craft_index, data.id)
 		if data.stackable:
 			count_label.visible = count > 1
 			if count <= 0:
@@ -83,17 +85,18 @@ func update():
 			count_label.visible = false
 			
 		if name == "WeaponSlot":
-			var players = get_tree().get_nodes_in_group("player")
-			if players.size() > 0:
-				players[0].equip_weapon(data)
+			# Emit through EventBus instead of calling player directly,
+			# so WeaponPivotComponent (and any other listeners) are notified.
+			EventBus.weapon_equipped.emit(data)
 	else:
 		icon_rect.texture = null
 		count_label.text = ""
 		tooltip_text = ""
 		if crafting_slot:
-			get_parent().get_parent().update_recipe(craft_index, "")
+			var craft_parent = get_parent().get_parent() if (get_parent() and get_parent().get_parent()) else null
+			if craft_parent and craft_parent.has_method("update_recipe"):
+				craft_parent.update_recipe(craft_index, "")
 			
 		if name == "WeaponSlot":
-			var players = get_tree().get_nodes_in_group("player")
-			if players.size() > 0:
-				players[0].unequip_weapon()
+			# Signal null to indicate the weapon slot is now empty.
+			EventBus.weapon_equipped.emit(null)

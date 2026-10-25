@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://btfupc57tjbaa"]
 
-[ext_resource type="Script" uid="uid://dcsecsmeucuni" path="res://entities/objects/bullet/bullet.gd" id="1_j8r0v"]
-[ext_resource type="Texture2D" uid="uid://ftgn8042h2hv" path="res://assets/pistol/RifleAmmoSmall.png" id="2_j8r0v"]
+[ext_resource type="Script" path="res://entities/objects/bullet/bullet.gd" id="1_j8r0v"]
+[ext_resource type="Texture2D" path="res://assets/pistol/RifleAmmoSmall.png" id="2_j8r0v"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qkbn0"]
 radius = 6.0
