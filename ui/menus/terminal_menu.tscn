@@ -1,0 +1,294 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/menus/terminal_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_avatar"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_terminal_bg"]
+bg_color = Color(0.07, 0.08, 0.12, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.65, 0.28, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_profile_bg"]
+bg_color = Color(0.11, 0.12, 0.17, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.4, 0.55, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_submodal_bg"]
+bg_color = Color(0.1, 0.11, 0.15, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.55, 0.25, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="TerminalMenu" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -320.0
+offset_right = 540.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_terminal_bg")
+script = ExtResource("1_script")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBox/HeaderRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "❖ TERMINAL — COMMAND SANCTUARY"
+
+[node name="Spacer" type="Control" parent="VBox/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseBtn" type="Button" parent="VBox/HeaderRow"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+text = "✕"
+
+[node name="HSeparator1" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="MainBody" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="LeftProfile" type="PanelContainer" parent="VBox/MainBody"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_profile_bg")
+
+[node name="ProfileVBox" type="VBoxContainer" parent="VBox/MainBody/LeftProfile"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AvatarFrame" type="CenterContainer" parent="VBox/MainBody/LeftProfile/ProfileVBox"]
+layout_mode = 2
+
+[node name="AvatarTexture" type="TextureRect" parent="VBox/MainBody/LeftProfile/ProfileVBox/AvatarFrame"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture = ExtResource("2_avatar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CharName" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 20
+text = "Ookami Mio"
+horizontal_alignment = 1
+
+[node name="CharTitle" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "Shrine Maiden Wolf Spirit"
+horizontal_alignment = 1
+
+[node name="HSep" type="HSeparator" parent="VBox/MainBody/LeftProfile/ProfileVBox"]
+layout_mode = 2
+
+[node name="StatsBox" type="VBoxContainer" parent="VBox/MainBody/LeftProfile/ProfileVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="FaithRank" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox/StatsBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "⭐ Faith Resonance: Rank 1"
+
+[node name="ShrineTier" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox/StatsBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "⛩️ Sanctuary Level: Tier 1"
+
+[node name="Coins" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox/StatsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "💰 Shrine Coins: 600"
+
+[node name="Shards" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox/StatsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "✨ Awakening Shards: 20"
+
+[node name="TimeStatus" type="Label" parent="VBox/MainBody/LeftProfile/ProfileVBox/StatsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+text = "☀️ Time of Day: Day"
+
+[node name="RightGrid" type="ScrollContainer" parent="VBox/MainBody"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Tiles" type="GridContainer" parent="VBox/MainBody/RightGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="BtnGacha" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "🌸 Convene (G)
+Summon Holomembers & Relics"
+
+[node name="BtnRoster" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "⛩️ Resonators (C)
+Party Roster & Customization"
+
+[node name="BtnQuests" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "📜 Guidebook (J)
+Quests & Exploration Tasks"
+
+[node name="BtnArchive" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "📖 Data Bank (L)
+Holo Archive Codex & Lore"
+
+[node name="BtnTalents" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "🕸️ Faith Web (K)
+Permanent Talent Tree"
+
+[node name="BtnExpeditions" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "🚀 Expeditions (U)
+Idle Realm Exploration"
+
+[node name="BtnSynthesis" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "🍲 Synthesis (O)
+Shrine Cooking & Talismans"
+
+[node name="BtnTime" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "☀️ Time Cycle (T)
+Day / Night / False Moon"
+
+[node name="BtnPhoto" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "📸 Photo Mode (P)
+Cinematic Camera Studio"
+
+[node name="BtnSettings" type="Button" parent="VBox/MainBody/RightGrid/Tiles"]
+custom_minimum_size = Vector2(230, 68)
+layout_mode = 2
+text = "⚙️ Settings
+Audio & Display Options"
+
+[node name="HSeparator2" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="BottomRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnQuit" type="Button" parent="VBox/BottomRow"]
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 0.5, 1)
+text = "⏻ Quit to Desktop"
+
+[node name="Spacer" type="Control" parent="VBox/BottomRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnMainMenu" type="Button" parent="VBox/BottomRow"]
+custom_minimum_size = Vector2(180, 36)
+layout_mode = 2
+text = "🏠 Return to Main Menu"
+
+[node name="BtnResume" type="Button" parent="VBox/BottomRow"]
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 1, 0.6, 1)
+text = "▶ Resume (ESC)"
+
+[node name="SettingsSubmodal" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_submodal_bg")
+
+[node name="VBox" type="VBoxContainer" parent="SettingsSubmodal"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="SettingsSubmodal/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="SettingsSubmodal/VBox/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "⚙️ AUDIO & DISPLAY SETTINGS"
+
+[node name="Spacer" type="Control" parent="SettingsSubmodal/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsCloseBtn" type="Button" parent="SettingsSubmodal/VBox/Header"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+text = "✕"
+
+[node name="HSep" type="HSeparator" parent="SettingsSubmodal/VBox"]
+layout_mode = 2
+
+[node name="WindowModeBtn" type="Button" parent="SettingsSubmodal/VBox"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+text = "Display: Windowed"
+
+[node name="SlidersBox" type="VBoxContainer" parent="SettingsSubmodal/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8

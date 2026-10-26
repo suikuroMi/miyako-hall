@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://ui/menus/expedition_board.tscn" id="13_expedition"]
 [ext_resource type="PackedScene" path="res://ui/hud/photo_mode.tscn" id="14_photo"]
 [ext_resource type="PackedScene" path="res://ui/menus/cooking_station_menu.tscn" id="15_cooking"]
+[ext_resource type="PackedScene" path="res://ui/menus/terminal_menu.tscn" id="16_terminal"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.137, 0.137, 0.137, 1)
@@ -82,3 +83,5 @@ script = ExtResource("4_hp")
 [node name="PhotoMode" parent="." instance=ExtResource("14_photo")]
 
 [node name="CookingStationMenu" parent="." instance=ExtResource("15_cooking")]
+
+[node name="TerminalMenu" parent="." instance=ExtResource("16_terminal")]

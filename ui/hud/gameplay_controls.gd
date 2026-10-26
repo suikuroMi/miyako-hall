@@ -16,11 +16,6 @@ var _skill_labels: Dictionary = {
 # Controller / Gamepad & UI state
 var _is_gamepad_mode: bool = false
 var _attack_hint: Label = null
-var _time_btn: Button = null
-
-# Settings menu modal
-var _settings_panel: PanelContainer
-var _window_mode_btn: Button
 
 # Party HUD
 var _party_buttons: Array[Button] = []
@@ -30,9 +25,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	_build_top_bar()
+	_build_terminal_trigger()
 	_build_party_bar()
-	_build_settings_menu()
 	_build_skill_placeholders()
 	_build_dummy_controls()
 
@@ -93,75 +87,36 @@ func _unhandled_input(event: InputEvent) -> void:
 			_set_gamepad_mode(false)
 
 # ---------------------------------------------------------------------------
-# Top Bar (Centered, avoids HealthBar & StatsHUD on the left, Minimap on right)
+# Terminal / Menu Trigger (Clean Top Header)
 # ---------------------------------------------------------------------------
 
-func _build_top_bar() -> void:
-	var top_bar := HBoxContainer.new()
-	top_bar.anchor_left = 0.5
-	top_bar.anchor_right = 0.5
-	top_bar.offset_left = -390
-	top_bar.offset_right = 390
-	top_bar.offset_top = 18
-	top_bar.offset_bottom = 60
-	top_bar.add_theme_constant_override("separation", 10)
-	add_child(top_bar)
+func _build_terminal_trigger() -> void:
+	var menu_btn := Button.new()
+	menu_btn.text = "❖ Terminal (Esc)"
+	menu_btn.position = Vector2(324, 14)
+	menu_btn.custom_minimum_size = Vector2(130, 30)
 
-	var settings_btn := Button.new()
-	settings_btn.text = "⚙️ Settings"
-	settings_btn.custom_minimum_size = Vector2(110, 42)
-	top_bar.add_child(settings_btn)
-	settings_btn.pressed.connect(_toggle_settings_menu)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.1, 0.14, 0.9)
+	style.border_color = Color(0.8, 0.65, 0.28, 0.9)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(6)
+	menu_btn.add_theme_stylebox_override("normal", style)
+	menu_btn.add_theme_color_override("font_color", Color(1.0, 0.9, 0.6))
+	menu_btn.add_theme_font_size_override("font_size", 12)
 
-	var quests_btn := Button.new()
-	quests_btn.text = "📜 Quests (J)"
-	quests_btn.custom_minimum_size = Vector2(115, 42)
-	top_bar.add_child(quests_btn)
-	quests_btn.pressed.connect(_toggle_quest_log)
+	menu_btn.pressed.connect(_toggle_terminal_menu)
+	add_child(menu_btn)
 
-	var archive_btn := Button.new()
-	archive_btn.text = "📖 Codex (L)"
-	archive_btn.custom_minimum_size = Vector2(115, 42)
-	top_bar.add_child(archive_btn)
-	archive_btn.pressed.connect(_toggle_holo_archive)
+func _toggle_terminal_menu() -> void:
+	var terminal = get_tree().root.find_child("TerminalMenu", true, false)
+	if is_instance_valid(terminal) and terminal.has_method("toggle_menu"):
+		terminal.toggle_menu()
 
-	var gacha_btn := Button.new()
-	gacha_btn.text = "🌸 Gacha (G)"
-	gacha_btn.custom_minimum_size = Vector2(115, 42)
-	top_bar.add_child(gacha_btn)
-	gacha_btn.pressed.connect(_toggle_gacha_menu)
-
-	var roster_btn := Button.new()
-	roster_btn.text = "⛩️ Roster (C)"
-	roster_btn.custom_minimum_size = Vector2(115, 42)
-	top_bar.add_child(roster_btn)
-	roster_btn.pressed.connect(_toggle_customization_menu)
-
-	_time_btn = Button.new()
-	_update_time_button_text(TimeManager.current_period if TimeManager else 1, TimeManager.get_period_name() if TimeManager else "Day")
-	_time_btn.custom_minimum_size = Vector2(110, 42)
-	top_bar.add_child(_time_btn)
-	_time_btn.pressed.connect(_on_time_button_pressed)
-
-	if TimeManager and not TimeManager.period_changed.is_connected(_on_time_period_changed):
-		TimeManager.period_changed.connect(_on_time_period_changed)
-
-func _on_time_button_pressed() -> void:
-	if TimeManager:
-		TimeManager.advance_time_period()
-
-func _on_time_period_changed(period: int, period_name: String) -> void:
-	_update_time_button_text(period, period_name)
-
-func _update_time_button_text(_period: int, period_name: String) -> void:
-	if not is_instance_valid(_time_btn):
-		return
-	var icon := "🌑 " if (TimeManager and TimeManager.is_eclipse) else "☀️ "
-	_time_btn.text = "%s%s (T)" % [icon, period_name]
+func _toggle_settings_menu() -> void:
+	_toggle_terminal_menu()
 
 func _exit_tree() -> void:
-	if TimeManager and TimeManager.period_changed.is_connected(_on_time_period_changed):
-		TimeManager.period_changed.disconnect(_on_time_period_changed)
 	if Input and Input.joy_connection_changed.is_connected(_on_joy_connection_changed):
 		Input.joy_connection_changed.disconnect(_on_joy_connection_changed)
 
@@ -260,192 +215,6 @@ func _on_party_swapped(_slot_idx: int, _char_data: Resource) -> void:
 
 func _on_party_composition_changed(_party: Array) -> void:
 	_refresh_party_bar()
-
-# ---------------------------------------------------------------------------
-# Settings & Pause Menu Modal
-# ---------------------------------------------------------------------------
-
-func _build_settings_menu() -> void:
-	_settings_panel = PanelContainer.new()
-	_settings_panel.process_mode = Node.PROCESS_MODE_ALWAYS
-	_settings_panel.anchor_left = 0.5
-	_settings_panel.anchor_right = 0.5
-	_settings_panel.anchor_top = 0.5
-	_settings_panel.anchor_bottom = 0.5
-	_settings_panel.offset_left = -220
-	_settings_panel.offset_right = 220
-	_settings_panel.offset_top = -325
-	_settings_panel.offset_bottom = 325
-	_settings_panel.visible = false
-
-	# Dark styled panel
-	var style_box := StyleBoxFlat.new()
-	style_box.bg_color = Color(0.1, 0.1, 0.14, 0.95)
-	style_box.border_color = Color(0.7, 0.55, 0.25, 1.0)
-	style_box.set_border_width_all(2)
-	style_box.set_corner_radius_all(10)
-	style_box.content_margin_left = 24
-	style_box.content_margin_right = 24
-	style_box.content_margin_top = 18
-	style_box.content_margin_bottom = 18
-	_settings_panel.add_theme_stylebox_override("panel", style_box)
-	add_child(_settings_panel)
-
-	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 8)
-	_settings_panel.add_child(col)
-
-	var title := Label.new()
-	title.text = "PAUSE & SETTINGS"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 20)
-	col.add_child(title)
-
-	var resume_btn := Button.new()
-	resume_btn.text = "Resume Game"
-	resume_btn.custom_minimum_size = Vector2(0, 34)
-	resume_btn.pressed.connect(_close_settings_menu)
-	col.add_child(resume_btn)
-
-	var photo_btn := Button.new()
-	photo_btn.text = "📸 Photo Mode (P)"
-	photo_btn.custom_minimum_size = Vector2(0, 34)
-	photo_btn.pressed.connect(func():
-		_close_settings_menu()
-		_toggle_photo_mode()
-	)
-	col.add_child(photo_btn)
-
-	var talents_btn := Button.new()
-	talents_btn.text = "🕸️ Talent Web (K)"
-	talents_btn.custom_minimum_size = Vector2(0, 34)
-	talents_btn.pressed.connect(func():
-		_close_settings_menu()
-		_toggle_talent_tree()
-	)
-	col.add_child(talents_btn)
-
-	var dispatch_btn := Button.new()
-	dispatch_btn.text = "🚀 Expeditions (U)"
-	dispatch_btn.custom_minimum_size = Vector2(0, 34)
-	dispatch_btn.pressed.connect(func():
-		_close_settings_menu()
-		_toggle_expedition_board()
-	)
-	col.add_child(dispatch_btn)
-
-	var kitchen_btn := Button.new()
-	kitchen_btn.text = "🍲 Kitchen & Talismans (O)"
-	kitchen_btn.custom_minimum_size = Vector2(0, 34)
-	kitchen_btn.pressed.connect(func():
-		_close_settings_menu()
-		_toggle_cooking_station()
-	)
-	col.add_child(kitchen_btn)
-
-	_window_mode_btn = Button.new()
-	_update_window_mode_button_text()
-	_window_mode_btn.custom_minimum_size = Vector2(0, 34)
-	_window_mode_btn.pressed.connect(_toggle_window_mode)
-	col.add_child(_window_mode_btn)
-
-	# Audio Volume Sliders
-	_build_volume_row(col, "Master Vol", func() -> float: return AudioManager.master_volume if AudioManager else 0.8, func(v: float):
-		if AudioManager: AudioManager.set_master_volume(v)
-	)
-	_build_volume_row(col, "Music (BGM)", func() -> float: return AudioManager.bgm_volume if AudioManager else 0.7, func(v: float):
-		if AudioManager: AudioManager.set_bgm_volume(v)
-	)
-	_build_volume_row(col, "Sound (SFX)", func() -> float: return AudioManager.sfx_volume if AudioManager else 0.85, func(v: float):
-		if AudioManager:
-			AudioManager.set_sfx_volume(v)
-			AudioManager.play_sfx("coin")
-	)
-
-	var main_menu_btn := Button.new()
-	main_menu_btn.text = "Return to Main Menu"
-	main_menu_btn.custom_minimum_size = Vector2(0, 36)
-	main_menu_btn.pressed.connect(_return_to_main_menu)
-	col.add_child(main_menu_btn)
-
-	var quit_btn := Button.new()
-	quit_btn.text = "Quit to Desktop"
-	quit_btn.custom_minimum_size = Vector2(0, 36)
-	quit_btn.pressed.connect(_quit_game)
-	col.add_child(quit_btn)
-
-func _build_volume_row(parent: Control, label_text: String, get_val_fn: Callable, set_val_fn: Callable) -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 8)
-	parent.add_child(row)
-
-	var lbl := Label.new()
-	lbl.text = label_text
-	lbl.custom_minimum_size = Vector2(95, 0)
-	lbl.add_theme_font_size_override("font_size", 13)
-	row.add_child(lbl)
-
-	var slider := HSlider.new()
-	slider.min_value = 0.0
-	slider.max_value = 100.0
-	slider.step = 1.0
-	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	slider.value = get_val_fn.call() * 100.0
-	row.add_child(slider)
-
-	var val_lbl := Label.new()
-	val_lbl.text = "%d%%" % int(slider.value)
-	val_lbl.custom_minimum_size = Vector2(40, 0)
-	val_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	val_lbl.add_theme_font_size_override("font_size", 13)
-	row.add_child(val_lbl)
-
-	slider.value_changed.connect(func(new_val: float):
-		val_lbl.text = "%d%%" % int(new_val)
-		set_val_fn.call(new_val / 100.0)
-	)
-
-func _toggle_settings_menu() -> void:
-	if _settings_panel.visible:
-		_close_settings_menu()
-	else:
-		_open_settings_menu()
-
-func _open_settings_menu() -> void:
-	_update_window_mode_button_text()
-	_settings_panel.visible = true
-	get_tree().paused = true
-
-func _close_settings_menu() -> void:
-	_settings_panel.visible = false
-	get_tree().paused = false
-
-func _toggle_window_mode() -> void:
-	var mode := DisplayServer.window_get_mode()
-	if mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-	_update_window_mode_button_text()
-
-func _update_window_mode_button_text() -> void:
-	if not _window_mode_btn:
-		return
-	var mode := DisplayServer.window_get_mode()
-	if mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		_window_mode_btn.text = "Screen: Fullscreen"
-	else:
-		_window_mode_btn.text = "Screen: Windowed"
-
-func _return_to_main_menu() -> void:
-	get_tree().paused = false
-	if SceneManager:
-		SceneManager.transition_to_map("res://ui/menus/main_menu.tscn", "default")
-	else:
-		get_tree().change_scene_to_file("res://ui/menus/main_menu.tscn")
-
-func _quit_game() -> void:
-	get_tree().quit()
 
 # ---------------------------------------------------------------------------
 # Skills & Combat HUD (Bottom Center)
