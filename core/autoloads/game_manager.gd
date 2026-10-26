@@ -92,6 +92,11 @@ var active_meal_buff: Dictionary = {}
 var talisman_hp_bonus: float = 0.0
 var talisman_speed_bonus: float = 0.0
 
+# --- Idle Faith Generation & Shrine Siege Defense ---
+var last_idle_claim_time: float = 0.0
+var is_shrine_siege_active: bool = false
+var siege_wave: int = 0
+
 # ---------------------------------------------------------------------------
 # Lifecycle
 # ---------------------------------------------------------------------------
@@ -605,4 +610,28 @@ func add_talisman_speed(amount: float) -> void:
 	talisman_speed_bonus += amount
 	if SaveManager:
 		SaveManager.save_game()
+
+# ---------------------------------------------------------------------------
+# Idle Faith & Shrine Siege Defense Systems
+# ---------------------------------------------------------------------------
+
+func get_unclaimed_idle_faith() -> int:
+	if rescued_spirits.size() == 0:
+		return 0
+	if last_idle_claim_time <= 0.0:
+		last_idle_claim_time = Time.get_unix_time_from_system() - 120.0
+	var elapsed_mins: float = max((Time.get_unix_time_from_system() - last_idle_claim_time) / 60.0, 0.0)
+	return int(elapsed_mins * rescued_spirits.size() * 5.0)
+
+func claim_idle_faith() -> int:
+	var amt := get_unclaimed_idle_faith()
+	if amt > 0:
+		shrine_coins += amt
+		last_idle_claim_time = Time.get_unix_time_from_system()
+		if EventBus:
+			EventBus.currency_changed.emit(shrine_coins)
+		if SaveManager:
+			SaveManager.save_game()
+	return amt
+
 

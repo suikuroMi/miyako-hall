@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://entities/objects/hidden_item/hidden_item.tscn" id="11_hidden"]
 [ext_resource type="PackedScene" path="res://entities/objects/shrine_resident/shrine_resident.tscn" id="12_resident"]
 [ext_resource type="PackedScene" path="res://entities/objects/cooking_crafting_station/cooking_crafting_station.tscn" id="13_cook"]
+[ext_resource type="PackedScene" path="res://entities/objects/shrine_bell/shrine_bell.tscn" id="14_bell"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(260, 60)
@@ -152,3 +153,6 @@ resident_name = "Shrine Maiden Attendant"
 
 [node name="CookingStation" parent="." instance=ExtResource("13_cook")]
 position = Vector2(1160, 560)
+
+[node name="SacredShrineBell" parent="." instance=ExtResource("14_bell")]
+position = Vector2(760, 580)

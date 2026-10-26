@@ -14,6 +14,9 @@
 [ext_resource type="PackedScene" path="res://entities/objects/jizo_shrine/jizo_shrine.tscn" id="12_jizo"]
 [ext_resource type="PackedScene" path="res://entities/objects/treasure_chest/treasure_chest.tscn" id="13_chest"]
 [ext_resource type="PackedScene" path="res://entities/objects/tall_grass/tall_grass_zone.tscn" id="14_grass"]
+[ext_resource type="PackedScene" path="res://entities/objects/breakable_prop/breakable_prop.tscn" id="15_prop"]
+[ext_resource type="PackedScene" path="res://entities/objects/puzzle/pushable_boulder.tscn" id="16_boulder"]
+[ext_resource type="PackedScene" path="res://entities/objects/puzzle/pressure_plate.tscn" id="17_plate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_north_gate"]
 size = Vector2(260, 50)
@@ -129,3 +132,15 @@ reward_coins = 120
 
 [node name="TallGrassPatch" parent="." instance=ExtResource("14_grass")]
 position = Vector2(1100, 480)
+
+[node name="ShrineUrn1" parent="." instance=ExtResource("15_prop")]
+position = Vector2(880, 520)
+
+[node name="ShrineUrn2" parent="." instance=ExtResource("15_prop")]
+position = Vector2(1040, 520)
+
+[node name="ForestPressurePlate" parent="." instance=ExtResource("17_plate")]
+position = Vector2(600, 680)
+
+[node name="ForestBoulder" parent="." instance=ExtResource("16_boulder")]
+position = Vector2(520, 680)

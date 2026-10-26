@@ -29,6 +29,20 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poise_bg"]
+bg_color = Color(0.1, 0.1, 0.1, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poise_fill"]
+bg_color = Color(0.95, 0.75, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_gate"]
 size = Vector2(260, 60)
 
@@ -112,6 +126,15 @@ theme_override_styles/background = SubResource("StyleBoxFlat_boss_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
 max_value = 750.0
 value = 750.0
+show_percentage = false
+
+[node name="PoiseBar" type="ProgressBar" parent="BossUI/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_poise_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_poise_fill")
+max_value = 160.0
+value = 160.0
 show_percentage = false
 
 [node name="VictoryBanner" type="Label" parent="BossUI"]

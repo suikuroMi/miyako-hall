@@ -6,6 +6,7 @@ extends Node2D
 @onready var boss: Node2D = get_node_or_null("BossShirakamiFubuki")
 @onready var boss_ui: CanvasLayer = $BossUI
 @onready var boss_hp_bar: ProgressBar = $BossUI/VBox/ProgressBar
+@onready var poise_bar: ProgressBar = $BossUI/VBox/PoiseBar
 @onready var boss_name_label: Label = $BossUI/VBox/BossName
 @onready var victory_banner: Label = $BossUI/VictoryBanner
 @onready var return_gate: Area2D = $GateToShrine
@@ -16,6 +17,10 @@ func _ready() -> void:
 		boss.boss_hp_changed.connect(_on_boss_hp_changed)
 		boss.purified.connect(_on_boss_purified)
 		boss.phase_changed.connect(_on_boss_phase_changed)
+		if "poise_changed" in boss:
+			boss.poise_changed.connect(_on_boss_poise_changed)
+			boss.staggered.connect(_on_boss_staggered)
+			boss.recovered.connect(_on_boss_recovered)
 
 	if GameManager and not GameManager.get_story_flag("gym_cleared_shirakami_fubuki"):
 		var intro_lines := [
@@ -50,11 +55,29 @@ func _on_boss_phase_changed(_phase: int) -> void:
 		boss_name_label.text = "❄️ BLIZZARD KAMI FUBUKI (PHASE 2) ❄️"
 		boss_name_label.modulate = Color(0.4, 0.9, 1.2, 1.0)
 
+func _on_boss_poise_changed(current: float, max_p: float) -> void:
+	if poise_bar:
+		poise_bar.max_value = max_p
+		poise_bar.value = current
+
+func _on_boss_staggered(_dur: float) -> void:
+	if boss_name_label:
+		boss_name_label.text = "💫 STAGGER BREAK! VULNERABLE! (1.5x DMG) 💫"
+		boss_name_label.modulate = Color(1.0, 0.85, 0.2, 1.0)
+
+func _on_boss_recovered() -> void:
+	if boss_name_label:
+		var phase_text := "❄️ ENRAGED BLIZZARD FUBUKI (PHASE 2) ❄️" if (boss and "current_phase" in boss and boss.current_phase == 2) else "❄️ CORRUPTED SHIRAKAMI FUBUKI — BLIZZARD KAMI"
+		boss_name_label.text = phase_text
+		boss_name_label.modulate = Color(0.4, 0.8, 1.0, 1.0) if (boss and "current_phase" in boss and boss.current_phase == 2) else Color(0.7, 0.9, 1.0, 1.0)
+
 func _on_boss_purified() -> void:
 	if victory_banner:
 		victory_banner.visible = true
 	if boss_hp_bar:
 		boss_hp_bar.visible = false
+	if poise_bar:
+		poise_bar.visible = false
 	if boss_name_label:
 		boss_name_label.text = "✨ SPIRIT PURIFIED — FUBUKI's BLESSING AWAKENED ✨"
 		boss_name_label.modulate = Color(0.4, 1.0, 0.5, 1.0)

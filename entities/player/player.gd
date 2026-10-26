@@ -202,6 +202,13 @@ func _physics_process(_delta: float) -> void:
 
 	move_and_slide()
 
+	# Check for pushable objects upon collision (e.g. Strength boulders)
+	for i in range(get_slide_collision_count()):
+		var col = get_slide_collision(i)
+		var collider = col.get_collider()
+		if collider and collider.has_method("push"):
+			collider.push(-col.get_normal(), 110.0)
+
 	_update_animation(direction)
 
 func _update_animation(direction: Vector2) -> void:

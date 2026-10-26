@@ -25,6 +25,7 @@ AudioManager="*res://core/autoloads/audio_manager.gd"
 ObjectPool="*res://core/autoloads/object_pool.gd"
 TimeManager="*res://core/autoloads/time_manager.gd"
 CameraManager="*res://core/autoloads/camera_manager.gd"
+CombatTextManager="*res://core/autoloads/combat_text_manager.gd"
 List="*res://ui/inventory/item_list.gd"
 
 [display]

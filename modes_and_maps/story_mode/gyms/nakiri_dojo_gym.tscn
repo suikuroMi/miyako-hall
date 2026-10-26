@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" path="res://assets/tileset/TORII.png" id="8_torii"]
 [ext_resource type="PackedScene" path="res://entities/objects/spirit_brazier/spirit_brazier.tscn" id="9_brazier"]
 [ext_resource type="PackedScene" path="res://entities/objects/hazard_zone/hazard_zone.tscn" id="10_hazard"]
+[ext_resource type="PackedScene" path="res://entities/objects/breakable_prop/breakable_prop.tscn" id="11_prop"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bg"]
 bg_color = Color(0.12, 0.08, 0.08, 0.9)
@@ -29,6 +30,20 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poise_bg"]
+bg_color = Color(0.1, 0.1, 0.1, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poise_fill"]
+bg_color = Color(0.95, 0.75, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_gate"]
 size = Vector2(260, 60)
@@ -92,6 +107,12 @@ is_periodic_cycle = true
 active_cycle_time = 2.5
 inactive_cycle_time = 1.5
 
+[node name="DojoUrnLeft" parent="." instance=ExtResource("11_prop")]
+position = Vector2(660, 600)
+
+[node name="DojoUrnRight" parent="." instance=ExtResource("11_prop")]
+position = Vector2(1260, 600)
+
 [node name="BossUI" type="CanvasLayer" parent="."]
 layer = 50
 
@@ -118,6 +139,15 @@ theme_override_styles/background = SubResource("StyleBoxFlat_boss_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
 max_value = 650.0
 value = 650.0
+show_percentage = false
+
+[node name="PoiseBar" type="ProgressBar" parent="BossUI/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_poise_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_poise_fill")
+max_value = 140.0
+value = 140.0
 show_percentage = false
 
 [node name="VictoryBanner" type="Label" parent="BossUI"]

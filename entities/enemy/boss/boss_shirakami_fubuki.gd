@@ -14,16 +14,25 @@ extends BaseEnemy
 # Signals
 # ---------------------------------------------------------------------------
 signal boss_hp_changed(current_hp: float, max_hp: float)
+signal poise_changed(current_poise: float, max_poise: float)
+signal staggered(duration: float)
+signal recovered()
 signal phase_changed(new_phase: int)
 signal purified()
 
 # ---------------------------------------------------------------------------
 # Boss State
 # ---------------------------------------------------------------------------
-enum BossState { IDLE, CHASING, FROST_DART, FROST_NOVA, PURIFIED }
+enum BossState { IDLE, CHASING, FROST_DART, FROST_NOVA, STAGGERED, PURIFIED }
 var boss_state: BossState = BossState.IDLE
 var current_phase: int = 1
 var max_boss_hp: float = 750.0
+
+var max_poise: float = 160.0
+var current_poise: float = 160.0
+var is_staggered: bool = false
+var _stagger_timer: float = 0.0
+var _poise_regen_delay: float = 0.0
 
 var _attack_timer: float = 0.0
 var _dart_cooldown: float = 3.0
@@ -47,6 +56,19 @@ func _setup_enemy() -> void:
 func _physics_process(delta: float) -> void:
 	if _is_dying or boss_state == BossState.PURIFIED:
 		return
+
+	if is_staggered:
+		_stagger_timer -= delta
+		velocity = Vector2.ZERO
+		if _stagger_timer <= 0.0:
+			_recover_from_stagger()
+		return
+
+	# Poise regeneration when not taking damage
+	_poise_regen_delay -= delta
+	if _poise_regen_delay <= 0.0 and current_poise < max_poise:
+		current_poise = min(current_poise + 18.0 * delta, max_poise)
+		poise_changed.emit(current_poise, max_poise)
 
 	_attack_timer += delta
 	_nova_timer += delta
@@ -123,8 +145,46 @@ func _start_frost_nova(target: Node2D) -> void:
 	boss_state = BossState.CHASING
 
 func take_damage(amount: float) -> void:
+	if is_staggered:
+		# Takes amplified damage during stagger break!
+		amount *= 1.5
+	else:
+		current_poise = max(current_poise - (amount * 0.9), 0.0)
+		_poise_regen_delay = 3.5
+		poise_changed.emit(current_poise, max_poise)
+		if current_poise <= 0.0:
+			_trigger_stagger()
+
 	super.take_damage(amount)
 	_broadcast_hp()
+
+func _trigger_stagger() -> void:
+	is_staggered = true
+	_stagger_timer = 3.5
+	boss_state = BossState.STAGGERED
+	velocity = Vector2.ZERO
+	staggered.emit(3.5)
+
+	var spr = get_node_or_null("Sprite2D")
+	if spr:
+		spr.modulate = Color(1.8, 1.6, 0.4, 1.0) # Golden vulnerable glow
+
+	if CameraManager:
+		CameraManager.shake(12.0, 0.35)
+	if AudioManager:
+		AudioManager.play_sfx("purified")
+
+func _recover_from_stagger() -> void:
+	is_staggered = false
+	current_poise = max_poise
+	poise_changed.emit(current_poise, max_poise)
+	boss_state = BossState.CHASING
+
+	var spr = get_node_or_null("Sprite2D")
+	if spr:
+		spr.modulate = Color.WHITE
+
+	recovered.emit()
 
 func _broadcast_hp() -> void:
 	var cur: float = stats.current_hp if stats else 0.0
