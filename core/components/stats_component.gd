@@ -128,6 +128,16 @@ func heal(amount: float) -> void:
 	if get_parent().is_in_group("player"):
 		EventBus.player_hp_changed.emit(current_hp, max_hp)
 
+## Fully restores HP and Mana
+func heal_full() -> void:
+	current_hp = max_hp
+	if has_mana:
+		current_mana = max_mana
+	if get_parent().is_in_group("player"):
+		EventBus.player_hp_changed.emit(current_hp, max_hp)
+		if has_mana:
+			EventBus.player_mana_changed.emit(current_mana, max_mana)
+
 ## Check if entity has enough mana
 func has_enough_mana(cost: float) -> bool:
 	if not has_mana or cost <= 0.0:

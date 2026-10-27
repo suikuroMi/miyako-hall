@@ -64,6 +64,10 @@ func receive_damage(amount: float, knockback_force: float, source_position: Vect
 	if _is_invincible:
 		return
 
+	var parent = get_parent()
+	if parent and parent.is_in_group("player") and parent.get("is_god_mode") == true:
+		return
+
 	# Delegate actual HP reduction to StatsComponent
 	var stats: StatsComponent = get_parent().get_node_or_null("StatsComponent")
 	if stats:
@@ -71,7 +75,6 @@ func receive_damage(amount: float, knockback_force: float, source_position: Vect
 
 	# Trigger visual on-hit flash and camera shake
 	_trigger_hit_flash()
-	var parent = get_parent()
 	if parent and parent.is_in_group("player") and CameraManager:
 		CameraManager.shake(9.0, 0.22)
 

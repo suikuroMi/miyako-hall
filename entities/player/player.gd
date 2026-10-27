@@ -39,6 +39,8 @@ var equipped_weapon: Resource = null
 var last_horizontal_direction: float = 1.0
 var anim_library: String = ""
 var _is_in_dialogue: bool = false
+var is_god_mode: bool = false
+var speed_multiplier: float = 1.0
 
 # ---------------------------------------------------------------------------
 # Permanent child references (must exist in player.tscn)
@@ -378,7 +380,7 @@ func get_movement_speed() -> float:
 		base_spd = 180.0 + (stats.get_total_speed(equipped_weapon) * 2.5)
 	if GameManager:
 		base_spd *= (1.0 + GameManager.get_shrine_speed_bonus())
-	return base_spd
+	return base_spd * speed_multiplier
 
 func get_attack_damage() -> float:
 	return stats.get_total_attack(equipped_weapon)
@@ -391,6 +393,8 @@ func get_intelligence() -> float:
 # ---------------------------------------------------------------------------
 
 func take_damage(amount: float) -> void:
+	if is_god_mode:
+		return
 	stats.take_damage(amount)
 
 func heal(amount: float) -> void:

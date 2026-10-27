@@ -32,6 +32,7 @@ extends PanelContainer
 # Bottom bar buttons
 @onready var btn_quit: Button = $VBox/BottomRow/BtnQuit
 @onready var btn_main_menu: Button = $VBox/BottomRow/BtnMainMenu
+@onready var btn_debug: Button = $VBox/BottomRow/BtnDebug
 @onready var btn_resume: Button = $VBox/BottomRow/BtnResume
 
 # Settings sub-modal inside terminal
@@ -51,6 +52,8 @@ func _ready() -> void:
 		btn_quit.pressed.connect(_on_quit_game)
 	if btn_main_menu:
 		btn_main_menu.pressed.connect(_on_return_main_menu)
+	if btn_debug:
+		btn_debug.pressed.connect(func(): _open_sub_view("DebugMenu", "toggle_menu"))
 
 	# Tile connections
 	if btn_gacha:

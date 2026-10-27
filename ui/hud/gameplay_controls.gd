@@ -82,6 +82,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.physical_keycode == KEY_O:
 			_toggle_cooking_station()
 			get_viewport().set_input_as_handled()
+		elif event.physical_keycode == KEY_F1 or event.physical_keycode == KEY_QUOTELEFT:
+			_toggle_debug_menu()
+			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed:
 		if _is_gamepad_mode:
 			_set_gamepad_mode(false)
@@ -394,3 +397,11 @@ func _clear_dummies() -> void:
 	for dummy in get_tree().get_nodes_in_group("training_dummies"):
 		dummy.queue_free()
 	_spawn_count = 0
+
+func _toggle_debug_menu() -> void:
+	var hud := get_parent()
+	if not hud:
+		return
+	var debug_menu = hud.get_node_or_null("DebugMenu")
+	if debug_menu and debug_menu.has_method("toggle_menu"):
+		debug_menu.toggle_menu()

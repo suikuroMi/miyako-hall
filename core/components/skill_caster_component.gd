@@ -41,6 +41,8 @@ var _max_cooldowns: Dictionary = {
 	"R": 1.0
 }
 
+var no_cooldowns: bool = false
+
 var _stats: StatsComponent = null
 var _movement: MovementComponent = null
 
@@ -110,7 +112,7 @@ func can_cast(slot: String) -> bool:
 	slot = slot.to_upper()
 	if not _skills.has(slot) or _skills[slot] == null:
 		return false
-	if _cooldowns[slot] > 0.0:
+	if not no_cooldowns and _cooldowns[slot] > 0.0:
 		return false
 	var skill: SkillData = _skills[slot]
 	if _stats and skill.mana_cost > 0.0:
@@ -132,7 +134,7 @@ func cast_skill(slot: String) -> bool:
 
 	# Start cooldown
 	_max_cooldowns[slot] = skill.cooldown
-	_cooldowns[slot] = skill.cooldown
+	_cooldowns[slot] = 0.0 if no_cooldowns else skill.cooldown
 
 	# Perform the skill's mechanical action
 	_execute_skill_effect(skill, slot)
@@ -145,6 +147,14 @@ func cast_skill(slot: String) -> bool:
 			AudioManager.play_sfx("skill")
 
 	return true
+
+## Resets cooldowns immediately for all slots
+func reset_all_cooldowns() -> void:
+	for slot in ["Q", "E", "R"]:
+		_cooldowns[slot] = 0.0
+		skill_cooldown_updated.emit(slot, 0.0, _max_cooldowns[slot])
+		if get_parent() and get_parent().is_in_group("player"):
+			EventBus.skill_cooldown_updated.emit(slot, 0.0, _max_cooldowns[slot])
 
 func get_skill(slot: String) -> SkillData:
 	slot = slot.to_upper()
